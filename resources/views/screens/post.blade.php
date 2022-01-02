@@ -18,11 +18,30 @@
                 </div>
                 <div class="card-footer">
                     <div class="mb-3">
-                        <textarea name="comment" rows="3" class="form-control mb-2" placeholder="Add comment"></textarea>
-                        <button class="btn btn-primary">Comment</button>
+                        @if (Auth::check())
+                            <form action="/{{ $user->username }}/posts/{{ $post->id }}/comments" method="POST">
+                                @csrf
+                                <textarea name="content" rows="3" class="form-control mb-2"
+                                    placeholder="Add comment"></textarea>
+                                @if ($errors->has('content'))
+                                    @foreach ($errors->get('content') as $message)
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @endforeach
+                                @endif
+                                <button type="submit" class="btn btn-primary">Comment</button>
+                            </form>
+                        @endif
                     </div>
+
                     <div>
                         <h6>Comments</h6>
+                        <hr>
+                        @foreach ($comments as $comment)
+                            <p>{{ $comment->content }}</p>
+                            <a href="/{{ $comment->user->username }}">{{ $comment->user->username }}</a>
+                            <p>{{ date('F d, Y - h:i a', strtotime($comment->created_at)) }}</p>
+                            <hr>
+                        @endforeach
                     </div>
                 </div>
             </div>

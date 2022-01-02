@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Comment\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Posts\PostController;
 use App\Http\Controllers\User\ProfileController;
@@ -20,5 +21,7 @@ Route::put('/{username}/edit', [ProfileController::class, 'updateProfile']);
 
 Route::get('/{username}/posts/{postId}', [PostController::class, 'showPostView']);
 Route::post('/posts', [PostController::class, 'addNewPost']);
+
+Route::post('/{username}/posts/{postId}/comments', [CommentController::class, 'addNewComment']);
 
 Route::get('/', [HomeController::class, 'showHomeView'])->middleware('auth')->name('home');

@@ -32,10 +32,12 @@ class PostController extends Controller
     {
         $post = Post::where('id', $postId)->first();
         $user = $post->user;
-        
+        $comments = $post->comments;
+
         return view('screens.post', [
             'user' => $user,
-            'post' => $post
+            'post' => $post,
+            'comments' => $comments
         ]);
     }
 }

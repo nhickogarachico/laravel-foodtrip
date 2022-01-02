@@ -14,7 +14,7 @@
                     <p>{{ $user->bio }}</p>
                     <p>joined {{ $user->created_at->diffForHumans() }}</p>
 
-                    @if (Auth::user()->username == $user->username)
+                    @if (Auth::check() && Auth::user()->username == $user->username)
                         <a href="/{{ $user->username }}/edit" class="btn btn-primary">Edit Profile</a>
                     @endif
                 </div>
@@ -23,7 +23,7 @@
 
         </div>
         <div class="col-9">
-            @if (Auth::user()->username == $user->username)
+            @if (Auth::check() && Auth::user()->username == $user->username)
                 <div class="mb-3">
                     @if (session('success'))
                         <div class="alert alert-success">
