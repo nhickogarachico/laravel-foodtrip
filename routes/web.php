@@ -15,5 +15,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
 Route::get('/{username}', [ProfileController::class, 'showProfileView']);
+Route::get('/{username}/edit', [ProfileController::class, 'editProfileView']);
+Route::put('/{username}/edit', [ProfileController::class, 'updateProfile']);
 
 Route::get('/', [HomeController::class, 'showHomeView'])->middleware('auth')->name('home');

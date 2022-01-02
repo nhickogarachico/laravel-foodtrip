@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('avatar')->nullable()->default('/images/default_profile.png');
-            $table->string('bio')->nullable();
+            $table->text('bio')->nullable();
             $table->timestamps();
         });
     }
