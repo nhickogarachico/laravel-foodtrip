@@ -22,8 +22,7 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        if(Auth::attempt($credentials))
-        {
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
             return redirect()->intended('/');
@@ -32,5 +31,16 @@ class AuthController extends Controller
         return back()->withErrors([
             'credentials' => 'Wrong credentials'
         ]);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 }
