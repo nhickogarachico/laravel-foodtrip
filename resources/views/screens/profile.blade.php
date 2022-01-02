@@ -38,7 +38,7 @@
                                 <p class="text-danger">{{ $message }}</p>
                             @endforeach
                         @endif
-                        <button class="btn btn-primary">Post</button>
+                        <button type="submit" class="btn btn-primary">Post</button>
                     </form>
 
                 </div>
@@ -46,18 +46,24 @@
             <h5 class="mb-3">Posts</h5>
             <div>
                 @foreach ($posts as $post)
+
                     <div class="card mb-3">
                         <div class="card-body">
                             <div class="mb-3">
-                                <img src="{{$post->user->avatar}}" alt="{{$post->user->username}} avatar" class="rounded-circle" width="35" height="35">
+                                <img src="{{ $post->user->avatar }}" alt="{{ $post->user->username }} avatar"
+                                    class="rounded-circle" width="35" height="35">
                                 <a href="/{{ $post->user->username }}"
                                     class="card-title">{{ $post->user->username }}</a>
-                                    <p>Posted {{$post->created_at->diffForHumans()}}</p>
+                                <p>Posted {{ $post->created_at->diffForHumans() }}</p>
                             </div>
                             <p>{{ $post->content }}</p>
-                        </div>
 
+                        </div>
+                        <div class="card-footer">
+                            <a href="/{{ $post->user->username }}/posts/{{ $post->id }}">Go to post page</a>
+                        </div>
                     </div>
+
                 @endforeach
             </div>
         </div>

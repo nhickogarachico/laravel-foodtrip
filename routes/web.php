@@ -18,6 +18,7 @@ Route::get('/{username}', [ProfileController::class, 'showProfileView']);
 Route::get('/{username}/edit', [ProfileController::class, 'editProfileView']);
 Route::put('/{username}/edit', [ProfileController::class, 'updateProfile']);
 
+Route::get('/{username}/posts/{postId}', [PostController::class, 'showPostView']);
 Route::post('/posts', [PostController::class, 'addNewPost']);
 
 Route::get('/', [HomeController::class, 'showHomeView'])->middleware('auth')->name('home');
