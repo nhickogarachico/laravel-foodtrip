@@ -18,13 +18,18 @@
                 </ul>
                 @isset($user)
                     <div class="me-2">
-                        <a href="/{{$user->username}}">Welcome {{ $user->username }}!</a>
+                        <a href="/{{ $user->username }}">Welcome {{ $user->username }}!</a>
                     </div>
+                    <form action="/logout" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-primary">Logout</button>
+                    </form>
                 @endisset
-                <form action="/logout" method="POST">
-                    @csrf
-                    <button type="submit" class="btn btn-primary">Logout</button>
-                </form>
+
+                @if (!Auth::check())
+                    <a href="/login" class="btn btn-primary me-2">Log in</a>
+                    <a href="/register" class="btn btn-primary">Register</a>
+                @endif
             </div>
         </div>
     </nav>

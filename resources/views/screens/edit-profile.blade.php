@@ -10,13 +10,18 @@
             {{ session('success') }}
         </div>
     @endif
-    <form action="/{{ $user->username }}/edit" method="POST">
+    <form action="/{{ $user->username }}/edit" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
-        <div><img src="{{ $user->avatar }}" alt=""></div>
+        <div><img src="{{ $user->avatar }}" alt="{{$user->avatar}}"></div>
         <div class="mb-3">
             <label for="avatarFile" class="form-label">Upload image</label>
-            <input class="form-control" type="file" id="avatarFile">
+            <input class="form-control" type="file" id="avatarFile" accept="image/*" name="avatar">
+            @if ($errors->has('avatar'))
+                @foreach ($errors->get('avatar') as $message)
+                    <p class="text-danger">{{ $message }}</p>
+                @endforeach
+            @endif
         </div>
         <div>
             <label for="firstName" class="form-label">First Name</label>
