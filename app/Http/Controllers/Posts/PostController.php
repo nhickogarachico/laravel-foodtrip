@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Posts;
 
 use App\Http\Controllers\Controller;
+use App\Models\Like;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -10,6 +11,11 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
+
+    public $isLiked = false;
+    public $likeCount = 0;
+    public $commentCount = 0;
+
     public function addNewPost(Request $request)
     {
         $userId = Auth::id();
@@ -34,10 +40,24 @@ class PostController extends Controller
         $user = $post->user;
         $comments = $post->comments;
 
+        //count like of this post
+        $liked = Like::where('post_id', $post->id)->where('user_id', Auth::id())->count();
+        $this->likeCount = $post->likes->count();
+
+        if($liked > 0) {
+            $this->isLiked = true;
+        }
+
+        // count number of comments
+        $this->commentCount = $post->comments->count();
+
         return view('screens.post', [
             'user' => $user,
             'post' => $post,
-            'comments' => $comments
+            'comments' => $comments,
+            'isLiked' => $this->isLiked,
+            'likeCount' => $this->likeCount,
+            'commentCount' => $this->commentCount
         ]);
     }
 }

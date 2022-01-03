@@ -17,6 +17,24 @@
                     </div>
                 </div>
                 <div class="card-footer">
+                    @if ($likeCount > 1)
+                        <p>{{ $likeCount }} likes</p>
+                    @else
+                        <p>{{ $likeCount }} like</p>
+                    @endif
+
+                    @if ($commentCount > 1)
+                        <p>{{ $commentCount }} comments</p>
+                    @else
+                        <p>{{ $commentCount }} comment</p>
+                    @endif
+                    @if (Auth::check())
+                        @if ($isLiked)
+                            <x-unlike-button :post-id="$post->id" />
+                        @else
+                            <x-like-button :post-id="$post->id" />
+                        @endif
+                    @endif
                     <div class="mb-3">
                         @if (Auth::check())
                             <form action="/{{ $user->username }}/posts/{{ $post->id }}/comments" method="POST">
@@ -34,13 +52,11 @@
                     </div>
 
                     <div>
+
                         <h6>Comments</h6>
                         <hr>
                         @foreach ($comments as $comment)
-                            <p>{{ $comment->content }}</p>
-                            <a href="/{{ $comment->user->username }}">{{ $comment->user->username }}</a>
-                            <p>{{ date('F d, Y - h:i a', strtotime($comment->created_at)) }}</p>
-                            <hr>
+                            <x-comment :comment="$comment"/>
                         @endforeach
                     </div>
                 </div>

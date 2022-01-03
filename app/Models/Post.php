@@ -23,4 +23,9 @@ class Post extends Model
     {
         return $this->hasMany(Comment::class)->orderBy('created_at', 'desc');
     }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
 }
