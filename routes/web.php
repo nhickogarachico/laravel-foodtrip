@@ -24,6 +24,7 @@ Route::get('/{username}/posts/{postId}', [PostController::class, 'showPostView']
 Route::post('/posts', [PostController::class, 'addNewPost']);
 
 Route::post('/{username}/posts/{postId}/comments', [CommentController::class, 'addNewComment']);
+Route::post('/comments/{commentId}/reply',[CommentController::class, 'replyToComment'] );
 
 Route::put('/posts/{postId}/like', [LikeController::class, 'likePost']);
 Route::delete('/posts/{postId}/unlike', [LikeController::class, 'unlikePost']);

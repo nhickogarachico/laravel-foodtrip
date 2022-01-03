@@ -39,7 +39,7 @@ class LikeController extends Controller
 
     public function unlikeComment($commentId)
     {
-        Like::where('comment_id', $commentId)->where('user_id', Auth::id())->delete();
+        CommentLike::where('comment_id', $commentId)->where('user_id', Auth::id())->delete();
 
         return back();
     }

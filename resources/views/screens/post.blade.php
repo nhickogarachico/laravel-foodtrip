@@ -34,10 +34,20 @@
                         @else
                             <x-like-button :post-id="$post->id" />
                         @endif
+
+
                     @endif
+                    <div>
+
+                        <h6>Comments</h6>
+                        <hr>
+                        @foreach ($comments as $comment)
+                            <x-comment :comment="$comment" :user="$user" :post="$post" />
+                        @endforeach
+                    </div>
                     <div class="mb-3">
                         @if (Auth::check())
-                            <form action="/{{ $user->username }}/posts/{{ $post->id }}/comments" method="POST">
+                            <form action="/{{$user->username}}/posts/{{$post->id}}/comments" method="POST">
                                 @csrf
                                 <textarea name="content" rows="3" class="form-control mb-2"
                                     placeholder="Add comment"></textarea>
@@ -49,15 +59,6 @@
                                 <button type="submit" class="btn btn-primary">Comment</button>
                             </form>
                         @endif
-                    </div>
-
-                    <div>
-
-                        <h6>Comments</h6>
-                        <hr>
-                        @foreach ($comments as $comment)
-                            <x-comment :comment="$comment"/>
-                        @endforeach
                     </div>
                 </div>
             </div>

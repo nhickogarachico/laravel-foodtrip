@@ -39,7 +39,7 @@ class PostComponent extends Component
         $this->likeCount = $this->post->likes->count();
 
         //get number of comments
-        $this->commentCount = $this->post->comments->count();
+        $this->commentCount = $this->post->allComments->count();
 
         if($liked > 0) {
             $this->isLiked = true;

@@ -8,15 +8,33 @@
     @else
         <p>{{ $likeCount }} like</p>
     @endif
-    
+
     @if (Auth::check())
         @if ($isLiked)
             <x-comment-unlike-button :comment-id="$comment->id" />
         @else
             <x-comment-like-button :comment-id="$comment->id" />
         @endif
+        <x-reply-button :comment="$comment"/>
+       
 
-
+        {{-- reply collapse --}}
+        <div class="collapse" id="replyCollapse{{$comment->id}}">
+            <p>Reply to {{$comment->user->username}}</p>
+            <x-comment-form :comment="$comment"/>
+        </div>
     @endif
-    <hr>
+    
+    <a class="text-link" type="button" data-bs-toggle="collapse" data-bs-target="#repliesCollapse{{$comment->id}}"
+        aria-expanded="false" aria-controls="repliesCollapse{{$comment->id}}">
+        {{$replyCount}} Replies
+    </a>
+
+    {{-- replies collapse --}}
+    <div class="collapse" id="repliesCollapse{{$comment->id}}">
+        @foreach ($replies as $reply)
+            <x-comment :comment="$reply" :user="$user" :post="$post" />
+        @endforeach
+    </div>
+    
 </div>

@@ -49,7 +49,7 @@ class PostController extends Controller
         }
 
         // count number of comments
-        $this->commentCount = $post->comments->count();
+        $this->commentCount = $post->allComments->count();
 
         return view('screens.post', [
             'user' => $user,

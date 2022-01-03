@@ -21,11 +21,16 @@ class Post extends Model
 
     public function comments()
     {
-        return $this->hasMany(Comment::class)->orderBy('created_at', 'desc');
+        return $this->hasMany(Comment::class)->where('reply_id', null)->orderBy('created_at', 'desc');
     }
 
     public function likes()
     {
         return $this->hasMany(Like::class);
+    }
+
+    public function allComments()
+    {
+        return $this->hasMany(Comment::class)->orderBy('created_at', 'desc');
     }
 }

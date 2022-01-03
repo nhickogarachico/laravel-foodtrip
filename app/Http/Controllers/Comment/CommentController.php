@@ -26,4 +26,26 @@ class CommentController extends Controller
 
         return back();
     }
+
+    public function replyToComment(Request $request, $commentId)
+    {
+
+        $request->validate([
+            "content$commentId" => 'required'
+        ]);
+        
+        $comment = Comment::where('id', $commentId)->first();
+        $postId = $comment->post->id;
+        $userId = Auth::id();
+
+        Comment::create([
+            'content' => $request->input("content$commentId"),
+            'post_id' => $postId,
+            'user_id' => $userId,
+            'reply_id' => $commentId
+        ]);
+
+        return back();
+
+    }
 }
