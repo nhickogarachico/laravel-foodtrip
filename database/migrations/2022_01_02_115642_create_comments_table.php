@@ -20,6 +20,10 @@ class CreateCommentsTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
+
+        Schema::table('comments', function (Blueprint $table) {
+            $table->foreignId('reply_id')->nullable()->constrained('comments');
+        });
     }
 
     /**

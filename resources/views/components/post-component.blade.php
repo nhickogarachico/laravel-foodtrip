@@ -7,6 +7,9 @@
             <p>Posted {{ $post->created_at->diffForHumans() }}</p>
         </div>
         <p>{{ $post->content }}</p>
+        @if ($post->image)
+            <img src="{{ $post->image }}" alt="{{ $post->content }} image" class="card-img-top">
+        @endif
 
     </div>
     <div class="card-footer">

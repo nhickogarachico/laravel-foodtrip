@@ -1,5 +1,6 @@
 <div>
     <p>{{ $comment->content }}</p>
+    <img src="{{$comment->user->avatar}}" alt="{{ $comment->user->username }} avatar" width='40' height=40 class="rounded-circle">
     <a href="/{{ $comment->user->username }}">{{ $comment->user->username }}</a>
     <p>{{ date('F d, Y - h:i a', strtotime($comment->created_at)) }}</p>
 

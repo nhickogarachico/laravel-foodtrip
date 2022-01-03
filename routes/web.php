@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Comment\CommentController;
+use App\Http\Controllers\FriendRequest\FriendRequestController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Like\LikeController;
 use App\Http\Controllers\Posts\PostController;
+use App\Http\Controllers\Search\SearchController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\RegisterController;
@@ -31,5 +33,9 @@ Route::delete('/posts/{postId}/unlike', [LikeController::class, 'unlikePost']);
 
 Route::put('/comments/{commentId}/like', [LikeController::class, 'likeComment']);
 Route::delete('/comments/{commentId}/unlike', [LikeController::class, 'unlikeComment']);
+
+Route::post('/{userFirst}/request/{userSecond}', [FriendRequestController::class, 'sendFriendRequest']);
+
+Route::get('/users/search', [SearchController::class, 'searchUser'])->name('search');
 
 Route::get('/', [HomeController::class, 'showHomeView'])->middleware('auth')->name('home');

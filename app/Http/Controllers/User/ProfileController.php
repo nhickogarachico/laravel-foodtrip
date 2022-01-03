@@ -16,10 +16,10 @@ class ProfileController extends Controller
         // check if username exists
         $user = User::where('username', $username)->first();
 
-        // fetch all posts of this user
-        $posts = $user->posts;
-
         if ($user) {
+            // fetch all posts of this user
+            $posts = $user->posts;
+            
             return view('screens.profile', [
                 'user' => $user,
                 'posts' => $posts
@@ -56,7 +56,7 @@ class ProfileController extends Controller
 
         if ($request->file('avatar')) {
             // Check if profile directory exists
-            $avatarDirectory = 'images/profiles/' . $user->id;
+            $avatarDirectory = 'images/database/' .$user->id .'/profiles';
 
             if (!File::exists($avatarDirectory)) {
                 File::makeDirectory($avatarDirectory, 0777, true);

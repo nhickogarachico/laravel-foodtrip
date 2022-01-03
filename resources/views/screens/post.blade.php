@@ -14,6 +14,10 @@
                     </div>
                     <div>
                         <p>{{ $post->content }}</p>
+                        @if ($post->image)
+                            <img src="{{ $post->image }}" alt="{{ $post->content }} image" class="card-img-top">
+                        @endif
+
                     </div>
                 </div>
                 <div class="card-footer">
@@ -47,7 +51,7 @@
                     </div>
                     <div class="mb-3">
                         @if (Auth::check())
-                            <form action="/{{$user->username}}/posts/{{$post->id}}/comments" method="POST">
+                            <form action="/{{ $user->username }}/posts/{{ $post->id }}/comments" method="POST">
                                 @csrf
                                 <textarea name="content" rows="3" class="form-control mb-2"
                                     placeholder="Add comment"></textarea>

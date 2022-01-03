@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class PostController extends Controller
 {
@@ -20,15 +21,40 @@ class PostController extends Controller
     {
         $userId = Auth::id();
 
-        $request->validate([
-            'content' => 'required'
-        ]);
+        if(!$request->input('content') && !$request->file('postImage'))
+        {
+            $request->validate([
+                'content' => 'required',
+                'postImage' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048']
+            ]);
+        }
+        
 
-        Post::create([
+
+        $post = Post::create([
             'content' => $request->input('content'),
             'user_id' => $userId,
         ]);
 
+        // postImage
+        if ($request->file('postImage')) {
+            //check if directory exists
+            $postImagesDirectory = 'images/database/' . $userId . '/post_images';
+
+            if (!File::exists($postImagesDirectory)) {
+                File::makeDirectory($postImagesDirectory, 0777, true);
+            }
+
+            $postImageName = time() . $post->id . '.' . $request->file('postImage')->extension();
+            $postImagePath = "/" . $postImagesDirectory . "/" . $postImageName;
+
+            $request->file('postImage')->move(public_path($postImagesDirectory), $postImagePath);
+
+            $post->image = $postImagePath;
+            $post->save();
+
+        }
+    
         return back()->with([
             'success' => 'Added new post succesfully'
         ]);
@@ -37,6 +63,12 @@ class PostController extends Controller
     public function showPostView($username, $postId)
     {
         $post = Post::where('id', $postId)->first();
+
+        if(!$post)
+        {
+            return back();
+        }
+
         $user = $post->user;
         $comments = $post->comments;
 
@@ -44,7 +76,7 @@ class PostController extends Controller
         $liked = Like::where('post_id', $post->id)->where('user_id', Auth::id())->count();
         $this->likeCount = $post->likes->count();
 
-        if($liked > 0) {
+        if ($liked > 0) {
             $this->isLiked = true;
         }
 
