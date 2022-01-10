@@ -35,6 +35,7 @@ Route::put('/comments/{commentId}/like', [LikeController::class, 'likeComment'])
 Route::delete('/comments/{commentId}/unlike', [LikeController::class, 'unlikeComment']);
 
 Route::post('/{userFirst}/request/{userSecond}', [FriendRequestController::class, 'sendFriendRequest']);
+Route::get('/{username}/friend-requests', [FriendRequestController::class, 'showFriendRequestView']);
 
 Route::get('/users/search', [SearchController::class, 'searchUser'])->name('search');
 

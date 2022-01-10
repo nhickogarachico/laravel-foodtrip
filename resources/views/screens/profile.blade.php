@@ -19,8 +19,14 @@
                     @endif
 
                     @if (Auth::check() && Auth::user()->username != $user->username)
-                        <x-add-friend-button :user-second="$user"/>
+                        <x-add-friend-button :user-second="$user" />
                     @endif
+                    <div>
+                        <a href="/{{$user->username}}/friend-requests">Friend Requests</a>
+                    </div>
+                    <div>
+                        <a href="#">Friends</a>
+                    </div>
                 </div>
 
             </div>

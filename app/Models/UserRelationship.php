@@ -14,4 +14,15 @@ class UserRelationship extends Model
         'user_second_id',
         'type'
     ];
+
+    public function firstUser()
+    {
+        return $this->belongsTo(User::class, 'user_first_id');
+    }
+
+    public function secondUser()
+    {
+        return $this->belongsTo(User::class, 'user_second_id');
+    }
+
 }

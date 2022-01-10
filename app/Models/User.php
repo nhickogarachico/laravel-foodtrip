@@ -33,4 +33,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(User::class)->orderBy('created_at', 'desc');
     }
+
+    public function requestTo()
+    {
+        return $this->hasMany(UserRelationship::class, 'user_first_id')->where('type', '1');
+    }
 }
