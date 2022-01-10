@@ -43,4 +43,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserRelationship::class, 'user_second_id')->where('type', '1');
     }
+
+    public function friends()
+    {   
+        $firstQuery = $this->hasMany(UserRelationship::class, 'user_first_id')->where('type', '3');
+        $secondQuery = $this->hasMany(UserRelationship::class, 'user_second_id')->where('type', '3');
+        return $firstQuery->union($secondQuery);
+    }
 }

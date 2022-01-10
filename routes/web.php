@@ -38,6 +38,7 @@ Route::post('/{userFirst}/request/{userSecond}', [FriendRequestController::class
 Route::get('/{username}/friend-requests', [FriendRequestController::class, 'showFriendRequestView']);
 Route::put('/friend-requests/{requestId}', [FriendRequestController::class, 'acceptFriendRequest']);
 Route::delete('/friend-requests/{requestId}', [FriendRequestController::class, 'declineFriendRequest']);
+Route::get('/{username}/friends', [FriendRequestController::class, 'showFriendsListView']);
 
 Route::get('/users/search', [SearchController::class, 'searchUser'])->name('search');
 

@@ -59,4 +59,19 @@ class FriendRequestController extends Controller
 
         return back();
     }
+
+    public function showFriendsListView($username)
+    {
+        $user = User::where('username', $username)->first();
+        if(Auth::user() != $user || !$user)
+        {
+            return back();
+        }
+
+        // get friends
+        $friends = $user->friends;
+        return view('screens.friends-list', [
+            'friends' => $friends
+        ]);
+    }
 }

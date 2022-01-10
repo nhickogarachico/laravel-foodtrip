@@ -25,7 +25,7 @@
                         <a href="/{{$user->username}}/friend-requests">Friend Requests</a>
                     </div>
                     <div>
-                        <a href="#">Friends</a>
+                        <a href="/{{$user->username}}/friends">Friends</a>
                     </div>
                 </div>
 
