@@ -44,10 +44,35 @@ class User extends Authenticatable
         return $this->hasMany(UserRelationship::class, 'user_second_id')->where('type', '1');
     }
 
-    public function friends()
+    public function friendsIRequested()
     {   
-        $firstQuery = $this->hasMany(UserRelationship::class, 'user_first_id')->where('type', '3');
-        $secondQuery = $this->hasMany(UserRelationship::class, 'user_second_id')->where('type', '3');
-        return $firstQuery->union($secondQuery);
+        return $this->belongsToMany(User::class, 'user_relationships', 'user_first_id', 'user_second_id')->where('type', 3);
+    }
+
+    public function friendsTheyRequested()
+    {
+        return $this->belongsToMany(User::class, 'user_relationships', 'user_second_id', 'user_first_id')->where('type', 3);
+    }
+
+    public function getFriendsAttribute()
+    {
+        if(!array_key_exists('friends', $this->relations)) $this->loadFriends();
+
+        return $this->getRelation('friends');
+    }
+
+    protected function loadFriends()
+    {
+        if(!array_key_exists('friends', $this->relations))
+        {
+            $friends = $this->mergeFriends();
+
+            $this->setRelation('friends', $friends);
+        }
+    }
+
+    protected function mergeFriends()
+    {
+        return $this->friendsIRequested->merge($this->friendsTheyRequested);
     }
 }
