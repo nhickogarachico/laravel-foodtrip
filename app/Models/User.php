@@ -38,4 +38,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserRelationship::class, 'user_first_id')->where('type', '1');
     }
+
+    public function requests()
+    {
+        return $this->hasMany(UserRelationship::class, 'user_second_id')->where('type', '1');
+    }
 }

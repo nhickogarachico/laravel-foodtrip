@@ -36,9 +36,27 @@ class FriendRequestController extends Controller
         }
 
         // get all this user's friend requests
-        $friendRequests = $user->requestTo;
+        $sentRequests = $user->requestTo;
+        $friendRequestsFromOthers = $user->requests;
         return view('screens.friend-requests', [
-            'friendRequests' => $friendRequests
+            'sentRequests' => $sentRequests,
+            'friendRequestsFromOthers' => $friendRequestsFromOthers
         ]);
+    }
+
+    public function acceptFriendRequest($requestId)
+    {
+        $friendRequest = UserRelationship::where('id', $requestId)->first();
+        $friendRequest->type = 3;
+        $friendRequest->save();
+
+        return back();
+    }
+
+    public function declineFriendRequest($requestId)
+    {
+        UserRelationship::where('id', $requestId)->delete();
+
+        return back();
     }
 }
