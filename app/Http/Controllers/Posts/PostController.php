@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Like;
 use App\Models\Post;
 use App\Models\User;
+use App\Notifications\NewPostNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Notification;
 
 class PostController extends Controller
 {
@@ -54,7 +56,13 @@ class PostController extends Controller
             $post->save();
 
         }
-    
+        
+
+        // post notification
+        //get user friends
+        $friends = Auth::user()->friends;
+        Notification::send($friends, new NewPostNotification(Auth::user(), $post));
+        
         return back()->with([
             'success' => 'Added new post succesfully'
         ]);

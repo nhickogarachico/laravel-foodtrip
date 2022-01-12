@@ -30,7 +30,7 @@
                 @elseif(Auth::user()->relationshipTypeInvited($user->id))
                     @if (Auth::user()->relationshipTypeInvited($user->id)->type == 1)
                         <div>
-                            <span class="badge bg-info">Sent an invite</span>
+                            <span class="badge bg-info">Sent an invite to you</span>
                         </div>
                         <div class="d-flex">
                             <form action="/friend-requests/{{ Auth::user()->relationshipTypeInvited($user->id)->id }}" method="POST">
