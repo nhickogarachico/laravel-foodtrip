@@ -5355,8 +5355,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   methods: {
-    deleteAllNotifications: function () {
-      var _deleteAllNotifications = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(username) {
+    deleteAllNotifications: function deleteAllNotifications(username) {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -5365,32 +5367,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return axios["delete"]("/".concat(username, "/notifications"));
 
               case 2:
+                _this.notifications = [];
+
+              case 3:
               case "end":
                 return _context.stop();
             }
           }
         }, _callee);
-      }));
-
-      function deleteAllNotifications(_x) {
-        return _deleteAllNotifications.apply(this, arguments);
-      }
-
-      return deleteAllNotifications;
-    }()
+      }))();
+    }
   },
   created: function created() {
-    var _this = this;
+    var _this2 = this;
 
     Echo["private"]("App.Models.User." + this.user.id).notification(function (notification) {
-      axios.get("/".concat(_this.user.username, "/notifications-json")).then(function (response) {
-        _this.notifications = response.data.notifications;
+      axios.get("/".concat(_this2.user.username, "/notifications-json")).then(function (response) {
+        _this2.notifications = response.data.notifications;
       })["catch"](function (error) {
         console.log(error);
       });
     });
     axios.get("/".concat(this.user.username, "/notifications-json")).then(function (response) {
-      _this.notifications = response.data.notifications;
+      _this2.notifications = response.data.notifications;
     })["catch"](function (error) {
       console.log(error);
     });

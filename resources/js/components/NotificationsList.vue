@@ -25,12 +25,14 @@ export default {
   },
   data() {
     return {
-      notifications: [],
-    };
+      notifications: []
+    }
   },
   methods: {
-    deleteAllNotifications: async (username) => {
-      await axios.delete(`/${username}/notifications`);
+    async deleteAllNotifications (username)  {
+      await axios.delete(`/${username}/notifications`)
+      this.notifications = []
+ 
     },
   },
   created() {
@@ -39,21 +41,21 @@ export default {
         axios
           .get(`/${this.user.username}/notifications-json`)
           .then((response) => {
-            this.notifications = response.data.notifications;
+            this.notifications = response.data.notifications
           })
           .catch((error) => {
-            console.log(error);
-          });
+            console.log(error)
+          })
       }
     );
     axios
       .get(`/${this.user.username}/notifications-json`)
       .then((response) => {
-        this.notifications = response.data.notifications;
+        this.notifications = response.data.notifications
       })
       .catch((error) => {
-        console.log(error);
-      });
+        console.log(error)
+      })
   },
 };
 </script>
