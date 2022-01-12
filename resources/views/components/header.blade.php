@@ -16,10 +16,17 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">Chat</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active position-relative" aria-current="page"
+                            href="/{{ $user->username }}/notifications">Notifications
+                            <notifications-counter v-bind:user="{{ Auth::user() }}" />
+                        </a>
+                    </li>
                 </ul>
-                <form class="d-flex" action="{{route('search')}}" method="GET">
+                <form class="d-flex" action="{{ route('search') }}" method="GET">
                     @csrf
-                    <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search">
+                    <input class="form-control me-2" name="search" type="search" placeholder="Search"
+                        aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
                 @isset($user)

@@ -1,7 +1,8 @@
 // Image preview before adding post
 
 const imgPreview = document.getElementById('img')
-imgPreview.style.display = 'none';
+
+if (imgPreview) imgPreview.style.display = 'none';
 
 function readURL(input) {
     if (input.files && input.files[0]) {

@@ -4,6 +4,7 @@ use App\Http\Controllers\Comment\CommentController;
 use App\Http\Controllers\FriendRequest\FriendRequestController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Like\LikeController;
+use App\Http\Controllers\Notification\NotificationController;
 use App\Http\Controllers\Posts\PostController;
 use App\Http\Controllers\Search\SearchController;
 use App\Http\Controllers\User\ProfileController;
@@ -26,7 +27,7 @@ Route::get('/{username}/posts/{postId}', [PostController::class, 'showPostView']
 Route::post('/posts', [PostController::class, 'addNewPost']);
 
 Route::post('/{username}/posts/{postId}/comments', [CommentController::class, 'addNewComment']);
-Route::post('/comments/{commentId}/reply',[CommentController::class, 'replyToComment'] );
+Route::post('/comments/{commentId}/reply', [CommentController::class, 'replyToComment']);
 
 Route::put('/posts/{postId}/like', [LikeController::class, 'likePost']);
 Route::delete('/posts/{postId}/unlike', [LikeController::class, 'unlikePost']);
@@ -39,6 +40,11 @@ Route::get('/{username}/friend-requests', [FriendRequestController::class, 'show
 Route::put('/friend-requests/{requestId}', [FriendRequestController::class, 'acceptFriendRequest']);
 Route::delete('/friend-requests/{requestId}', [FriendRequestController::class, 'declineFriendRequest']);
 Route::get('/{username}/friends', [FriendRequestController::class, 'showFriendsListView']);
+
+Route::get('/{username}/notifications', [NotificationController::class, 'showNotificationsView']);
+Route::get('/{username}/notifications-json', [NotificationController::class, 'fetchNotificationsJSON']);
+Route::get('/{username}/notifications/unread/count', [NotificationController::class, 'fetchUnreadNotificationsCount']);
+Route::delete('/{username}/notifications', [NotificationController::class, 'deleteAllNotifications']);
 
 Route::get('/users/search', [SearchController::class, 'searchUser'])->name('search');
 

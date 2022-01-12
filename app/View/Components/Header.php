@@ -26,9 +26,10 @@ class Header extends Component
     {
         if (Auth::check()) {
             $user = Auth::user();
-
+            $notificationsCount = Auth::user()->unreadNotifications->count();
             return view('components.header', [
-                'user' => $user
+                'user' => $user,
+                'notificationsCount' => $notificationsCount
             ]);
         } else 
         {

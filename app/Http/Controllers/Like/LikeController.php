@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Like;
 use App\Http\Controllers\Controller;
 use App\Models\CommentLike;
 use App\Models\Like;
+use App\Models\Post;
+use App\Notifications\PostLikedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class LikeController extends Controller
 {
@@ -16,6 +19,15 @@ class LikeController extends Controller
             'user_id' => Auth::id(),
             'post_id' => $postId
         ]);
+
+        // get user of post
+        $post = Post::where('id', $postId)->first();
+        $userToNotify = $post->user;
+
+        //send notification
+        if (Auth::user() != $userToNotify) {
+            Notification::send($userToNotify, new PostLikedNotification(Auth::user(), $post));
+        }
 
         return back();
     }
@@ -34,6 +46,7 @@ class LikeController extends Controller
             'comment_id' => $commentId
         ]);
 
+
         return back();
     }
 
@@ -43,5 +56,4 @@ class LikeController extends Controller
 
         return back();
     }
-
 }
