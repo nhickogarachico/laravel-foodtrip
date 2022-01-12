@@ -6,5 +6,6 @@
     <h5>Friends</h5>
     @foreach ($friends as $friend)
         <p>{{$friend->username}}</p>
+        <p>{{$friend->id}}</p>
     @endforeach
 @endsection

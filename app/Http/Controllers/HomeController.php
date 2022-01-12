@@ -16,10 +16,16 @@ class HomeController extends Controller
         //get posts from friends
         $friends = Auth::user()->friends;
 
-        foreach($friends as $friend)
+        if($friends->count() > 0)
         {
-            $allPosts = array_merge($userPosts, $friend->posts->all());
+            foreach($friends as $friend)
+            {
+                $allPosts = array_merge($userPosts, $friend->posts->all());
+            }
+        } else {
+            $allPosts = $userPosts;
         }
+        
         // sort array by date
         $createdDate = array_column($allPosts, 'created_at');
         array_multisort($createdDate, SORT_DESC, $allPosts);

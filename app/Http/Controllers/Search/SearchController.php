@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Search;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SearchController extends Controller
 {
@@ -23,7 +24,8 @@ class SearchController extends Controller
 
         return view('screens.search-result', [
             'users' => $users,
-            'search' => $search
+            'search' => $search,
+            'friendsId' => array_column(Auth::user()->friends->toArray(), 'id')
         ]);
     }
 }

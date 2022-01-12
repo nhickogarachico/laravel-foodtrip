@@ -45,6 +45,16 @@ class User extends Authenticatable
         return $this->hasMany(UserRelationship::class, 'user_second_id')->where('type', '1');
     }
 
+    public function relationshipTypeSender($userId)
+    {
+        return UserRelationship::where('user_first_id', $this->id)->where('user_second_id', $userId)->first();
+    }
+
+    public function relationshipTypeInvited($userId)
+    {
+        return UserRelationship::where('user_second_id', $this->id)->where('user_first_id', $userId)->first();
+    }
+
     public function friendsIRequested()
     {   
         return $this->belongsToMany(User::class, 'user_relationships', 'user_first_id', 'user_second_id')->where('type', 3);
@@ -62,6 +72,7 @@ class User extends Authenticatable
         return $this->getRelation('friends');
     }
 
+    
     protected function loadFriends()
     {
         if(!array_key_exists('friends', $this->relations))
