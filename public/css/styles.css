@@ -1,53 +1,93 @@
-.bd-placeholder-img {
-    font-size: 1.125rem;
-    text-anchor: middle;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;900&display=swap');
+:root {
+    --main-red: #BA3129;
+    --main-red-dark: #9b2822;
+    --main-bg: #EDE5CC;
 }
 
-@media (min-width: 768px) {
-    .bd-placeholder-img-lg {
-        font-size: 3.5rem;
-    }
-}
-
-html,
-body {
-    height: 100%;
+* {
+    font-family: 'Titillium Web', sans-serif;
 }
 
 body {
-    display: flex;
-    align-items: center;
-    padding-top: 40px;
-    padding-bottom: 40px;
-    background-color: #f5f5f5;
+    background-color: var(--main-bg);
 }
 
-.form-signin {
-    width: 100%;
-    max-width: 330px;
-    padding: 15px;
-    margin: auto;
+a {
+    color: var(--main-red);
 }
 
-.form-signin .checkbox {
-    font-weight: 400;
+a:hover {
+    color: var(--main-red-dark);
 }
 
-.form-signin .form-floating:focus-within {
-    z-index: 2;
+
+/* Font  */
+
+.text-main-red {
+    color: var(--main-red);
 }
 
-.form-signin input[type="email"] {
-    margin-bottom: -1px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
+.fw-600 {
+    font-weight: 600;
 }
 
-.form-signin input[type="password"] {
-    margin-bottom: 10px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
+.text-fb-color {
+    color: #395498;
+}
+
+.text-twitter-color {
+    color: #2BA5DA;
+}
+
+.text-ig-color {
+    color: #C83C8F;
+}
+
+.text-yt-color {
+    color: #FE0000;
+}
+
+.fs-7 {
+    font-size: 0.9rem;
+}
+
+
+/* Buttons */
+
+.btn {
+    padding: 10px;
+}
+
+.btn-main-red {
+    background-color: var(--main-red);
+    color: white;
+}
+
+.btn-main-red:hover {
+    background-color: var(--main-red-dark);
+    color: white;
+}
+
+
+/* Form control */
+
+.form-control:focus {
+    border-color: var(--main-red);
+    box-shadow: none;
+}
+
+
+/* Avatar */
+
+.small-avatar {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+}
+
+.medium-avatar {
+    width: 92px;
+    height: 92px;
+    object-fit: cover;
 }

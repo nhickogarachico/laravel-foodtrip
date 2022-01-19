@@ -1,0 +1,381 @@
+:root {
+    --main-red: #BA3129;
+    --main-red-dark: #9b2822;
+    --main-light: #EDE5CC;
+    --accept-green: #228B22;
+    --accept-green-dark: #196919;
+    --decline-red: #E84B23;
+    --decline-red-dark: #cc411f;
+}
+
+#brand {
+    color: white;
+    font-weight: 900;
+    text-decoration: none;
+    font-size: 25px;
+    transition: 0.3s;
+}
+
+p {
+    margin-bottom: 0;
+}
+
+
+/* Navbar */
+
+nav {
+    background-color: var(--main-red);
+    padding: 15px !important;
+}
+
+nav a:hover {
+    color: var(--main-light) !important;
+}
+
+#header-search {
+    width: 350px;
+    border: none;
+}
+
+.link-red-hover:hover {
+    color: var(--main-red) !important;
+}
+
+
+/* Dropdown */
+
+.dropdown-menu {
+    min-width: 350px;
+    border: none;
+    padding-bottom: 0;
+}
+
+.smaller-dropdown-menu {
+    min-width: 230px;
+}
+
+.dropdown-no-hover:hover {
+    background: white;
+}
+
+.notif-badge {
+    padding: 3px;
+}
+
+.dropdown-link:hover {
+    color: var(--main-red) !important;
+}
+
+.dropdown-header {
+    font-size: 16px;
+}
+
+.dropdown-footer {
+    color: white;
+    background-color: var(--main-red);
+    padding: 8px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.dropdown-footer:hover {
+    background-color: var(--main-red-dark);
+}
+
+.dropdown-hover:hover {
+    background-color: rgb(216, 216, 216);
+}
+
+.dropdown-item:active {
+    color: #212529;
+    background-color: white;
+}
+
+.dropdown-body {
+    max-height: 265px;
+    overflow: auto;
+    scrollbar-color: rgb(172, 172, 172, 0.5) transparent;
+    scrollbar-width: thin;
+}
+
+.dropdown-body::-webkit-scrollbar {
+    width: 4px;
+    background-color: transparent;
+}
+
+.dropdown-body::-webkit-scrollbar-thumb {
+    background-color: rgb(172, 172, 172, 0.5);
+    border-radius: 50px;
+}
+
+
+/* Custom Buttons */
+
+.btn-accept {
+    background-color: var(--accept-green);
+    color: white;
+    padding: 5px;
+    font-size: 12px;
+}
+
+.btn-decline {
+    background-color: var(--decline-red);
+    color: white;
+    padding: 5px;
+    font-size: 12px;
+}
+
+.btn-accept:hover {
+    background-color: var(--accept-green-dark);
+}
+
+.btn-decline:hover {
+    background-color: var(--decline-red-dark);
+}
+
+.btn-accept:hover,
+.btn-decline:hover {
+    color: white;
+}
+
+.truncate {
+    width: 280px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+}
+
+.time-diff {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.message-link:hover div {
+    background-color: rgb(216, 216, 216);
+}
+
+#mobile-header {
+    display: none;
+}
+
+#mobile-search {
+    height: 60px;
+    width: 100%;
+    border: none;
+    padding: 15px;
+    border-radius: 0;
+    background-color: var(--main-red-dark);
+    color: white;
+    outline: 0;
+}
+
+#mobile-search::placeholder {
+    color: white;
+}
+
+#mobile-search:active,
+#mobile-search:focus {
+    outline: 2px solid var(--bs-yellow);
+}
+
+#header-search-button {
+    position: absolute;
+    top: 25%;
+    right: 5%;
+    border: none;
+    outline: none;
+    color: white;
+    background: none;
+}
+
+
+/* Sidebar  */
+
+#profileSideMenu {
+    width: 278px;
+}
+
+.sidemenu-content {
+    list-style: none;
+    margin: 5px 0;
+    padding: 0;
+}
+
+
+/* MAIN PAGE */
+
+#cover-photo {
+    margin-top: 106px;
+    width: 100%;
+}
+
+#cover-photo .card-img-top {
+    height: 300px;
+    object-fit: cover;
+    object-position: 50% 30%;
+}
+
+#cover-photo .profile-avatar {
+    width: 135px;
+    height: 135px;
+    object-fit: cover;
+    position: absolute;
+    top: 225px;
+    left: 25px;
+}
+
+#cover-info {
+    margin-left: 9.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card {
+    outline: none !important;
+    border: none !important;
+}
+
+.card-img-top {
+    object-fit: cover;
+    object-position: 50% 30%;
+}
+
+.bottom-border-main-red {
+    border-bottom: 2px solid var(--main-red);
+}
+
+.info-col {
+    width: 83px;
+}
+
+.info-text {
+    font-size: 12px;
+}
+
+.settings-btn {
+    background: none;
+    outline: none;
+    border: none;
+}
+
+.post-settings-dropdown {
+    min-width: 10px;
+    font-size: 13px;
+    transform: translate(-70px, 20px) !important;
+}
+
+.react-btn {
+    background: none;
+    border: none;
+}
+
+.post-img {
+    max-height: 400px !important;
+}
+
+.image-num {
+    font-size: 15px;
+}
+
+.food-tag {
+    font-size: 12px;
+    background-color: var(--main-red);
+    color: white;
+    max-width: 30px;
+    text-decoration: none;
+    padding: 0 10px;
+    border-radius: 15px;
+}
+
+.food-tag:hover {
+    background-color: var(--main-red-dark);
+    color: white;
+}
+
+.profile-timeline-responsive {
+    display: none;
+}
+
+.logout-button {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
+
+/* Media queries */
+
+@media only screen and (max-width: 1200px) {
+    #secondary-nav {
+        display: none;
+    }
+    #header-search {
+        width: 75%;
+    }
+    #header-search-form {
+        flex-grow: 1;
+    }
+    .profile-timeline-responsive {
+        display: block;
+    }
+    .third-col-profile-responsive {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .first-col {
+        display: none;
+    }
+    #cover-photo .profile-avatar {
+        top: 35%;
+        left: 285.5px;
+    }
+    #cover-info {
+        margin-left: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        text-align: center;
+    }
+    .profile-header-info {
+        flex-direction: column;
+        margin-top: 35px;
+    }
+    .profile-buttons {
+        margin-bottom: 1.5rem;
+    }
+    .socials {
+        margin-bottom: 1.5rem;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    #main-header {
+        display: none;
+    }
+    #mobile-header {
+        display: block;
+    }
+    #cover-photo {
+        margin-top: 30px;
+    }
+    #cover-photo .profile-avatar {
+        top: 35%;
+        left: 50%;
+        transform: translate(-50%, 0)
+    }
+}
+
+@media only screen and (max-width: 576px) {
+    #cover-photo .card-img-top {
+        height: 106px;
+    }
+    #cover-photo .profile-avatar {
+        top: 6%;
+        left: 50%;
+        transform: translate(-50%, 0)
+    }
+}

@@ -1,0 +1,43 @@
+/* CSS for the Login and Register Page */
+
+main {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: #EDE5CC;
+    overflow: auto;
+}
+
+main .row {
+    height: 100%;
+}
+
+.left-landing {
+    height: 100%;
+    background-image: url('../images/assets/landing-bg.jpg');
+    background-position: center;
+    background-size: cover;
+}
+
+.fw-900 {
+    font-weight: 900;
+}
+
+#landing-form {
+    width: 500px;
+    margin: 10px;
+}
+
+@media only screen and (max-width: 992.15px) {
+    main {
+        background-image: url('../images/assets/landing-bg.jpg');
+        background-position: center;
+        background-size: cover;
+    }
+    .left-landing {
+        background: none;
+    }
+    #left {
+        display: none;
+    }
+}

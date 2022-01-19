@@ -28,9 +28,10 @@ class AuthController extends Controller
             return redirect()->intended('/');
         }
 
-        return back()->withErrors([
-            'credentials' => 'Wrong credentials'
-        ]);
+        return back()->withInput()
+            ->withErrors([
+                'credentials' => 'Wrong credentials'
+            ]);
     }
 
     public function logout(Request $request)
