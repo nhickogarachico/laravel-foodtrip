@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Notification;
 
 class LikeController extends Controller
 {
+    protected $isLiked = false;
+
     public function likePost($postId)
     {
         Like::create([
@@ -31,14 +33,33 @@ class LikeController extends Controller
             Notification::send($userToNotify, new PostLikedNotification(Auth::user(), $post));
         }
 
-        return back();
+        return response()->json([
+            'message' => 'Post liked!'
+        ]);
     }
 
     public function unlikePost($postId)
     {
         Like::where('post_id', $postId)->where('user_id', Auth::id())->delete();
 
-        return back();
+        return response()->json([
+            'message' => 'Post unliked!'
+        ]);;
+    }
+
+    public function getLikeCount($postId)
+    {
+        $post = Post::where('id', $postId)->first();
+        $liked = Like::where('post_id', $post->id)->where('user_id', Auth::id())->count();
+
+        if($liked > 0) {
+            $this->isLiked = true;
+        }
+
+        return response()->json([
+            'likeCount' => $post->likes->count(),
+            'isLiked' => $this->isLiked
+        ]);
     }
 
     public function likeComment($commentId)

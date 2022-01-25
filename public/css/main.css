@@ -118,6 +118,26 @@ nav a:hover {
     font-size: 12px;
 }
 
+.btn-main-accept {
+    background-color: var(--accept-green);
+    color: white;
+}
+
+.btn-main-accept:hover {
+    background-color: var(--accept-green-dark);
+    color: white;
+}
+
+.btn-main-decline {
+    background-color: var(--decline-red);
+    color: white;
+}
+
+.btn-main-decline:hover {
+    background-color: var(--decline-red-dark);
+    color: white;
+}
+
 .btn-decline {
     background-color: var(--decline-red);
     color: white;
@@ -298,9 +318,79 @@ nav a:hover {
     display: none;
 }
 
-.logout-button {
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
+.change-pf-btn {
+    position: absolute;
+    background-color: white;
+    color: var(--main-red);
+    top: 70%;
+    left: 14px;
+    padding: 0.5rem 12px;
+    transition: 0.1s;
+}
+
+.change-pf-btn:hover {
+    background-color: var(--main-red);
+    color: white;
+}
+
+#choose-photo {
+    height: 300px;
+    overflow: auto;
+    scrollbar-color: rgb(172, 172, 172, 0.5) transparent;
+    scrollbar-width: thin;
+}
+
+#choose-photo::-webkit-scrollbar {
+    width: 4px;
+    background-color: transparent;
+}
+
+#choose-photo::-webkit-scrollbar-thumb {
+    background-color: rgb(172, 172, 172, 0.5);
+    border-radius: 50px;
+}
+
+#uploadProfilePhotoPreview,
+#uploadCoverPhotoPreview {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+
+#uploadCoverPhotoPreview {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.imgPreviewLabel {
+    padding: 0.5rem;
+}
+
+.imgPreviewInput {
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    z-index: -1;
+}
+
+.change-cover-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: white;
+    color: var(--main-red);
+    padding: 0.5rem 12px;
+    transition: 0.1s;
+}
+
+.change-cover-btn:hover {
+    background-color: var(--main-red);
+    color: white;
+}
+
+.imgPreview {
+    display: none;
 }
 
 
@@ -350,6 +440,16 @@ nav a:hover {
     .socials {
         margin-bottom: 1.5rem;
     }
+    .change-pf-btn {
+        top: 46%;
+        left: 40%;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    .change-pf-btn {
+        left: 278px;
+    }
 }
 
 @media only screen and (max-width: 768px) {
@@ -367,6 +467,9 @@ nav a:hover {
         left: 50%;
         transform: translate(-50%, 0)
     }
+    .change-pf-btn {
+        left: 176px;
+    }
 }
 
 @media only screen and (max-width: 576px) {
@@ -377,5 +480,31 @@ nav a:hover {
         top: 6%;
         left: 50%;
         transform: translate(-50%, 0)
+    }
+    .imgPreviewThumbProfile {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+    }
+    .change-pf-btn {
+        left: 41%;
+        top: 100px;
+        transform: translate(-78%, 0);
+    }
+}
+
+@media only screen and (max-width: 460px) {
+    .change-pf-btn {
+        left: 38%;
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    .accept-decline-buttons {
+        flex-direction: column;
+    }
+    .accept-decline-buttons button:first-child {
+        margin-right: 0 !important;
+        margin-bottom: 1rem;
     }
 }

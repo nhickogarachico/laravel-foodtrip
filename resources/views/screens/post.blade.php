@@ -34,7 +34,6 @@
                     @endif
                     @if (Auth::check())
                         @if ($isLiked)
-                            <x-unlike-button :post-id="$post->id" />
                         @else
                             <x-like-button :post-id="$post->id" />
                         @endif

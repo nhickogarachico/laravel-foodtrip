@@ -23,6 +23,12 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('avatar')->nullable()->default('/images/default_profile.png');
             $table->text('bio')->nullable();
+            $table->string('cover')->nullable()->default('/images/default_cover.jpg');
+            $table->string('address')->nullable();
+            $table->string('fb_id')->nullable();
+            $table->string('twitter_id')->nullable();
+            $table->string('ig_id')->nullable();
+            $table->string('yt_id')->nullable();
             $table->timestamps();
         });
     }

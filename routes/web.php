@@ -29,7 +29,8 @@ Route::post('/posts', [PostController::class, 'addNewPost']);
 Route::post('/{username}/posts/{postId}/comments', [CommentController::class, 'addNewComment']);
 Route::post('/comments/{commentId}/reply', [CommentController::class, 'replyToComment']);
 
-Route::put('/posts/{postId}/like', [LikeController::class, 'likePost']);
+Route::post('/posts/{postId}/like', [LikeController::class, 'likePost']);
+Route::get('/posts/{postId}/like', [LikeController::class, 'getLikeCount']);
 Route::delete('/posts/{postId}/unlike', [LikeController::class, 'unlikePost']);
 
 Route::put('/comments/{commentId}/like', [LikeController::class, 'likeComment']);

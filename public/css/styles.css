@@ -21,6 +21,19 @@ a:hover {
     color: var(--main-red-dark);
 }
 
+.header-margin-top {
+    margin-top: 100px;
+    margin-bottom: 70px;
+}
+
+.page-header {
+    font-size: 25px;
+}
+
+.link-dark-red-hover:hover {
+    color: var(--main-red-dark);
+}
+
 
 /* Font  */
 
@@ -52,6 +65,10 @@ a:hover {
     font-size: 0.9rem;
 }
 
+.fs-8 {
+    font-size: 0.8rem;
+}
+
 
 /* Buttons */
 
@@ -69,6 +86,16 @@ a:hover {
     color: white;
 }
 
+.btn-main-red-outline {
+    background-color: white;
+    border: 1px solid var(--main-red);
+    color: var(--main-red);
+}
+
+.btn-main-red-outline:hover {
+    color: var(--main-red);
+}
+
 
 /* Form control */
 
@@ -81,8 +108,8 @@ a:hover {
 /* Avatar */
 
 .small-avatar {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     object-fit: cover;
 }
 
@@ -90,4 +117,41 @@ a:hover {
     width: 92px;
     height: 92px;
     object-fit: cover;
+}
+
+.message-avatar {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+}
+
+
+/* Image preview */
+
+.imgPreviewThumb {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.imgPreviewThumbProfile {
+    width: 145px;
+    height: 145px;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.imgPreviewThumbProfileSelected {
+    border: 2px solid var(--bs-yellow);
+}
+
+@media only screen and (max-width: 768px) {
+    .header-margin-top {
+        margin-top: 1rem;
+    }
+}
+
+.active-accordion {
+    font-weight: 600;
+    margin-left: 0.5rem;
 }

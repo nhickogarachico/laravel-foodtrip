@@ -24,8 +24,15 @@ class MobileHeader extends Component
      */
     public function render()
     {
-        return view('components.mobile-header', [
-            'user' => Auth::user()
-        ]);
+        if (Auth::check()) {
+            $user = Auth::user();
+            $notificationsCount = Auth::user()->unreadNotifications->count();
+            return view('components.mobile-header', [
+                'user' => $user,
+                'notificationsCount' => $notificationsCount
+            ]);
+        } else {
+            return view('components.mobile-header');
+        }
     }
 }
