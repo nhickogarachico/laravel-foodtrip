@@ -22,9 +22,9 @@
             <div class="col-lg-6 d-flex justify-content-center align-items-center">
                 <form id="landing-form" class="text-center bg-white rounded shadow p-5" action="/register" method="POST">
                     @csrf
-                    <div class="mb-5">
+                    <div class="mb-4">
                         <h1 class="fw-900 text-main-red">FoodTrip!</h1>
-                        <p>Social media for Filipino food and travel enthusiasts</p>
+                        <p>Discover great Filipino food places!</p>
                     </div>
                     <h3 class="mb-3">Create your Account</h3>
 
@@ -76,6 +76,9 @@
                     <button class="btn btn-main-red w-100 mb-3">Register</button>
                     <div>
                         <p>Already have an account? <a href="/login" class="text-decoration-none">Login here.</a></p>
+                    </div>
+                    <div>
+                        <p>Have a restaurant? Create your page <a href="/register/restaurant/step/1" class="text-decoration-none">here.</a></p>
                     </div>
                 </form>
             </div>

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAreasTable extends Migration
+class CreateRestaurantContactNumbersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateAreasTable extends Migration
      */
     public function up()
     {
-        Schema::create('areas', function (Blueprint $table) {
+        Schema::create('restaurant_contact_numbers', function (Blueprint $table) {
             $table->id();
-            $table->string('area');
+            $table->string('contact_number');
+            $table->foreignId('contact_number_type_id')->constrained()->default(1);
         });
     }
 
@@ -26,6 +27,6 @@ class CreateAreasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('areas');
+        Schema::dropIfExists('restaurant_contact_numbers');
     }
 }

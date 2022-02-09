@@ -22,6 +22,7 @@ window.Vue = require('vue').default;
 Vue.component('notifications-list', require('./components/NotificationsList.vue').default);
 Vue.component('notifications-counter', require('./components/NotificationsCounter.vue').default);
 Vue.component('like-button', require('./components/LikeButton.vue').default);
+Vue.component('tag-search-input', require('./components/TagSearchInput.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

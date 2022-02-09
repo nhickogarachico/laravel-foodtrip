@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRestaurantCategoriesTable extends Migration
+class CreateContactNumberTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,14 +14,14 @@ class CreateRestaurantCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('restaurant_categories', function (Blueprint $table) {
+        Schema::create('contact_number_types', function (Blueprint $table) {
             $table->id();
-            $table->string('category');
+            $table->string('type');
         });
 
-       DB::table('restaurant_categories')->insert([
-            ['category' => 'Filipino'],
-            ['category' => 'Steak']
+        DB::table('contact_number_types')->insert([
+            ['type' => 'Mobile'],
+            ['type' => 'Telephone']
         ]);
     }
 
@@ -32,6 +32,6 @@ class CreateRestaurantCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('restaurant_categories');
+        Schema::dropIfExists('contact_number_types');
     }
 }

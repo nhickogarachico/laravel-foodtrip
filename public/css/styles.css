@@ -45,6 +45,10 @@ a:hover {
     font-weight: 600;
 }
 
+.fw-900 {
+    font-weight: 900;
+}
+
 .text-fb-color {
     color: #395498;
 }
@@ -145,13 +149,44 @@ a:hover {
     border: 2px solid var(--bs-yellow);
 }
 
+.active-accordion {
+    font-weight: 600;
+    margin-left: 0.5rem;
+}
+
+.tag {
+    font-size: 12px;
+    background-color: var(--main-red);
+    color: white;
+    max-width: 30px;
+    text-decoration: none;
+    padding: 0 10px;
+    border-radius: 15px;
+}
+
+.form-check-input:checked {
+    background-color: var(--main-red);
+    border: none;
+    outline: none;
+}
+
+.form-check-input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.form-select:focus {
+    outline: none;
+    box-shadow: none;
+    border: 1px solid var(--main-red);
+}
+
+.form-select:active {
+    border: 1px solid var(--main-red);
+}
+
 @media only screen and (max-width: 768px) {
     .header-margin-top {
         margin-top: 1rem;
     }
-}
-
-.active-accordion {
-    font-weight: 600;
-    margin-left: 0.5rem;
 }

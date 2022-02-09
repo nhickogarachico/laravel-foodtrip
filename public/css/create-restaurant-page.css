@@ -1,0 +1,102 @@
+.active {
+    font-weight: 600;
+}
+
+.tags-container {
+    position: relative;
+}
+
+.tag-input {
+    padding: 0;
+}
+
+.tag-text {
+    width: 100%;
+    resize: none;
+    padding: 16px 12px;
+    height: 58px;
+}
+
+.tag {
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 1rem;
+    max-width: none;
+}
+
+.tag-dropdown {
+    background-color: white;
+    border: 1px solid #ced4da;
+    border-top: none;
+    display: none;
+    max-height: 280px;
+    overflow: auto;
+    scrollbar-color: rgb(172, 172, 172, 0.5) transparent;
+    scrollbar-width: thin;
+}
+
+.tag-dropdown::-webkit-scrollbar {
+    width: 4px;
+    background-color: transparent;
+}
+
+.tag-dropdown::-webkit-scrollbar-thumb {
+    background-color: rgb(172, 172, 172, 0.5);
+    border-radius: 50px;
+}
+
+.tag-dropdown-item {
+    padding: 1rem;
+    cursor: pointer;
+}
+
+.tag-dropdown-item:hover {
+    background-color: #ced4da;
+}
+
+.contact-icon {
+    min-width: 30px;
+}
+
+.add-contact-btn {
+    min-width: 200px;
+}
+
+.contact-number {
+    font-weight: 600;
+}
+
+.fs-9 {
+    font-size: 0.75rem;
+}
+
+#menuItemDescription {
+    resize: none;
+    scrollbar-color: rgb(172, 172, 172, 0.5) transparent;
+    scrollbar-width: thin;
+}
+
+#menuItemDescription::-webkit-scrollbar {
+    width: 4px;
+    background-color: transparent;
+}
+
+#menuItemDescription::-webkit-scrollbar-thumb {
+    background-color: rgb(172, 172, 172, 0.5);
+    border-radius: 50px;
+}
+
+.card-img-top {
+    object-fit: cover;
+}
+
+@media only screen and (max-width: 576px) {
+    .contact-container {
+        flex-direction: column;
+        justify-content: start;
+    }
+    .contact-container>div:first-child {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+}
