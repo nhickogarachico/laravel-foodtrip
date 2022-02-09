@@ -28,7 +28,6 @@
     background-color: white;
     border: 1px solid #ced4da;
     border-top: none;
-    display: none;
     max-height: 280px;
     overflow: auto;
     scrollbar-color: rgb(172, 172, 172, 0.5) transparent;

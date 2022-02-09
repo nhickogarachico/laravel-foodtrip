@@ -16,7 +16,8 @@
             @csrf
             <div class="form-floating mb-3">
                 <input class="form-control" name="restaurantName" id="floatingRestaurantName" type="text"
-                    placeholder="restaurant name" autofocus value={{ session('stepOneData') ? session('stepOneData')['restaurantName'] : ""}} >
+                    placeholder="restaurant name" autofocus
+                    value={{ session('stepOneData') ? session('stepOneData')['restaurantName'] : '' }}>
                 <label for="floatingName">Restaurant Name</label>
             </div>
             <p class="fw-600">Contact Information</p>
@@ -70,23 +71,12 @@
                 </div>
 
             </div>
-            <p class="fw-600">Categories</p>
-            <div class="tags-container mb-3">
-                <div class="tag-input">
-                    <input class="form-control tag-text" type="text" placeholder="categories">
-                </div>
-                <div class="tag-dropdown">
-                </div>
-                <div class="tag-categories mt-3">
 
-                </div>
-            </div>
+            <p class="fw-600">Categories</p>
+            <tag-search-input v-bind:restaurant-categories="{{$restaurantCategory}}"></tag-search-input>
             <button type="submit" class="btn btn-main-red w-100">Next</button>
+
         </form>
 
     </div>
-
-    @push('scripts')
-    <script src="{{ asset('js/create-restaurant-page.js') }}"></script>
-    @endpush
 @endsection

@@ -21,7 +21,9 @@ class RestaurantController extends Controller
         $restaurantCategory = $this->restaurantCategory->all();
 
         if($stepNumber > 0 && $stepNumber < 5) {
-            return view("screens.create-restaurant-page-step-$stepNumber");
+            return view("screens.create-restaurant-page-step-$stepNumber", [
+                'restaurantCategory' => $restaurantCategory
+            ]);
         } else {
             abort(404);
         }
