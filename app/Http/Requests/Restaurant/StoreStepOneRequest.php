@@ -28,6 +28,7 @@ class StoreStepOneRequest extends FormRequest
             'mobileNumber' => 'required',
             'telephoneNumber' => 'required',
             'website' => 'required',
+            'restaurantCategories' => ['required', 'array']
         ];
     }
 }

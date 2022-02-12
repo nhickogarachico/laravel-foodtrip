@@ -35,27 +35,26 @@
 <script>
 export default {
   props: {
-    restaurantCategories: Array,
+    restaurantCategoryTags: Array,
+    restaurantCategories: Array
   },
   data() {
     return {
       tagDisplay: "none",
       categoryTagInput: "",
-      searchedCategoryTags: this.categoryTagInput,
+      searchedCategoryTags: this.restaurantCategoryTags,
       selectedCategoryTags: [],
-      exp: "",
     };
   },
   methods: {
     displayTagDropdown: function () {
       this.tagDisplay = "block";
-      this.exp = new RegExp("^" + this.escapeRegex(this.categoryTagInput), "i");
+      let exp = new RegExp("^" + this.escapeRegex(this.categoryTagInput), "i");
 
-      this.searchedCategoryTags = this.restaurantCategories.filter(
-        (category) => {
-          return category.category.match(this.exp) && !this.selectedCategoryTags.includes(category);
-        }
-      );
+      this.searchedCategoryTags = this.restaurantCategoryTags.filter((category) => {
+        return category.category.match(exp) && !this.selectedCategoryTags.includes(category)
+      });
+      
     },
 
     escapeRegex: function (string) {
@@ -64,13 +63,14 @@ export default {
 
     addTag: function (category) {
       this.selectedCategoryTags.push(category);
+      this.restaurantCategories.push(category);
       this.categoryTagInput = "";
     },
-    removeTag: function(category) {
-      this.selectedCategoryTags = this.selectedCategoryTags.filter(selectedCategory => {
-        return selectedCategory !== category
-      })
-    }
+    removeTag: function (category) {
+      let categoryTagIndexToBeDeleted = this.selectedCategoryTags.indexOf(category)
+      this.selectedCategoryTags.splice(categoryTagIndexToBeDeleted, 1)
+      this.restaurantCategories.splice(categoryTagIndexToBeDeleted, 1)
+    },
   },
   mounted() {
     const tagText = document.querySelector(".tag-text");

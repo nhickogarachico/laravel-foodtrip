@@ -5262,6 +5262,206 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/ContactNumberInput.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/ContactNumberInput.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    value: String
+  },
+  data: function data() {
+    return {
+      currentContactNumberInput: ""
+    };
+  },
+  methods: {
+    onlyDigits: function onlyDigits(event) {
+      var digitsRegex = /^[0-9]*$/;
+
+      if (event.target.value.match(digitsRegex)) {
+        this.currentContactNumberInput = event.target.value;
+      } else {
+        event.target.value = this.currentContactNumberInput;
+      }
+
+      return event.target.value;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CreateRestaurantPageStepOne.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CreateRestaurantPageStepOne.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    restaurantCategoryTags: Array
+  },
+  data: function data() {
+    return {
+      restaurantNameInput: "",
+      mobileNumberInput: "",
+      mobileNumbers: [],
+      telephoneNumberInput: "",
+      currentTelephoneNumberInput: "",
+      telephoneNumbers: [],
+      websiteInput: "",
+      restaurantCategories: [],
+      test: "test"
+    };
+  },
+  methods: {
+    addTelephoneNumber: function addTelephoneNumber(test) {
+      console.log(test);
+    },
+    proceedToStepTwo: function proceedToStepTwo() {
+      console.log(this.mobileNumberInput);
+      console.log(this.telephoneNumberInput);
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/LikeButton.vue?vue&type=script&lang=js&":
 /*!*****************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/LikeButton.vue?vue&type=script&lang=js& ***!
@@ -5531,15 +5731,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
+    restaurantCategoryTags: Array,
     restaurantCategories: Array
   },
   data: function data() {
     return {
       tagDisplay: "none",
       categoryTagInput: "",
-      searchedCategoryTags: this.categoryTagInput,
-      selectedCategoryTags: [],
-      exp: ""
+      searchedCategoryTags: this.restaurantCategoryTags,
+      selectedCategoryTags: []
     };
   },
   methods: {
@@ -5547,9 +5747,9 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.tagDisplay = "block";
-      this.exp = new RegExp("^" + this.escapeRegex(this.categoryTagInput), "i");
-      this.searchedCategoryTags = this.restaurantCategories.filter(function (category) {
-        return category.category.match(_this.exp) && !_this.selectedCategoryTags.includes(category);
+      var exp = new RegExp("^" + this.escapeRegex(this.categoryTagInput), "i");
+      this.searchedCategoryTags = this.restaurantCategoryTags.filter(function (category) {
+        return category.category.match(exp) && !_this.selectedCategoryTags.includes(category);
       });
     },
     escapeRegex: function escapeRegex(string) {
@@ -5557,12 +5757,13 @@ __webpack_require__.r(__webpack_exports__);
     },
     addTag: function addTag(category) {
       this.selectedCategoryTags.push(category);
+      this.restaurantCategories.push(category);
       this.categoryTagInput = "";
     },
     removeTag: function removeTag(category) {
-      this.selectedCategoryTags = this.selectedCategoryTags.filter(function (selectedCategory) {
-        return selectedCategory !== category;
-      });
+      var categoryTagIndexToBeDeleted = this.selectedCategoryTags.indexOf(category);
+      this.selectedCategoryTags.splice(categoryTagIndexToBeDeleted, 1);
+      this.restaurantCategories.splice(categoryTagIndexToBeDeleted, 1);
     }
   },
   mounted: function mounted() {
@@ -5606,6 +5807,8 @@ Vue.component('notifications-list', (__webpack_require__(/*! ./components/Notifi
 Vue.component('notifications-counter', (__webpack_require__(/*! ./components/NotificationsCounter.vue */ "./resources/js/components/NotificationsCounter.vue")["default"]));
 Vue.component('like-button', (__webpack_require__(/*! ./components/LikeButton.vue */ "./resources/js/components/LikeButton.vue")["default"]));
 Vue.component('tag-search-input', (__webpack_require__(/*! ./components/TagSearchInput.vue */ "./resources/js/components/TagSearchInput.vue")["default"]));
+Vue.component('create-restaurant-page-step-one', (__webpack_require__(/*! ./components/CreateRestaurantPageStepOne.vue */ "./resources/js/components/CreateRestaurantPageStepOne.vue")["default"]));
+Vue.component('contact-number-input', (__webpack_require__(/*! ./components/ContactNumberInput.vue */ "./resources/js/components/ContactNumberInput.vue")["default"]));
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -35024,6 +35227,84 @@ try {
 
 /***/ }),
 
+/***/ "./resources/js/components/ContactNumberInput.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/components/ContactNumberInput.vue ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ContactNumberInput_vue_vue_type_template_id_261602ec___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ContactNumberInput.vue?vue&type=template&id=261602ec& */ "./resources/js/components/ContactNumberInput.vue?vue&type=template&id=261602ec&");
+/* harmony import */ var _ContactNumberInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ContactNumberInput.vue?vue&type=script&lang=js& */ "./resources/js/components/ContactNumberInput.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ContactNumberInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ContactNumberInput_vue_vue_type_template_id_261602ec___WEBPACK_IMPORTED_MODULE_0__.render,
+  _ContactNumberInput_vue_vue_type_template_id_261602ec___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/ContactNumberInput.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/CreateRestaurantPageStepOne.vue":
+/*!*****************************************************************!*\
+  !*** ./resources/js/components/CreateRestaurantPageStepOne.vue ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _CreateRestaurantPageStepOne_vue_vue_type_template_id_052f4337___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateRestaurantPageStepOne.vue?vue&type=template&id=052f4337& */ "./resources/js/components/CreateRestaurantPageStepOne.vue?vue&type=template&id=052f4337&");
+/* harmony import */ var _CreateRestaurantPageStepOne_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CreateRestaurantPageStepOne.vue?vue&type=script&lang=js& */ "./resources/js/components/CreateRestaurantPageStepOne.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _CreateRestaurantPageStepOne_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _CreateRestaurantPageStepOne_vue_vue_type_template_id_052f4337___WEBPACK_IMPORTED_MODULE_0__.render,
+  _CreateRestaurantPageStepOne_vue_vue_type_template_id_052f4337___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/CreateRestaurantPageStepOne.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/LikeButton.vue":
 /*!************************************************!*\
   !*** ./resources/js/components/LikeButton.vue ***!
@@ -35180,6 +35461,38 @@ component.options.__file = "resources/js/components/TagSearchInput.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/ContactNumberInput.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/ContactNumberInput.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ContactNumberInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ContactNumberInput.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/ContactNumberInput.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ContactNumberInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/CreateRestaurantPageStepOne.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/CreateRestaurantPageStepOne.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateRestaurantPageStepOne_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CreateRestaurantPageStepOne.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CreateRestaurantPageStepOne.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateRestaurantPageStepOne_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/LikeButton.vue?vue&type=script&lang=js&":
 /*!*************************************************************************!*\
   !*** ./resources/js/components/LikeButton.vue?vue&type=script&lang=js& ***!
@@ -35241,6 +35554,40 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TagSearchInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./TagSearchInput.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/TagSearchInput.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TagSearchInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/ContactNumberInput.vue?vue&type=template&id=261602ec&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/ContactNumberInput.vue?vue&type=template&id=261602ec& ***!
+  \***************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ContactNumberInput_vue_vue_type_template_id_261602ec___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ContactNumberInput_vue_vue_type_template_id_261602ec___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ContactNumberInput_vue_vue_type_template_id_261602ec___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ContactNumberInput.vue?vue&type=template&id=261602ec& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/ContactNumberInput.vue?vue&type=template&id=261602ec&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/CreateRestaurantPageStepOne.vue?vue&type=template&id=052f4337&":
+/*!************************************************************************************************!*\
+  !*** ./resources/js/components/CreateRestaurantPageStepOne.vue?vue&type=template&id=052f4337& ***!
+  \************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateRestaurantPageStepOne_vue_vue_type_template_id_052f4337___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateRestaurantPageStepOne_vue_vue_type_template_id_052f4337___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateRestaurantPageStepOne_vue_vue_type_template_id_052f4337___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CreateRestaurantPageStepOne.vue?vue&type=template&id=052f4337& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CreateRestaurantPageStepOne.vue?vue&type=template&id=052f4337&");
+
 
 /***/ }),
 
@@ -35308,6 +35655,313 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TagSearchInput_vue_vue_type_template_id_45a4f633___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TagSearchInput_vue_vue_type_template_id_45a4f633___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./TagSearchInput.vue?vue&type=template&id=45a4f633& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/TagSearchInput.vue?vue&type=template&id=45a4f633&");
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/ContactNumberInput.vue?vue&type=template&id=261602ec&":
+/*!******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/ContactNumberInput.vue?vue&type=template&id=261602ec& ***!
+  \******************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("input", {
+    staticClass: "form-control",
+    attrs: {
+      name: "mobileNumber",
+      id: "floatingMobile1",
+      type: "text",
+      placeholder: "mobile number 1",
+      maxlength: "10",
+    },
+    domProps: { value: _vm.value },
+    on: {
+      input: function ($event) {
+        _vm.$emit("input", _vm.onlyDigits($event))
+      },
+    },
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CreateRestaurantPageStepOne.vue?vue&type=template&id=052f4337&":
+/*!***************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CreateRestaurantPageStepOne.vue?vue&type=template&id=052f4337& ***!
+  \***************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "form",
+    [
+      _c("div", { staticClass: "form-floating mb-3" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.restaurantNameInput,
+              expression: "restaurantNameInput",
+            },
+          ],
+          staticClass: "form-control",
+          attrs: {
+            name: "restaurantName",
+            id: "floatingRestaurantName",
+            type: "text",
+            placeholder: "restaurant name",
+            autofocus: "",
+          },
+          domProps: { value: _vm.restaurantNameInput },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.restaurantNameInput = $event.target.value
+            },
+          },
+        }),
+        _vm._v(" "),
+        _c("label", { attrs: { for: "floatingName" } }, [
+          _vm._v("Restaurant Name"),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("p", { staticClass: "fw-600" }, [_vm._v("Contact Information")]),
+      _vm._v(" "),
+      _c("div", [
+        _c(
+          "div",
+          {
+            staticClass:
+              "\n        contact-container\n        d-flex\n        justify-content-between\n        align-items-center\n        mb-3\n      ",
+          },
+          [
+            _c("div", { staticClass: "d-flex align-items-center flex-fill" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("p", { staticClass: "mb-0 fw-600 me-2" }, [_vm._v("+63")]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "form-floating w-100" },
+                [
+                  _c("contact-number-input", {
+                    model: {
+                      value: _vm.mobileNumberInput,
+                      callback: function ($$v) {
+                        _vm.mobileNumberInput = $$v
+                      },
+                      expression: "mobileNumberInput",
+                    },
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "floatingMobile1" } }, [
+                    _vm._v("Mobile Number"),
+                  ]),
+                ],
+                1
+              ),
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-main-red ms-2 add-contact-btn",
+                attrs: { id: "addMobileBtn", type: "button" },
+              },
+              [_vm._v("\n        Add Mobile Number +\n      ")]
+            ),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "text-center mobile-numbers-div" },
+          _vm._l(_vm.mobileNumbers, function (mobileNumber) {
+            return _c("div", { key: _vm.mobileNumbers.indexOf(mobileNumber) })
+          }),
+          0
+        ),
+      ]),
+      _vm._v(" "),
+      _c("div", [
+        _c(
+          "div",
+          {
+            staticClass:
+              "\n        contact-container\n        d-flex\n        justify-content-between\n        align-items-center\n        mb-3\n      ",
+          },
+          [
+            _c("div", { staticClass: "d-flex align-items-center flex-fill" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c("p", { staticClass: "mb-0 fw-600 me-2" }, [_vm._v("+63")]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "form-floating w-100" },
+                [
+                  _c("contact-number-input", {
+                    model: {
+                      value: _vm.telephoneNumberInput,
+                      callback: function ($$v) {
+                        _vm.telephoneNumberInput = $$v
+                      },
+                      expression: "telephoneNumberInput",
+                    },
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "floatingTelephone1" } }, [
+                    _vm._v("Telephone Number"),
+                  ]),
+                ],
+                1
+              ),
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-main-red ms-2 add-contact-btn",
+                attrs: { id: "addTelephoneBtn", type: "button" },
+                on: {
+                  click: function ($event) {
+                    return _vm.addTelephoneNumber("test")
+                  },
+                },
+              },
+              [_vm._v("\n        Add Telephone Number +\n      ")]
+            ),
+          ]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "text-center telephone-numbers-div" }),
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "d-flex justify-content-between align-items-center" },
+        [
+          _vm._m(2),
+          _vm._v(" "),
+          _c("p", { staticClass: "mb-0 fw-600 me-1 fs-9" }, [_vm._v("www.")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-floating mb-3 w-100" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.websiteInput,
+                  expression: "websiteInput",
+                },
+              ],
+              staticClass: "form-control",
+              attrs: {
+                name: "website",
+                id: "floatingWebsite",
+                type: "text",
+                placeholder: "website",
+              },
+              domProps: { value: _vm.websiteInput },
+              on: {
+                input: function ($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.websiteInput = $event.target.value
+                },
+              },
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "floatingWebsite" } }, [
+              _vm._v("Website"),
+            ]),
+          ]),
+        ]
+      ),
+      _vm._v(" "),
+      _c("p", { staticClass: "fw-600" }, [_vm._v("Categories")]),
+      _vm._v(" "),
+      _c("tag-search-input", {
+        attrs: {
+          "restaurant-category-tags": _vm.restaurantCategoryTags,
+          "restaurant-categories": _vm.restaurantCategories,
+        },
+      }),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-main-red w-100",
+          attrs: { type: "submit" },
+          on: {
+            click: function ($event) {
+              $event.preventDefault()
+              return _vm.proceedToStepTwo.apply(null, arguments)
+            },
+          },
+        },
+        [_vm._v("Next")]
+      ),
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "contact-icon" }, [
+      _c("i", { staticClass: "fas fa-mobile-alt me-3" }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "contact-icon" }, [
+      _c("i", { staticClass: "fas fa-phone me-3" }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "contact-icon" }, [
+      _c("i", { staticClass: "fas fa-globe me-3" }),
+    ])
+  },
+]
+render._withStripped = true
+
 
 
 /***/ }),

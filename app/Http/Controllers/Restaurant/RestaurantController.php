@@ -18,11 +18,11 @@ class RestaurantController extends Controller
 
     public function showRegisterRestaurantView(int $stepNumber)
     {
-        $restaurantCategory = $this->restaurantCategory->all();
+        $restaurantCategoryTags = $this->restaurantCategory->orderBy('category')->get();
 
         if($stepNumber > 0 && $stepNumber < 5) {
             return view("screens.create-restaurant-page-step-$stepNumber", [
-                'restaurantCategory' => $restaurantCategory
+                'restaurantCategoryTags' => $restaurantCategoryTags
             ]);
         } else {
             abort(404);
@@ -31,7 +31,7 @@ class RestaurantController extends Controller
 
     public function completeRestaurantPageCreationStepOne(StoreStepOneRequest $request)
     {
-        $request->session()->put('stepOneData', $request->validated());
+        
 
         return redirect('/register/restaurant/step/2');
     }
