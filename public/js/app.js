@@ -5456,6 +5456,63 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var createRestaurantPageStorage = window.sessionStorage;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
@@ -5469,17 +5526,22 @@ var createRestaurantPageStorage = window.sessionStorage;
       telephoneNumberInput: "",
       telephoneNumbers: JSON.parse(createRestaurantPageStorage.telephoneNumbers),
       websiteInput: createRestaurantPageStorage.websiteName,
-      restaurantCategories: []
+      restaurantCategories: JSON.parse(createRestaurantPageStorage.restaurantCategories),
+      validationErrors: {
+        mobileNumberInput: "",
+        telephoneNumberInput: ""
+      }
     };
   },
   methods: {
     addContactNumber: function addContactNumber(contactNumberInput, contactNumbers, contactInputName) {
       if (contactNumberInput === "" || contactNumberInput.length < 10) {
-        alert("Enter valid contact number");
+        this.validationErrors[contactInputName] = "Invalid contact number";
       } else if (contactNumbers.includes(contactNumberInput)) {
-        alert("You already added that contact number");
+        this.validationErrors[contactInputName] = "You already added that contact number";
       } else {
         contactNumbers.push(contactNumberInput);
+        this.validationErrors[contactInputName] = "";
       }
 
       this[contactInputName] = "";
@@ -5491,15 +5553,23 @@ var createRestaurantPageStorage = window.sessionStorage;
       this.$refs["".concat(contactInputName, "Ref")].focus();
     },
     saveInfo: function saveInfo() {
-      createRestaurantPageStorage.setItem('restaurantName', this.restaurantNameInput);
-      createRestaurantPageStorage.setItem('mobileNumbers', JSON.stringify(this.mobileNumbers));
-      createRestaurantPageStorage.setItem('telephoneNumbers', JSON.stringify(this.telephoneNumbers));
-      createRestaurantPageStorage.setItem('websiteName', this.websiteInput);
-      createRestaurantPageStorage.setItem('restaurantCategories', JSON.stringify(this.restaurantCategories));
-      alert('Info saved');
+      createRestaurantPageStorage.setItem("restaurantName", this.restaurantNameInput);
+      createRestaurantPageStorage.setItem("mobileNumbers", JSON.stringify(this.mobileNumbers));
+      createRestaurantPageStorage.setItem("telephoneNumbers", JSON.stringify(this.telephoneNumbers));
+      createRestaurantPageStorage.setItem("websiteName", this.websiteInput);
+      createRestaurantPageStorage.setItem("restaurantCategories", JSON.stringify(this.restaurantCategories));
+      alert("Info saved");
     }
   },
-  mounted: function mounted() {}
+  mounted: function mounted() {
+    var test = {};
+
+    if (test["test"]) {
+      console.log("true");
+    } else {
+      console.log("false");
+    }
+  }
 });
 
 /***/ }),
@@ -5781,7 +5851,7 @@ __webpack_require__.r(__webpack_exports__);
       tagDisplay: "none",
       categoryTagInput: "",
       searchedCategoryTags: this.restaurantCategoryTags,
-      selectedCategoryTags: []
+      selectedCategoryTags: this.restaurantCategories
     };
   },
   methods: {
@@ -10949,7 +11019,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-main-save {\n  background-color: #12744b;\n  color: white;\n}\n.btn-main-save:hover {\n  background-color: #0d5738;\n  color: white;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-main-save {\r\n  background-color: #12744b;\r\n  color: white;\n}\n.btn-main-save:hover {\r\n  background-color: #0d5738;\r\n  color: white;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -36222,6 +36292,17 @@ var render = function () {
       _c("p", { staticClass: "fw-600" }, [_vm._v("Contact Information")]),
       _vm._v(" "),
       _c("div", [
+        _vm.validationErrors["mobileNumberInput"]
+          ? _c("div", { staticClass: "alert alert-warning" }, [
+              _c("i", { staticClass: "fas fa-exclamation-circle me-2" }),
+              _vm._v(
+                "\n      " +
+                  _vm._s(_vm.validationErrors["mobileNumberInput"]) +
+                  "\n    "
+              ),
+            ])
+          : _vm._e(),
+        _vm._v(" "),
         _c(
           "div",
           {
@@ -36318,6 +36399,17 @@ var render = function () {
       ]),
       _vm._v(" "),
       _c("div", [
+        _vm.validationErrors["telephoneNumberInput"]
+          ? _c("div", { staticClass: "alert alert-warning" }, [
+              _c("i", { staticClass: "fas fa-exclamation-circle me-2" }),
+              _vm._v(
+                "\n      " +
+                  _vm._s(_vm.validationErrors["telephoneNumberInput"]) +
+                  "\n    "
+              ),
+            ])
+          : _vm._e(),
+        _vm._v(" "),
         _c(
           "div",
           {
@@ -36472,13 +36564,13 @@ var render = function () {
           attrs: { type: "button" },
           on: { click: _vm.saveInfo },
         },
-        [_vm._v("Save")]
+        [_vm._v("\n    Save\n  ")]
       ),
       _vm._v(" "),
       _c(
         "button",
         { staticClass: "btn btn-main-red w-100", attrs: { type: "submit" } },
-        [_vm._v("\n    Next\n  ")]
+        [_vm._v("Next")]
       ),
     ],
     1

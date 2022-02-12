@@ -43,7 +43,7 @@ export default {
       tagDisplay: "none",
       categoryTagInput: "",
       searchedCategoryTags: this.restaurantCategoryTags,
-      selectedCategoryTags: [],
+      selectedCategoryTags: this.restaurantCategories,
     };
   },
   methods: {
