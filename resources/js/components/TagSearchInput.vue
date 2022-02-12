@@ -52,7 +52,7 @@ export default {
       let exp = new RegExp("^" + this.escapeRegex(this.categoryTagInput), "i");
 
       this.searchedCategoryTags = this.restaurantCategoryTags.filter((category) => {
-        return category.category.match(exp) && !this.selectedCategoryTags.includes(category)
+        return category.category.match(exp) && !this.selectedCategoryTags.some((el) => el.id == category.id)
       });
       
     },
@@ -63,13 +63,11 @@ export default {
 
     addTag: function (category) {
       this.selectedCategoryTags.push(category);
-      this.restaurantCategories.push(category);
       this.categoryTagInput = "";
     },
     removeTag: function (category) {
       let categoryTagIndexToBeDeleted = this.selectedCategoryTags.indexOf(category)
       this.selectedCategoryTags.splice(categoryTagIndexToBeDeleted, 1)
-      this.restaurantCategories.splice(categoryTagIndexToBeDeleted, 1)
     },
   },
   mounted() {
@@ -78,6 +76,7 @@ export default {
       const withinBoundaries = e.composedPath().includes(tagText);
       if (!withinBoundaries) this.tagDisplay = "none";
     });
+
   },
 };
 </script>

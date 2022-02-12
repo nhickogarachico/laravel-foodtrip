@@ -5513,6 +5513,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var createRestaurantPageStorage = window.sessionStorage;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
@@ -5528,9 +5538,11 @@ var createRestaurantPageStorage = window.sessionStorage;
       websiteInput: createRestaurantPageStorage.websiteName,
       restaurantCategories: JSON.parse(createRestaurantPageStorage.restaurantCategories),
       validationErrors: {
+        restaurantNameInput: "",
         mobileNumberInput: "",
         telephoneNumberInput: ""
-      }
+      },
+      saveSuccess: false
     };
   },
   methods: {
@@ -5558,18 +5570,19 @@ var createRestaurantPageStorage = window.sessionStorage;
       createRestaurantPageStorage.setItem("telephoneNumbers", JSON.stringify(this.telephoneNumbers));
       createRestaurantPageStorage.setItem("websiteName", this.websiteInput);
       createRestaurantPageStorage.setItem("restaurantCategories", JSON.stringify(this.restaurantCategories));
-      alert("Info saved");
+      this.validateInputs();
+    },
+    validateInputs: function validateInputs() {
+      if (this.restaurantNameInput === "") {
+        this.validationErrors.restaurantNameInput = "Restaurant name is required";
+        this.saveSuccess = false;
+      } else {
+        this.validationErrors.restaurantNameInput = "";
+        this.saveSuccess = true;
+      }
     }
   },
-  mounted: function mounted() {
-    var test = {};
-
-    if (test["test"]) {
-      console.log("true");
-    } else {
-      console.log("false");
-    }
-  }
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -5861,7 +5874,9 @@ __webpack_require__.r(__webpack_exports__);
       this.tagDisplay = "block";
       var exp = new RegExp("^" + this.escapeRegex(this.categoryTagInput), "i");
       this.searchedCategoryTags = this.restaurantCategoryTags.filter(function (category) {
-        return category.category.match(exp) && !_this.selectedCategoryTags.includes(category);
+        return category.category.match(exp) && !_this.selectedCategoryTags.some(function (el) {
+          return el.id == category.id;
+        });
       });
     },
     escapeRegex: function escapeRegex(string) {
@@ -5869,13 +5884,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     addTag: function addTag(category) {
       this.selectedCategoryTags.push(category);
-      this.restaurantCategories.push(category);
       this.categoryTagInput = "";
     },
     removeTag: function removeTag(category) {
       var categoryTagIndexToBeDeleted = this.selectedCategoryTags.indexOf(category);
       this.selectedCategoryTags.splice(categoryTagIndexToBeDeleted, 1);
-      this.restaurantCategories.splice(categoryTagIndexToBeDeleted, 1);
     }
   },
   mounted: function mounted() {
@@ -36255,6 +36268,23 @@ var render = function () {
   return _c(
     "form",
     [
+      _vm.validationErrors["restaurantNameInput"]
+        ? _c("div", { staticClass: "alert alert-warning" }, [
+            _c("i", { staticClass: "fas fa-exclamation-circle me-2" }),
+            _vm._v(
+              "\n    " +
+                _vm._s(_vm.validationErrors["restaurantNameInput"]) +
+                "\n  "
+            ),
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.saveSuccess
+        ? _c("div", { staticClass: "alert alert-success" }, [
+            _vm._v("\n    Saved info successfully\n  "),
+          ])
+        : _vm._e(),
+      _vm._v(" "),
       _c("div", { staticClass: "form-floating mb-3" }, [
         _c("input", {
           directives: [

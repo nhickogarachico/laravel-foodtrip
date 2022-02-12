@@ -1,5 +1,15 @@
 <template>
   <form>
+    <div
+      class="alert alert-warning"
+      v-if="validationErrors['restaurantNameInput']"
+    >
+      <i class="fas fa-exclamation-circle me-2"></i>
+      {{ validationErrors["restaurantNameInput"] }}
+    </div>
+    <div class="alert alert-success" v-if="saveSuccess">
+      Saved info successfully
+    </div>
     <div class="form-floating mb-3">
       <input
         class="form-control"
@@ -18,7 +28,7 @@
         class="alert alert-warning"
         v-if="validationErrors['mobileNumberInput']"
       >
-       <i class="fas fa-exclamation-circle me-2"></i>
+        <i class="fas fa-exclamation-circle me-2"></i>
         {{ validationErrors["mobileNumberInput"] }}
       </div>
       <div
@@ -169,8 +179,8 @@
     </div>
     <p class="fw-600">Categories</p>
     <tag-search-input
-      v-bind:restaurant-category-tags="restaurantCategoryTags"
-      v-bind:restaurant-categories="restaurantCategories"
+      :restaurant-category-tags="restaurantCategoryTags"
+      :restaurant-categories="restaurantCategories"
     ></tag-search-input>
     <button
       type="button"
@@ -202,7 +212,12 @@ export default {
       restaurantCategories: JSON.parse(
         createRestaurantPageStorage.restaurantCategories
       ),
-      validationErrors: { mobileNumberInput: "", telephoneNumberInput: "" },
+      validationErrors: {
+        restaurantNameInput: "",
+        mobileNumberInput: "",
+        telephoneNumberInput: "",
+      },
+      saveSuccess: false,
     };
   },
   methods: {
@@ -214,7 +229,8 @@ export default {
       if (contactNumberInput === "" || contactNumberInput.length < 10) {
         this.validationErrors[contactInputName] = "Invalid contact number";
       } else if (contactNumbers.includes(contactNumberInput)) {
-       this.validationErrors[contactInputName] = "You already added that contact number";
+        this.validationErrors[contactInputName] =
+          "You already added that contact number";
       } else {
         contactNumbers.push(contactNumberInput);
         this.validationErrors[contactInputName] = "";
@@ -249,17 +265,22 @@ export default {
         "restaurantCategories",
         JSON.stringify(this.restaurantCategories)
       );
-      alert("Info saved");
+
+      this.validateInputs()
+    },
+    validateInputs: function () {
+      if (this.restaurantNameInput === "") {
+        this.validationErrors.restaurantNameInput =
+          "Restaurant name is required";
+          this.saveSuccess = false
+      } else {
+        this.validationErrors.restaurantNameInput =
+          "";
+        this.saveSuccess = true;
+      }
     },
   },
-  mounted() {
-    let test = {};
-    if (test["test"]) {
-      console.log("true");
-    } else {
-      console.log("false");
-    }
-  },
+  mounted() {},
 };
 </script>
 <style>
