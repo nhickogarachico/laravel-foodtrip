@@ -29,7 +29,7 @@
           </div>
           <p class="mb-0 fw-600 me-2">+63</p>
           <div class="form-floating w-100">
-            <contact-number-input v-model="mobileNumberInput"/>
+            <contact-number-input v-model="mobileNumberInput" ref="mobileNumberInputRef" />
             <label for="floatingMobile1">Mobile Number</label>
           </div>
         </div>
@@ -37,15 +37,20 @@
           id="addMobileBtn"
           type="button"
           class="btn btn-main-red ms-2 add-contact-btn"
+          v-on:click="addContactNumber(mobileNumberInput, mobileNumbers, 'mobileNumberInput')"
         >
           Add Mobile Number +
         </button>
       </div>
       <div class="text-center mobile-numbers-div">
         <div
+        class="d-flex align-items-center justify-content-center mb-2"
           v-for="mobileNumber in mobileNumbers"
           :key="mobileNumbers.indexOf(mobileNumber)"
-        ></div>
+        >
+          <p class="mb-0 fw-600">(+63) {{ mobileNumber }}</p>
+          <button type="button" class="btn btn-main-red py-1 ms-2" v-on:click="removeContactNumber(mobileNumber, mobileNumbers, 'mobileNumberInput')"><i class="fas fa-times"></i></button>
+        </div>
       </div>
     </div>
     <div>
@@ -64,7 +69,7 @@
           </div>
           <p class="mb-0 fw-600 me-2">+63</p>
           <div class="form-floating w-100">
-            <contact-number-input v-model="telephoneNumberInput"/>
+            <contact-number-input v-model="telephoneNumberInput" ref="telephoneNumberInputRef" />
             <label for="floatingTelephone1">Telephone Number</label>
           </div>
         </div>
@@ -72,12 +77,22 @@
           id="addTelephoneBtn"
           type="button"
           class="btn btn-main-red ms-2 add-contact-btn"
-          v-on:click="addTelephoneNumber('test')"
+          v-on:click="addContactNumber(telephoneNumberInput, telephoneNumbers, 'telephoneNumberInput')"
         >
           Add Telephone Number +
         </button>
       </div>
-      <div class="text-center telephone-numbers-div"></div>
+      <div class="text-center telephone-numbers-div">
+        <div
+        class="d-flex align-items-center justify-content-center mb-2"
+          v-for="telephoneNumber in telephoneNumbers"
+          :key="telephoneNumbers.indexOf(telephoneNumber)"
+          
+        >
+          <p class="mb-0 fw-600">(+63) {{ telephoneNumber }}</p>
+          <button type="button" class="btn btn-main-red py-1 ms-2" v-on:click="removeContactNumber(telephoneNumber, telephoneNumbers, 'telephoneNumberInput')"><i class="fas fa-times"></i></button>
+        </div>
+      </div>
     </div>
     <div class="d-flex justify-content-between align-items-center">
       <div class="contact-icon">
@@ -101,40 +116,71 @@
       v-bind:restaurant-category-tags="restaurantCategoryTags"
       v-bind:restaurant-categories="restaurantCategories"
     ></tag-search-input>
-    <button type="submit" v-on:click.prevent="proceedToStepTwo" class="btn btn-main-red w-100">Next</button>
-
+    <button type="button" class="btn btn-main-save w-100 mb-2" v-on:click="saveInfo">Save</button>
+    <button
+      type="submit"
+      class="btn btn-main-red w-100"
+    >
+      Next
+    </button>
   </form>
-  
 </template>
 
 <script>
+let createRestaurantPageStorage = window.sessionStorage
 export default {
   props: {
     restaurantCategoryTags: Array,
   },
   data() {
     return {
-      restaurantNameInput: "",
+      restaurantNameInput: createRestaurantPageStorage.restaurantName,
       mobileNumberInput: "",
-      mobileNumbers: [],
+      mobileNumbers: JSON.parse(createRestaurantPageStorage.mobileNumbers),
       telephoneNumberInput: "",
-      currentTelephoneNumberInput: "",
-      telephoneNumbers: [],
-      websiteInput: "",
+      telephoneNumbers: JSON.parse(createRestaurantPageStorage.telephoneNumbers),
+      websiteInput: createRestaurantPageStorage.websiteName,
       restaurantCategories: [],
-      test: "test"
     };
   },
   methods: {
-    
-    addTelephoneNumber: function (test) {
-      console.log(test);
+    addContactNumber: function (contactNumberInput, contactNumbers, contactInputName) {
+      if (contactNumberInput === "" || contactNumberInput.length < 10) {
+        alert("Enter valid contact number");
+      } else if (contactNumbers.includes(contactNumberInput)) {
+        alert("You already added that contact number");
+      } else {
+        contactNumbers.push(contactNumberInput);
+      }
+      this[contactInputName] = ""
+      this.$refs[`${contactInputName}Ref`].focus()
     },
-
-    proceedToStepTwo: function(){
-      console.log(this.mobileNumberInput)
-      console.log(this.telephoneNumberInput)
+    removeContactNumber: function(contactNumber, contactNumbers, contactInputName) {
+      let contactNumberToRemove = contactNumbers.indexOf(contactNumber)
+      contactNumbers.splice(contactNumberToRemove, 1)
+      this.$refs[`${contactInputName}Ref`].focus()
+    },
+    saveInfo: function () {
+      createRestaurantPageStorage.setItem('restaurantName', this.restaurantNameInput)
+      createRestaurantPageStorage.setItem('mobileNumbers', JSON.stringify(this.mobileNumbers))
+      createRestaurantPageStorage.setItem('telephoneNumbers', JSON.stringify(this.telephoneNumbers))
+      createRestaurantPageStorage.setItem('websiteName', this.websiteInput)
+      createRestaurantPageStorage.setItem('restaurantCategories', JSON.stringify(this.restaurantCategories))
+      alert('Info saved')
     },
   },
+  mounted() {
+  }
 };
 </script>
+<style>
+  .btn-main-save {
+    background-color: #12744b;
+    color: white;
+  }
+
+  .btn-main-save:hover {
+    background-color: #0d5738;
+    color: white;
+  }
+</style>

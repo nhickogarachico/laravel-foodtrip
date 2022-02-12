@@ -8,6 +8,7 @@
     maxlength="10"
     :value="value"
     v-on:input="$emit('input', onlyDigits($event))"
+    ref="contactNumberInput"
   />
 </template>
 
@@ -32,6 +33,10 @@ export default {
 
       return event.target.value
     },
+    focus: function() {
+      this.currentContactNumberInput = ""
+      this.$refs.contactNumberInput.focus()
+    }
   },
 };
 </script>

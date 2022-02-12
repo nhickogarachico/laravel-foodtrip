@@ -1,13 +1,3 @@
-:root {
-    --main-red: #BA3129;
-    --main-red-dark: #9b2822;
-    --main-light: #EDE5CC;
-    --accept-green: #228B22;
-    --accept-green-dark: #196919;
-    --decline-red: #E84B23;
-    --decline-red-dark: #cc411f;
-}
-
 #brand {
     color: white;
     font-weight: 900;
