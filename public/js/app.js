@@ -5328,6 +5328,33 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5524,23 +5551,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 var createRestaurantPageStorage = window.sessionStorage;
+var isInitialState = createRestaurantPageStorage.length === 0;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     restaurantCategoryTags: Array
   },
   data: function data() {
     return {
-      restaurantNameInput: createRestaurantPageStorage.restaurantName,
+      restaurantNameInput: isInitialState ? "" : createRestaurantPageStorage.restaurantName,
       mobileNumberInput: "",
-      mobileNumbers: JSON.parse(createRestaurantPageStorage.mobileNumbers),
+      mobileNumbers: isInitialState ? [] : JSON.parse(createRestaurantPageStorage.mobileNumbers),
       telephoneNumberInput: "",
-      telephoneNumbers: JSON.parse(createRestaurantPageStorage.telephoneNumbers),
-      websiteInput: createRestaurantPageStorage.websiteName,
-      restaurantCategories: JSON.parse(createRestaurantPageStorage.restaurantCategories),
+      telephoneNumbers: isInitialState ? [] : JSON.parse(createRestaurantPageStorage.telephoneNumbers),
+      websiteInput: isInitialState ? [] : createRestaurantPageStorage.websiteName,
+      restaurantCategories: isInitialState ? [] : JSON.parse(createRestaurantPageStorage.restaurantCategories),
       validationErrors: {
         restaurantNameInput: "",
         mobileNumberInput: "",
-        telephoneNumberInput: ""
+        telephoneNumberInput: "",
+        restaurantCategories: ""
       },
       saveSuccess: false
     };
@@ -5552,7 +5581,7 @@ var createRestaurantPageStorage = window.sessionStorage;
       } else if (contactNumbers.includes(contactNumberInput)) {
         this.validationErrors[contactInputName] = "You already added that contact number";
       } else {
-        contactNumbers.push(contactNumberInput);
+        contactNumbers.push("+63" + contactNumberInput);
         this.validationErrors[contactInputName] = "";
       }
 
@@ -5565,24 +5594,70 @@ var createRestaurantPageStorage = window.sessionStorage;
       this.$refs["".concat(contactInputName, "Ref")].focus();
     },
     saveInfo: function saveInfo() {
-      createRestaurantPageStorage.setItem("restaurantName", this.restaurantNameInput);
-      createRestaurantPageStorage.setItem("mobileNumbers", JSON.stringify(this.mobileNumbers));
-      createRestaurantPageStorage.setItem("telephoneNumbers", JSON.stringify(this.telephoneNumbers));
-      createRestaurantPageStorage.setItem("websiteName", this.websiteInput);
-      createRestaurantPageStorage.setItem("restaurantCategories", JSON.stringify(this.restaurantCategories));
-      this.validateInputs();
-    },
-    validateInputs: function validateInputs() {
-      if (this.restaurantNameInput === "") {
-        this.validationErrors.restaurantNameInput = "Restaurant name is required";
+      if (this.restaurantNameInput === "" || this.restaurantCategories.length === 0) {
+        if (this.restaurantNameInput === "") this.validationErrors.restaurantNameInput = "Restaurant name is required";
+        if (this.restaurantCategories.length === 0) this.validationErrors.restaurantCategories = "Restaurant category is required";
         this.saveSuccess = false;
       } else {
+        createRestaurantPageStorage.setItem("restaurantName", this.restaurantNameInput);
+        createRestaurantPageStorage.setItem("mobileNumbers", JSON.stringify(this.mobileNumbers));
+        createRestaurantPageStorage.setItem("telephoneNumbers", JSON.stringify(this.telephoneNumbers));
+        createRestaurantPageStorage.setItem("websiteName", this.websiteInput);
+        createRestaurantPageStorage.setItem("restaurantCategories", JSON.stringify(this.restaurantCategories));
         this.validationErrors.restaurantNameInput = "";
+        this.validationErrors.restaurantCategories = "";
         this.saveSuccess = true;
       }
-    }
-  },
-  mounted: function mounted() {}
+
+      this.$nextTick(function () {
+        window.scrollTo(0, 0);
+      });
+    },
+    closeSuccessAlert: function closeSuccessAlert() {
+      this.saveSuccess = false;
+    },
+    proceedToStepTwo: function () {
+      var _proceedToStepTwo = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _context.next = 3;
+                return axios.post("/register/restaurant/step/1", {
+                  restaurantName: this.restaurantNameInput,
+                  mobileNumbers: this.mobileNumbers,
+                  telephoneNumbers: this.telephoneNumbers,
+                  website: this.websiteInput,
+                  restaurantCategories: this.restaurantCategories
+                });
+
+              case 3:
+                window.location.href = "/register/restaurant/step/2";
+                _context.next = 10;
+                break;
+
+              case 6:
+                _context.prev = 6;
+                _context.t0 = _context["catch"](0);
+                _context.t0.response.data.errors.restaurantName ? this.validationErrors.restaurantNameInput = _context.t0.response.data.errors.restaurantName[0] : this.validationErrors.restaurantNameInput = "";
+                _context.t0.response.data.errors.restaurantCategories ? this.validationErrors.restaurantCategories = _context.t0.response.data.errors.restaurantCategories[0] : this.validationErrors.restaurantNameInput = _context.t0.response.data.errors.restaurantName[0] = "";
+
+              case 10:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[0, 6]]);
+      }));
+
+      function proceedToStepTwo() {
+        return _proceedToStepTwo.apply(this, arguments);
+      }
+
+      return proceedToStepTwo;
+    }()
+  }
 });
 
 /***/ }),
@@ -11032,7 +11107,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-main-save {\r\n  background-color: #12744b;\r\n  color: white;\n}\n.btn-main-save:hover {\r\n  background-color: #0d5738;\r\n  color: white;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-main-save {\r\n  background-color: #12744b;\r\n  color: white;\n}\n.btn-main-save:hover {\r\n  background-color: #0d5738;\r\n  color: white;\n}\n.saveSuccessAlert {\r\n  margin-top: 1rem;\r\n  position: fixed;\r\n  top: 0;\r\n  left: 50%;\r\n  transform: translate(-50%, 0);\r\n  z-index: 99;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -36279,10 +36354,37 @@ var render = function () {
           ])
         : _vm._e(),
       _vm._v(" "),
-      _vm.saveSuccess
-        ? _c("div", { staticClass: "alert alert-success" }, [
-            _vm._v("\n    Saved info successfully\n  "),
+      _vm.validationErrors["restaurantCategories"]
+        ? _c("div", { staticClass: "alert alert-warning" }, [
+            _c("i", { staticClass: "fas fa-exclamation-circle me-2" }),
+            _vm._v(
+              "\n    " +
+                _vm._s(_vm.validationErrors["restaurantCategories"]) +
+                "\n  "
+            ),
           ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.saveSuccess
+        ? _c(
+            "div",
+            {
+              ref: "successAlert",
+              staticClass: "alert alert-success saveSuccessAlert",
+            },
+            [
+              _vm._v("\n    Saved info successfully\n    "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn p-0 ms-2",
+                  attrs: { type: "button" },
+                  on: { click: _vm.closeSuccessAlert },
+                },
+                [_c("i", { staticClass: "fas fa-times" })]
+              ),
+            ]
+          )
         : _vm._e(),
       _vm._v(" "),
       _c("div", { staticClass: "form-floating mb-3" }, [
@@ -36401,7 +36503,7 @@ var render = function () {
               },
               [
                 _c("p", { staticClass: "mb-0 fw-600" }, [
-                  _vm._v("(+63) " + _vm._s(mobileNumber)),
+                  _vm._v(_vm._s(mobileNumber)),
                 ]),
                 _vm._v(" "),
                 _c(
@@ -36508,7 +36610,7 @@ var render = function () {
               },
               [
                 _c("p", { staticClass: "mb-0 fw-600" }, [
-                  _vm._v("(+63) " + _vm._s(telephoneNumber)),
+                  _vm._v(_vm._s(telephoneNumber)),
                 ]),
                 _vm._v(" "),
                 _c(
@@ -36540,8 +36642,6 @@ var render = function () {
         { staticClass: "d-flex justify-content-between align-items-center" },
         [
           _vm._m(2),
-          _vm._v(" "),
-          _c("p", { staticClass: "mb-0 fw-600 me-1 fs-9" }, [_vm._v("www.")]),
           _vm._v(" "),
           _c("div", { staticClass: "form-floating mb-3 w-100" }, [
             _c("input", {
@@ -36599,8 +36699,12 @@ var render = function () {
       _vm._v(" "),
       _c(
         "button",
-        { staticClass: "btn btn-main-red w-100", attrs: { type: "submit" } },
-        [_vm._v("Next")]
+        {
+          staticClass: "btn btn-main-red w-100",
+          attrs: { type: "button" },
+          on: { click: _vm.proceedToStepTwo },
+        },
+        [_vm._v("\n    Next\n  ")]
       ),
     ],
     1

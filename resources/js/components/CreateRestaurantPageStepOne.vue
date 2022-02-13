@@ -7,8 +7,22 @@
       <i class="fas fa-exclamation-circle me-2"></i>
       {{ validationErrors["restaurantNameInput"] }}
     </div>
-    <div class="alert alert-success" v-if="saveSuccess">
+    <div
+      class="alert alert-warning"
+      v-if="validationErrors['restaurantCategories']"
+    >
+      <i class="fas fa-exclamation-circle me-2"></i>
+      {{ validationErrors["restaurantCategories"] }}
+    </div>
+    <div
+      class="alert alert-success saveSuccessAlert"
+      v-if="saveSuccess"
+      ref="successAlert"
+    >
       Saved info successfully
+      <button class="btn p-0 ms-2" type="button" v-on:click="closeSuccessAlert">
+        <i class="fas fa-times"></i>
+      </button>
     </div>
     <div class="form-floating mb-3">
       <input
@@ -75,7 +89,7 @@
           v-for="mobileNumber in mobileNumbers"
           :key="mobileNumbers.indexOf(mobileNumber)"
         >
-          <p class="mb-0 fw-600">(+63) {{ mobileNumber }}</p>
+          <p class="mb-0 fw-600">{{ mobileNumber }}</p>
           <button
             type="button"
             class="btn btn-main-red py-1 ms-2"
@@ -143,7 +157,7 @@
           v-for="telephoneNumber in telephoneNumbers"
           :key="telephoneNumbers.indexOf(telephoneNumber)"
         >
-          <p class="mb-0 fw-600">(+63) {{ telephoneNumber }}</p>
+          <p class="mb-0 fw-600">{{ telephoneNumber }}</p>
           <button
             type="button"
             class="btn btn-main-red py-1 ms-2"
@@ -164,7 +178,6 @@
       <div class="contact-icon">
         <i class="fas fa-globe me-3"></i>
       </div>
-      <p class="mb-0 fw-600 me-1 fs-9">www.</p>
       <div class="form-floating mb-3 w-100">
         <input
           class="form-control"
@@ -189,33 +202,47 @@
     >
       Save
     </button>
-    <button type="submit" class="btn btn-main-red w-100">Next</button>
+    <button
+      type="button"
+      class="btn btn-main-red w-100"
+      v-on:click="proceedToStepTwo"
+    >
+      Next
+    </button>
   </form>
 </template>
 
 <script>
 let createRestaurantPageStorage = window.sessionStorage;
+let isInitialState = createRestaurantPageStorage.length === 0;
 export default {
   props: {
     restaurantCategoryTags: Array,
   },
   data() {
     return {
-      restaurantNameInput: createRestaurantPageStorage.restaurantName,
+      restaurantNameInput: isInitialState
+        ? ""
+        : createRestaurantPageStorage.restaurantName,
       mobileNumberInput: "",
-      mobileNumbers: JSON.parse(createRestaurantPageStorage.mobileNumbers),
+      mobileNumbers: isInitialState
+        ? []
+        : JSON.parse(createRestaurantPageStorage.mobileNumbers),
       telephoneNumberInput: "",
-      telephoneNumbers: JSON.parse(
-        createRestaurantPageStorage.telephoneNumbers
-      ),
-      websiteInput: createRestaurantPageStorage.websiteName,
-      restaurantCategories: JSON.parse(
-        createRestaurantPageStorage.restaurantCategories
-      ),
+      telephoneNumbers: isInitialState
+        ? []
+        : JSON.parse(createRestaurantPageStorage.telephoneNumbers),
+      websiteInput: isInitialState
+        ? []
+        : createRestaurantPageStorage.websiteName,
+      restaurantCategories: isInitialState
+        ? []
+        : JSON.parse(createRestaurantPageStorage.restaurantCategories),
       validationErrors: {
         restaurantNameInput: "",
         mobileNumberInput: "",
         telephoneNumberInput: "",
+        restaurantCategories: "",
       },
       saveSuccess: false,
     };
@@ -232,7 +259,7 @@ export default {
         this.validationErrors[contactInputName] =
           "You already added that contact number";
       } else {
-        contactNumbers.push(contactNumberInput);
+        contactNumbers.push("+63" + contactNumberInput);
         this.validationErrors[contactInputName] = "";
       }
       this[contactInputName] = "";
@@ -248,39 +275,64 @@ export default {
       this.$refs[`${contactInputName}Ref`].focus();
     },
     saveInfo: function () {
-      createRestaurantPageStorage.setItem(
-        "restaurantName",
-        this.restaurantNameInput
-      );
-      createRestaurantPageStorage.setItem(
-        "mobileNumbers",
-        JSON.stringify(this.mobileNumbers)
-      );
-      createRestaurantPageStorage.setItem(
-        "telephoneNumbers",
-        JSON.stringify(this.telephoneNumbers)
-      );
-      createRestaurantPageStorage.setItem("websiteName", this.websiteInput);
-      createRestaurantPageStorage.setItem(
-        "restaurantCategories",
-        JSON.stringify(this.restaurantCategories)
-      );
-
-      this.validateInputs()
-    },
-    validateInputs: function () {
-      if (this.restaurantNameInput === "") {
-        this.validationErrors.restaurantNameInput =
-          "Restaurant name is required";
-          this.saveSuccess = false
+      if (
+        this.restaurantNameInput === "" ||
+        this.restaurantCategories.length === 0
+      ) {
+        if (this.restaurantNameInput === "")
+          this.validationErrors.restaurantNameInput =
+            "Restaurant name is required";
+        if (this.restaurantCategories.length === 0)
+          this.validationErrors.restaurantCategories =
+            "Restaurant category is required";
+        this.saveSuccess = false;
       } else {
-        this.validationErrors.restaurantNameInput =
-          "";
+        createRestaurantPageStorage.setItem(
+          "restaurantName",
+          this.restaurantNameInput
+        );
+        createRestaurantPageStorage.setItem(
+          "mobileNumbers",
+          JSON.stringify(this.mobileNumbers)
+        );
+        createRestaurantPageStorage.setItem(
+          "telephoneNumbers",
+          JSON.stringify(this.telephoneNumbers)
+        );
+        createRestaurantPageStorage.setItem("websiteName", this.websiteInput);
+        createRestaurantPageStorage.setItem(
+          "restaurantCategories",
+          JSON.stringify(this.restaurantCategories)
+        );
+
+        this.validationErrors.restaurantNameInput = "";
+        this.validationErrors.restaurantCategories = "";
         this.saveSuccess = true;
+      }
+      this.$nextTick(() => {
+        window.scrollTo(0, 0);
+      });
+    },
+    closeSuccessAlert: function () {
+      this.saveSuccess = false;
+    },
+    proceedToStepTwo: async function () {
+      try {
+        await axios.post("/register/restaurant/step/1", {
+          restaurantName: this.restaurantNameInput,
+          mobileNumbers: this.mobileNumbers,
+          telephoneNumbers: this.telephoneNumbers,
+          website: this.websiteInput,
+          restaurantCategories: this.restaurantCategories,
+        });
+        window.location.href = "/register/restaurant/step/2";
+      } catch (error) {
+        
+        error.response.data.errors.restaurantName ? this.validationErrors.restaurantNameInput = error.response.data.errors.restaurantName[0] : this.validationErrors.restaurantNameInput = ""
+        error.response.data.errors.restaurantCategories ? this.validationErrors.restaurantCategories = error.response.data.errors.restaurantCategories[0] : this.validationErrors.restaurantNameInput = error.response.data.errors.restaurantName[0] = ""
       }
     },
   },
-  mounted() {},
 };
 </script>
 <style>
@@ -292,5 +344,14 @@ export default {
 .btn-main-save:hover {
   background-color: #0d5738;
   color: white;
+}
+
+.saveSuccessAlert {
+  margin-top: 1rem;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 99;
 }
 </style>

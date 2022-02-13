@@ -25,10 +25,23 @@ class StoreStepOneRequest extends FormRequest
     {
         return [
             'restaurantName' => 'required',
-            'mobileNumber' => 'required',
-            'telephoneNumber' => 'required',
-            'website' => 'required',
+            'mobileNumbers' => ['array', 'nullable'],
+            'telephoneNumbers' => ['array', 'nullable'],
+            'website' => 'nullable',
             'restaurantCategories' => ['required', 'array']
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'restaurantName.required' => 'Restaurant name is required',
+            'restaurantCategories.required' => 'Restaurant category is required',
         ];
     }
 }

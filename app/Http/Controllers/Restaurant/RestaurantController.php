@@ -31,8 +31,6 @@ class RestaurantController extends Controller
 
     public function completeRestaurantPageCreationStepOne(StoreStepOneRequest $request)
     {
-        
-
-        return redirect('/register/restaurant/step/2');
+        $request->session()->put('stepOneData' , $request->validated());
     }
 }
