@@ -33,15 +33,7 @@
                             <a href="/" class="fw-900 text-main-red text-decoration-none fs-3">FoodTrip</a>
                             <h1 class="mb-3">Create Restaurant Page</h1>
                         </div>
-                        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                            <ol class="breadcrumb mb-3 justify-content-center">
-                                <li class="breadcrumb-item"><a href="#" class="active text-decoration-none">Basic
-                                        Information</a></li>
-                                <li class="breadcrumb-item" aria-current="page">Restaurant Outlets</li>
-                                <li class="breadcrumb-item" aria-current="page">Additional Information</li>
-                                <li class="breadcrumb-item" aria-current="page">Finish</li>
-                            </ol>
-                        </nav>
+                        <x-create-restaurant-breadcrumb/>
                         @yield('content')
                     </div>
                 </div>

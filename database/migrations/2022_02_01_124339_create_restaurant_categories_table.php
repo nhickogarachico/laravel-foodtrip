@@ -21,7 +21,11 @@ class CreateRestaurantCategoriesTable extends Migration
 
        DB::table('restaurant_categories')->insert([
             ['category' => 'Filipino'],
-            ['category' => 'Steak']
+            ['category' => 'Steak'],
+            ['category' => 'Italian'],
+            ['category' => 'Pastry'],
+            ['category' => 'Pasta'],
+
         ]);
     }
 

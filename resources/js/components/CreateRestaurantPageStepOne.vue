@@ -285,12 +285,14 @@ export default {
         this.restaurantNameInput === "" ||
         this.restaurantCategories.length === 0
       ) {
-        if (this.restaurantNameInput === "")
-          this.validationErrors.restaurantNameInput =
-            "Restaurant name is required";
-        if (this.restaurantCategories.length === 0)
-          this.validationErrors.restaurantCategories =
-            "Restaurant category is required";
+        this.restaurantNameInput === ""
+          ? (this.validationErrors.restaurantNameInput =
+              "Restaurant name is required")
+          : (this.validationErrors.restaurantNameInput = "");
+        this.restaurantCategories.length === 0
+          ? (this.validationErrors.restaurantCategories =
+              "Restaurant category is required")
+          : (this.validationErrors.restaurantCategories = "");
         this.saveSuccess = false;
       } else {
         createRestaurantPageStorage.setItem(
