@@ -275,6 +275,12 @@ export default {
       this.$refs[`${contactInputName}Ref`].focus();
     },
     saveInfo: function () {
+      this.storeDataInSessionStorage();
+      this.$nextTick(() => {
+        window.scrollTo(0, 0);
+      });
+    },
+    storeDataInSessionStorage: function () {
       if (
         this.restaurantNameInput === "" ||
         this.restaurantCategories.length === 0
@@ -309,9 +315,6 @@ export default {
         this.validationErrors.restaurantCategories = "";
         this.saveSuccess = true;
       }
-      this.$nextTick(() => {
-        window.scrollTo(0, 0);
-      });
     },
     closeSuccessAlert: function () {
       this.saveSuccess = false;
@@ -325,11 +328,22 @@ export default {
           website: this.websiteInput,
           restaurantCategories: this.restaurantCategories,
         });
+        this.storeDataInSessionStorage();
         window.location.href = "/register/restaurant/step/2";
       } catch (error) {
-        
-        error.response.data.errors.restaurantName ? this.validationErrors.restaurantNameInput = error.response.data.errors.restaurantName[0] : this.validationErrors.restaurantNameInput = ""
-        error.response.data.errors.restaurantCategories ? this.validationErrors.restaurantCategories = error.response.data.errors.restaurantCategories[0] : this.validationErrors.restaurantNameInput = error.response.data.errors.restaurantName[0] = ""
+        error.response.data.errors.restaurantName
+          ? (this.validationErrors.restaurantNameInput =
+              error.response.data.errors.restaurantName[0])
+          : (this.validationErrors.restaurantNameInput = "");
+        error.response.data.errors.restaurantCategories
+          ? (this.validationErrors.restaurantCategories =
+              error.response.data.errors.restaurantCategories[0])
+          : (this.validationErrors.restaurantNameInput =
+              error.response.data.errors.restaurantName[0] =
+                "");
+        this.$nextTick(() => {
+          window.scrollTo(0, 0);
+        });
       }
     },
   },

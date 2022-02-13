@@ -5594,6 +5594,12 @@ var isInitialState = createRestaurantPageStorage.length === 0;
       this.$refs["".concat(contactInputName, "Ref")].focus();
     },
     saveInfo: function saveInfo() {
+      this.storeDataInSessionStorage();
+      this.$nextTick(function () {
+        window.scrollTo(0, 0);
+      });
+    },
+    storeDataInSessionStorage: function storeDataInSessionStorage() {
       if (this.restaurantNameInput === "" || this.restaurantCategories.length === 0) {
         if (this.restaurantNameInput === "") this.validationErrors.restaurantNameInput = "Restaurant name is required";
         if (this.restaurantCategories.length === 0) this.validationErrors.restaurantCategories = "Restaurant category is required";
@@ -5608,10 +5614,6 @@ var isInitialState = createRestaurantPageStorage.length === 0;
         this.validationErrors.restaurantCategories = "";
         this.saveSuccess = true;
       }
-
-      this.$nextTick(function () {
-        window.scrollTo(0, 0);
-      });
     },
     closeSuccessAlert: function closeSuccessAlert() {
       this.saveSuccess = false;
@@ -5633,22 +5635,26 @@ var isInitialState = createRestaurantPageStorage.length === 0;
                 });
 
               case 3:
+                this.storeDataInSessionStorage();
                 window.location.href = "/register/restaurant/step/2";
-                _context.next = 10;
+                _context.next = 12;
                 break;
 
-              case 6:
-                _context.prev = 6;
+              case 7:
+                _context.prev = 7;
                 _context.t0 = _context["catch"](0);
                 _context.t0.response.data.errors.restaurantName ? this.validationErrors.restaurantNameInput = _context.t0.response.data.errors.restaurantName[0] : this.validationErrors.restaurantNameInput = "";
                 _context.t0.response.data.errors.restaurantCategories ? this.validationErrors.restaurantCategories = _context.t0.response.data.errors.restaurantCategories[0] : this.validationErrors.restaurantNameInput = _context.t0.response.data.errors.restaurantName[0] = "";
+                this.$nextTick(function () {
+                  window.scrollTo(0, 0);
+                });
 
-              case 10:
+              case 12:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 6]]);
+        }, _callee, this, [[0, 7]]);
       }));
 
       function proceedToStepTwo() {
