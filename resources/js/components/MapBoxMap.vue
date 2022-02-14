@@ -6,32 +6,46 @@ export default {
   props: {
     mapboxApiKey: String,
   },
+  data() {
+    return {
+      addressFromCoordinates: "",
+    };
+  },
+  methods: {
+    getAddress: function (coordinates) {
+      this.$emit("map-click", coordinates);
+    },
+  },
   mounted() {
-    L.mapbox.accessToken = this.mapBoxApiKey;
-
-    var mapboxTiles = L.tileLayer(
-      "https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=" +
-        L.mapbox.accessToken,
+    let map = L.map("map").setView(
+      [14.569299483936252, 120.99557384062871],
+      15
+    );
+    L.tileLayer(
+      `https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=${this.mapboxApiKey}`,
       {
         attribution:
-          '© <a href="https://www.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+          'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         tileSize: 512,
         zoomOffset: -1,
       }
-    );
+    ).addTo(map);
 
-    var map = L.map("map")
-      .addLayer(mapboxTiles)
-      .setView([42.361, -71.0587], 15);
+    let marker = {};
+    map.on("click", (e) => {
+      this.getAddress(e.latlng);
+
+      if (marker) {
+        map.removeLayer(marker);
+      }
+      marker = L.marker(e.latlng).addTo(map);
+    });
   },
 };
 </script>
 
 <style>
 #map {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 100%;
+  height: 400px;
 }
 </style>

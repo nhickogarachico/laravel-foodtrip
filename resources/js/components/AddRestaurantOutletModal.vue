@@ -94,21 +94,30 @@
                 </div>
               </div>
             </div>
-            <div class="mb-3">
-              <div class="form-floating mb-1">
+            <div class="mb-2">
+              <div class="form-floating">
                 <input
                   class="form-control"
                   id="floatingFullAddress1"
                   type="text"
                   placeholder="full address"
-                  autofocus
+                  v-model="fullAddressInput"
                 />
                 <label for="floatingFullAddress">Full Address</label>
+              </div>
+              <div class="d-flex justify-content-center align-items-center flex-column" v-if="this.reverseGeoCoding.loading">
+                <div class="spinner-grow text-danger mt-2" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <span class="fst-italic">Fetching address ...</span>
               </div>
             </div>
             <div>
               <p class="fw-600">Map Location</p>
-              <map-box-map :mapbox-api-key="mapBoxAPIKey"></map-box-map>
+              <map-box-map
+                :mapbox-api-key="mapBoxAPIKey"
+                v-on:map-click="setFullAddress"
+              ></map-box-map>
             </div>
             <div>
               <p class="fw-600">Contact Information</p>
@@ -221,7 +230,9 @@ export default {
       areaInput: 0,
       localityInput: 0,
       locationInput: 0,
+      fullAddressInput: "",
       sameRestaurantOutletName: true,
+      reverseGeoCoding: { loading: false },
     };
   },
   methods: {
@@ -251,7 +262,25 @@ export default {
     filterLocations: function (location) {
       return location.locality_id === this.localityInput;
     },
+    setFullAddress: function (coordinates) {
+      this.reverseGeoCoding.loading = true;
+      axios
+        .get(
+          `https://api.mapbox.com/geocoding/v5/mapbox.places/${coordinates.lng}, ${coordinates.lat}.json?access_token=${this.mapBoxAPIKey}`
+        )
+        .then((response) => {
+          this.fullAddressInput = response.data.features[0].place_name;
+          this.reverseGeoCoding.loading = false;
+        })
+        .catch((err) => console.log(err));
+    },
   },
   mounted() {},
 };
 </script>
+
+<style>
+.modal-dialog {
+  max-width: 800px;
+}
+</style>

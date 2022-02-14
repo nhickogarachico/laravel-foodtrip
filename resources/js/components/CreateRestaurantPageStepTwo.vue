@@ -11,16 +11,18 @@
         <button class="btn btn-main-red w-50" data-bs-toggle="modal" data-bs-target="#addRestaurantOutletModal">Add Outlet</button>
       </div>
     </div>
+    
   </div>
 </template>
 
 <script>
+import {createRestaurantPageStorage} from './sessionStorage'
 export default {
   props: {
     stepOneData: Object,
   },
   mounted() {
-    console.log(this.stepOneData)
+    createRestaurantPageStorage.setItem('stepOneData', JSON.stringify(this.stepOneData))
   }
 };
 </script>
