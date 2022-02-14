@@ -27,17 +27,27 @@ class RestaurantController extends Controller
 
     public function showRegisterRestaurantStepOneView()
     {
+        $initialStepOne = [
+            "restaurantName" => "",
+            "mobileNumbers" => [],
+            "telephoneNumbers" => [],
+            "websiteName" => "",
+            "restaurantCategories" => []
+        ];
         $restaurantCategoryTags = $this->restaurantCategory->orderBy('category')->get();
         return view("screens.create-restaurant-page-step-1", [
-            'restaurantCategoryTags' => $restaurantCategoryTags
+            'restaurantCategoryTags' => $restaurantCategoryTags,
+            'stepOneData' => session('stepOneData') ? json_encode(session('stepOneData')) : json_encode($initialStepOne),
         ]);
     }
     public function showRegisterRestaurantStepTwoView()
     {
+
         $stepOneData = session('stepOneData');
         $areas = $this->area->all();
         $localities = $this->locality->all();
         $locations = $this->location->all();
+        
         if (session('stepOneData')) {
             return view('screens.create-restaurant-page-step-2', [
                 'areas' => $areas,
@@ -53,4 +63,12 @@ class RestaurantController extends Controller
     {
         $request->session()->put('stepOneData', $request->validated());
     }
+
+    public function fetchSessionData()
+    {
+        return response()->json([
+            'sessionData' => session()->all()
+        ]);
+    }
+
 }

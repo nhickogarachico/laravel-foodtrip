@@ -107,6 +107,10 @@
               </div>
             </div>
             <div>
+              <p class="fw-600">Map Location</p>
+              <map-box-map :mapbox-api-key="mapBoxAPIKey"></map-box-map>
+            </div>
+            <div>
               <p class="fw-600">Contact Information</p>
               <div>
                 <div
@@ -199,7 +203,11 @@
 </template>
 
 <script>
+import MapBoxMap from "./MapBoxMap.vue";
+import mapBoxAPIKey from "./config/keys";
+
 export default {
+  components: { MapBoxMap },
   props: {
     areas: Array,
     localities: Array,
@@ -208,6 +216,7 @@ export default {
   },
   data() {
     return {
+      mapBoxAPIKey: mapBoxAPIKey,
       restaurantOutletName: this.stepOneData.restaurantName,
       areaInput: 0,
       localityInput: 0,
@@ -229,12 +238,12 @@ export default {
         this.$refs["restaurantOutletNameInput"].focus();
       }
     },
-    onChangeAreaInput: function() {
-        this.localityInput = 0
-        this.locationInput = 0
+    onChangeAreaInput: function () {
+      this.localityInput = 0;
+      this.locationInput = 0;
     },
-    onChangeLocalityInput: function() {
-        this.locationInput = 0
+    onChangeLocalityInput: function () {
+      this.locationInput = 0;
     },
     filterLocalities: function (locality) {
       return locality.area_id === this.areaInput;
@@ -243,8 +252,6 @@ export default {
       return location.locality_id === this.localityInput;
     },
   },
-  mounted() {
-    console.log(this.localityInput);
-  },
+  mounted() {},
 };
 </script>

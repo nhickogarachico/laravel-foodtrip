@@ -27,6 +27,7 @@ Vue.component('create-restaurant-page-step-one', require('./components/CreateRes
 Vue.component('create-restaurant-page-step-two', require('./components/CreateRestaurantPageStepTwo.vue').default);
 Vue.component('contact-number-input', require('./components/ContactNumberInput.vue').default);
 Vue.component('add-restaurant-outlet-modal', require('./components/AddRestaurantOutletModal.vue').default);
+Vue.component('mapbox-map', require('./components/MapBoxMap.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -36,4 +37,11 @@ Vue.component('add-restaurant-outlet-modal', require('./components/AddRestaurant
 
 const app = new Vue({
     el: '#app',
+    data() {
+        return {
+            createRestaurantPageStorage: window.sessionStorage
+        }
+    }
 });
+
+// GLOBAL VARIABLES

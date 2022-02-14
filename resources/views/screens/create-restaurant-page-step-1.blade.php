@@ -4,6 +4,6 @@
 
 @section('content')
     <div>
-        <create-restaurant-page-step-one v-bind:restaurant-category-tags="{{$restaurantCategoryTags}}"></create-restaurant-page-step-one>
+        <create-restaurant-page-step-one v-bind:restaurant-category-tags="{{$restaurantCategoryTags}}" :step-one-data="{{$stepOneData}}"></create-restaurant-page-step-one>
     </div>
 @endsection

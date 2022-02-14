@@ -15,7 +15,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    stepOneData: Object,
+  },
+  mounted() {
+    console.log(this.stepOneData)
+  }
+};
 </script>
 
 <style>

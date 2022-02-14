@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateLocalitiesTable extends Migration
@@ -19,6 +20,13 @@ class CreateLocalitiesTable extends Migration
             $table->foreignId('area_id')->constrained();
             $table->foreignId('locality_type_id')->constrained();
         });
+
+        DB::table('localities')->insert([
+            ['locality' => 'Makati', 'area_id' => 1, 'locality_type_id' => 1],
+            ['locality' => 'Mandaluyong', 'area_id' => 1, 'locality_type_id' => 1],
+            ['locality' => 'Dasmariñas', 'area_id' => 2, 'locality_type_id' => 2],
+            ['locality' => 'Bacoor', 'area_id' => 2, 'locality_type_id' => 2],
+        ]);
     }
 
     /**

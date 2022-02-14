@@ -18,6 +18,10 @@
         integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    {{-- Mapbox --}}
+    <script src='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js'></script>
+    <link href='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.css' rel='stylesheet' />
+    
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('css/create-restaurant-page.css') }}">
     @stack('styles')
@@ -33,7 +37,7 @@
                             <a href="/" class="fw-900 text-main-red text-decoration-none fs-3">FoodTrip</a>
                             <h1 class="mb-3">Create Restaurant Page</h1>
                         </div>
-                        <x-create-restaurant-breadcrumb/>
+                        <x-create-restaurant-breadcrumb />
                         @yield('content')
                     </div>
                 </div>

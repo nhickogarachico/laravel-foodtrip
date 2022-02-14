@@ -14,16 +14,7 @@
       <i class="fas fa-exclamation-circle me-2"></i>
       {{ validationErrors["restaurantCategories"] }}
     </div>
-    <div
-      class="alert alert-success saveSuccessAlert"
-      v-if="saveSuccess"
-      ref="successAlert"
-    >
-      Saved info successfully
-      <button class="btn p-0 ms-2" type="button" v-on:click="closeSuccessAlert">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
+    
     <div class="form-floating mb-3">
       <input
         class="form-control"
@@ -197,13 +188,6 @@
     ></tag-search-input>
     <button
       type="button"
-      class="btn btn-main-save w-100 mb-2"
-      v-on:click="saveInfo"
-    >
-      Save
-    </button>
-    <button
-      type="button"
       class="btn btn-main-red w-100"
       v-on:click="proceedToStepTwo"
     >
@@ -213,38 +197,27 @@
 </template>
 
 <script>
-let createRestaurantPageStorage = window.sessionStorage;
-let isInitialState = createRestaurantPageStorage.length === 0;
+import { createRestaurantPageStorage } from "./sessionStorage";
 export default {
   props: {
     restaurantCategoryTags: Array,
+    stepOneData: Object
   },
   data() {
     return {
-      restaurantNameInput: isInitialState
-        ? ""
-        : createRestaurantPageStorage.restaurantName,
+      restaurantNameInput: this.stepOneData.restaurantName,
       mobileNumberInput: "",
-      mobileNumbers: isInitialState
-        ? []
-        : JSON.parse(createRestaurantPageStorage.mobileNumbers),
+      mobileNumbers: this.stepOneData.mobileNumbers,
       telephoneNumberInput: "",
-      telephoneNumbers: isInitialState
-        ? []
-        : JSON.parse(createRestaurantPageStorage.telephoneNumbers),
-      websiteInput: isInitialState
-        ? []
-        : createRestaurantPageStorage.websiteName,
-      restaurantCategories: isInitialState
-        ? []
-        : JSON.parse(createRestaurantPageStorage.restaurantCategories),
+      telephoneNumbers: this.stepOneData.telephoneNumbers,
+      websiteInput: this.stepOneData.websiteName,
+      restaurantCategories: this.stepOneData.restaurantCategories,
       validationErrors: {
         restaurantNameInput: "",
         mobileNumberInput: "",
         telephoneNumberInput: "",
         restaurantCategories: "",
       },
-      saveSuccess: false,
     };
   },
   methods: {
@@ -274,12 +247,6 @@ export default {
       contactNumbers.splice(contactNumberToRemove, 1);
       this.$refs[`${contactInputName}Ref`].focus();
     },
-    saveInfo: function () {
-      this.storeDataInSessionStorage();
-      this.$nextTick(() => {
-        window.scrollTo(0, 0);
-      });
-    },
     storeDataInSessionStorage: function () {
       if (
         this.restaurantNameInput === "" ||
@@ -293,33 +260,29 @@ export default {
           ? (this.validationErrors.restaurantCategories =
               "Restaurant category is required")
           : (this.validationErrors.restaurantCategories = "");
-        this.saveSuccess = false;
       } else {
-        createRestaurantPageStorage.setItem(
-          "restaurantName",
-          this.restaurantNameInput
-        );
-        createRestaurantPageStorage.setItem(
+        this.setSessionStorageItem("restaurantName", this.restaurantNameInput);
+        this.setSessionStorageItem(
           "mobileNumbers",
           JSON.stringify(this.mobileNumbers)
         );
-        createRestaurantPageStorage.setItem(
+        this.setSessionStorageItem(
           "telephoneNumbers",
           JSON.stringify(this.telephoneNumbers)
         );
-        createRestaurantPageStorage.setItem("websiteName", this.websiteInput);
-        createRestaurantPageStorage.setItem(
+        this.setSessionStorageItem(
+          "telephoneNumbers",
+          JSON.stringify(this.telephoneNumbers)
+        );
+        this.setSessionStorageItem("websiteName", this.websiteInput);
+        this.setSessionStorageItem(
           "restaurantCategories",
           JSON.stringify(this.restaurantCategories)
         );
 
         this.validationErrors.restaurantNameInput = "";
         this.validationErrors.restaurantCategories = "";
-        this.saveSuccess = true;
       }
-    },
-    closeSuccessAlert: function () {
-      this.saveSuccess = false;
     },
     proceedToStepTwo: async function () {
       try {
@@ -348,7 +311,17 @@ export default {
         });
       }
     },
+    setSessionStorageItem: function (key, data) {
+      let sessionData = JSON.parse(
+        createRestaurantPageStorage.getItem("stepOneData")
+      );
+      sessionData[key] = data;
+      createRestaurantPageStorage.setItem("stepOneData", JSON.stringify(sessionData));
+    },
   },
+  beforeMount() {
+    createRestaurantPageStorage.setItem('stepOneData', JSON.stringify(this.stepOneData))
+  }
 };
 </script>
 <style>

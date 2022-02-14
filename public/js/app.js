@@ -5273,6 +5273,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _MapBoxMap_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MapBoxMap.vue */ "./resources/js/components/MapBoxMap.vue");
+/* harmony import */ var _config_keys__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./config/keys */ "./resources/js/components/config/keys.js");
 //
 //
 //
@@ -5473,7 +5475,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    MapBoxMap: _MapBoxMap_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   props: {
     areas: Array,
     localities: Array,
@@ -5482,6 +5493,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      mapBoxAPIKey: _config_keys__WEBPACK_IMPORTED_MODULE_1__["default"],
       restaurantOutletName: this.stepOneData.restaurantName,
       areaInput: 0,
       localityInput: 0,
@@ -5517,9 +5529,7 @@ __webpack_require__.r(__webpack_exports__);
       return location.locality_id === this.localityInput;
     }
   },
-  mounted: function mounted() {
-    console.log(this.localityInput);
-  }
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -5592,6 +5602,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _sessionStorage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./sessionStorage */ "./resources/js/components/sessionStorage.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -5796,44 +5807,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var createRestaurantPageStorage = window.sessionStorage;
-var isInitialState = createRestaurantPageStorage.length === 0;
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    restaurantCategoryTags: Array
+    restaurantCategoryTags: Array,
+    stepOneData: Object
   },
   data: function data() {
     return {
-      restaurantNameInput: isInitialState ? "" : createRestaurantPageStorage.restaurantName,
+      restaurantNameInput: this.stepOneData.restaurantName,
       mobileNumberInput: "",
-      mobileNumbers: isInitialState ? [] : JSON.parse(createRestaurantPageStorage.mobileNumbers),
+      mobileNumbers: this.stepOneData.mobileNumbers,
       telephoneNumberInput: "",
-      telephoneNumbers: isInitialState ? [] : JSON.parse(createRestaurantPageStorage.telephoneNumbers),
-      websiteInput: isInitialState ? [] : createRestaurantPageStorage.websiteName,
-      restaurantCategories: isInitialState ? [] : JSON.parse(createRestaurantPageStorage.restaurantCategories),
+      telephoneNumbers: this.stepOneData.telephoneNumbers,
+      websiteInput: this.stepOneData.websiteName,
+      restaurantCategories: this.stepOneData.restaurantCategories,
       validationErrors: {
         restaurantNameInput: "",
         mobileNumberInput: "",
         telephoneNumberInput: "",
         restaurantCategories: ""
-      },
-      saveSuccess: false
+      }
     };
   },
   methods: {
@@ -5855,30 +5849,20 @@ var isInitialState = createRestaurantPageStorage.length === 0;
       contactNumbers.splice(contactNumberToRemove, 1);
       this.$refs["".concat(contactInputName, "Ref")].focus();
     },
-    saveInfo: function saveInfo() {
-      this.storeDataInSessionStorage();
-      this.$nextTick(function () {
-        window.scrollTo(0, 0);
-      });
-    },
     storeDataInSessionStorage: function storeDataInSessionStorage() {
       if (this.restaurantNameInput === "" || this.restaurantCategories.length === 0) {
         this.restaurantNameInput === "" ? this.validationErrors.restaurantNameInput = "Restaurant name is required" : this.validationErrors.restaurantNameInput = "";
         this.restaurantCategories.length === 0 ? this.validationErrors.restaurantCategories = "Restaurant category is required" : this.validationErrors.restaurantCategories = "";
-        this.saveSuccess = false;
       } else {
-        createRestaurantPageStorage.setItem("restaurantName", this.restaurantNameInput);
-        createRestaurantPageStorage.setItem("mobileNumbers", JSON.stringify(this.mobileNumbers));
-        createRestaurantPageStorage.setItem("telephoneNumbers", JSON.stringify(this.telephoneNumbers));
-        createRestaurantPageStorage.setItem("websiteName", this.websiteInput);
-        createRestaurantPageStorage.setItem("restaurantCategories", JSON.stringify(this.restaurantCategories));
+        this.setSessionStorageItem("restaurantName", this.restaurantNameInput);
+        this.setSessionStorageItem("mobileNumbers", JSON.stringify(this.mobileNumbers));
+        this.setSessionStorageItem("telephoneNumbers", JSON.stringify(this.telephoneNumbers));
+        this.setSessionStorageItem("telephoneNumbers", JSON.stringify(this.telephoneNumbers));
+        this.setSessionStorageItem("websiteName", this.websiteInput);
+        this.setSessionStorageItem("restaurantCategories", JSON.stringify(this.restaurantCategories));
         this.validationErrors.restaurantNameInput = "";
         this.validationErrors.restaurantCategories = "";
-        this.saveSuccess = true;
       }
-    },
-    closeSuccessAlert: function closeSuccessAlert() {
-      this.saveSuccess = false;
     },
     proceedToStepTwo: function () {
       var _proceedToStepTwo = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
@@ -5924,7 +5908,15 @@ var isInitialState = createRestaurantPageStorage.length === 0;
       }
 
       return proceedToStepTwo;
-    }()
+    }(),
+    setSessionStorageItem: function setSessionStorageItem(key, data) {
+      var sessionData = JSON.parse(_sessionStorage__WEBPACK_IMPORTED_MODULE_1__.createRestaurantPageStorage.getItem("stepOneData"));
+      sessionData[key] = data;
+      _sessionStorage__WEBPACK_IMPORTED_MODULE_1__.createRestaurantPageStorage.setItem("stepOneData", JSON.stringify(sessionData));
+    }
+  },
+  beforeMount: function beforeMount() {
+    _sessionStorage__WEBPACK_IMPORTED_MODULE_1__.createRestaurantPageStorage.setItem('stepOneData', JSON.stringify(this.stepOneData));
   }
 });
 
@@ -5957,7 +5949,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    stepOneData: Object
+  },
+  mounted: function mounted() {
+    console.log(this.stepOneData);
+  }
+});
 
 /***/ }),
 
@@ -6042,6 +6041,37 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   mounted: function mounted() {
     this.getPostLikeCount();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/MapBoxMap.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/MapBoxMap.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    mapboxApiKey: String
+  },
+  mounted: function mounted() {
+    L.mapbox.accessToken = this.mapBoxApiKey;
+    var mapboxTiles = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=" + L.mapbox.accessToken, {
+      attribution: '© <a href="https://www.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      tileSize: 512,
+      zoomOffset: -1
+    });
+    var map = L.map("map").addLayer(mapboxTiles).setView([42.361, -71.0587], 15);
   }
 });
 
@@ -6310,6 +6340,7 @@ Vue.component('create-restaurant-page-step-one', (__webpack_require__(/*! ./comp
 Vue.component('create-restaurant-page-step-two', (__webpack_require__(/*! ./components/CreateRestaurantPageStepTwo.vue */ "./resources/js/components/CreateRestaurantPageStepTwo.vue")["default"]));
 Vue.component('contact-number-input', (__webpack_require__(/*! ./components/ContactNumberInput.vue */ "./resources/js/components/ContactNumberInput.vue")["default"]));
 Vue.component('add-restaurant-outlet-modal', (__webpack_require__(/*! ./components/AddRestaurantOutletModal.vue */ "./resources/js/components/AddRestaurantOutletModal.vue")["default"]));
+Vue.component('mapbox-map', (__webpack_require__(/*! ./components/MapBoxMap.vue */ "./resources/js/components/MapBoxMap.vue")["default"]));
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -6317,8 +6348,13 @@ Vue.component('add-restaurant-outlet-modal', (__webpack_require__(/*! ./componen
  */
 
 var app = new Vue({
-  el: '#app'
-});
+  el: '#app',
+  data: function data() {
+    return {
+      createRestaurantPageStorage: window.sessionStorage
+    };
+  }
+}); // GLOBAL VARIABLES
 
 /***/ }),
 
@@ -6361,6 +6397,39 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   forceTLS: false,
   disableStats: true
 });
+
+/***/ }),
+
+/***/ "./resources/js/components/config/keys.js":
+/*!************************************************!*\
+  !*** ./resources/js/components/config/keys.js ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("pk.eyJ1IjoibmpoZ2FyYWNoaWNvIiwiYSI6ImNreXRyNXZ2YjFncmIzMW85azNkcWUwdG4ifQ.os-6QEc-ez8ScbS_9kU3eA");
+
+/***/ }),
+
+/***/ "./resources/js/components/sessionStorage.js":
+/*!***************************************************!*\
+  !*** ./resources/js/components/sessionStorage.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "createRestaurantPageStorage": () => (/* binding */ createRestaurantPageStorage)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+var createRestaurantPageStorage = window.sessionStorage;
 
 /***/ }),
 
@@ -11433,6 +11502,30 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-main-red-hover:hover {\n  background-color: var(--main-red);\n  color: white;\n}\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/MapBoxMap.vue?vue&type=style&index=0&lang=css&":
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/MapBoxMap.vue?vue&type=style&index=0&lang=css& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n#map {\r\n  position: absolute;\r\n  top: 0;\r\n  bottom: 0;\r\n  width: 100%;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -35912,6 +36005,36 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/MapBoxMap.vue?vue&type=style&index=0&lang=css&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/MapBoxMap.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_MapBoxMap_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./MapBoxMap.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/MapBoxMap.vue?vue&type=style&index=0&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_MapBoxMap_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_MapBoxMap_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js":
 /*!****************************************************************************!*\
   !*** ./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js ***!
@@ -36390,6 +36513,47 @@ component.options.__file = "resources/js/components/LikeButton.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/MapBoxMap.vue":
+/*!***********************************************!*\
+  !*** ./resources/js/components/MapBoxMap.vue ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _MapBoxMap_vue_vue_type_template_id_5522cfb2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MapBoxMap.vue?vue&type=template&id=5522cfb2& */ "./resources/js/components/MapBoxMap.vue?vue&type=template&id=5522cfb2&");
+/* harmony import */ var _MapBoxMap_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MapBoxMap.vue?vue&type=script&lang=js& */ "./resources/js/components/MapBoxMap.vue?vue&type=script&lang=js&");
+/* harmony import */ var _MapBoxMap_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MapBoxMap.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/MapBoxMap.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _MapBoxMap_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _MapBoxMap_vue_vue_type_template_id_5522cfb2___WEBPACK_IMPORTED_MODULE_0__.render,
+  _MapBoxMap_vue_vue_type_template_id_5522cfb2___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/MapBoxMap.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/NotificationsCounter.vue":
 /*!**********************************************************!*\
   !*** ./resources/js/components/NotificationsCounter.vue ***!
@@ -36587,6 +36751,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/MapBoxMap.vue?vue&type=script&lang=js&":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/MapBoxMap.vue?vue&type=script&lang=js& ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MapBoxMap_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./MapBoxMap.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/MapBoxMap.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MapBoxMap_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/NotificationsCounter.vue?vue&type=script&lang=js&":
 /*!***********************************************************************************!*\
   !*** ./resources/js/components/NotificationsCounter.vue?vue&type=script&lang=js& ***!
@@ -36657,6 +36837,19 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateRestaurantPageStepTwo_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader/dist/cjs.js!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CreateRestaurantPageStepTwo.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CreateRestaurantPageStepTwo.vue?vue&type=style&index=0&lang=css&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/MapBoxMap.vue?vue&type=style&index=0&lang=css&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/MapBoxMap.vue?vue&type=style&index=0&lang=css& ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_MapBoxMap_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader/dist/cjs.js!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./MapBoxMap.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/MapBoxMap.vue?vue&type=style&index=0&lang=css&");
 
 
 /***/ }),
@@ -36742,6 +36935,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LikeButton_vue_vue_type_template_id_2a9c25d4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LikeButton_vue_vue_type_template_id_2a9c25d4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./LikeButton.vue?vue&type=template&id=2a9c25d4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/LikeButton.vue?vue&type=template&id=2a9c25d4&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/MapBoxMap.vue?vue&type=template&id=5522cfb2&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/MapBoxMap.vue?vue&type=template&id=5522cfb2& ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MapBoxMap_vue_vue_type_template_id_5522cfb2___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MapBoxMap_vue_vue_type_template_id_5522cfb2___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MapBoxMap_vue_vue_type_template_id_5522cfb2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./MapBoxMap.vue?vue&type=template&id=5522cfb2& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/MapBoxMap.vue?vue&type=template&id=5522cfb2&");
 
 
 /***/ }),
@@ -37117,6 +37327,18 @@ var render = function () {
               _vm._v(" "),
               _vm._m(1),
               _vm._v(" "),
+              _c(
+                "div",
+                [
+                  _c("p", { staticClass: "fw-600" }, [_vm._v("Map Location")]),
+                  _vm._v(" "),
+                  _c("map-box-map", {
+                    attrs: { "mapbox-api-key": _vm.mapBoxAPIKey },
+                  }),
+                ],
+                1
+              ),
+              _vm._v(" "),
               _vm._m(2),
               _vm._v(" "),
               _vm._m(3),
@@ -37387,28 +37609,6 @@ var render = function () {
                 "\n  "
             ),
           ])
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.saveSuccess
-        ? _c(
-            "div",
-            {
-              ref: "successAlert",
-              staticClass: "alert alert-success saveSuccessAlert",
-            },
-            [
-              _vm._v("\n    Saved info successfully\n    "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn p-0 ms-2",
-                  attrs: { type: "button" },
-                  on: { click: _vm.closeSuccessAlert },
-                },
-                [_c("i", { staticClass: "fas fa-times" })]
-              ),
-            ]
-          )
         : _vm._e(),
       _vm._v(" "),
       _c("div", { staticClass: "form-floating mb-3" }, [
@@ -37714,16 +37914,6 @@ var render = function () {
       _c(
         "button",
         {
-          staticClass: "btn btn-main-save w-100 mb-2",
-          attrs: { type: "button" },
-          on: { click: _vm.saveInfo },
-        },
-        [_vm._v("\n    Save\n  ")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
           staticClass: "btn btn-main-red w-100",
           attrs: { type: "button" },
           on: { click: _vm.proceedToStepTwo },
@@ -37878,6 +38068,31 @@ var render = function () {
       ]
     ),
   ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/MapBoxMap.vue?vue&type=template&id=5522cfb2&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/MapBoxMap.vue?vue&type=template&id=5522cfb2& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { attrs: { id: "map" } })
 }
 var staticRenderFns = []
 render._withStripped = true
