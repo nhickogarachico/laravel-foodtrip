@@ -228,7 +228,7 @@ export default {
     ) {
       if (contactNumberInput === "" || contactNumberInput.length < 10) {
         this.validationErrors[contactInputName] = "Invalid contact number";
-      } else if (contactNumbers.includes(contactNumberInput)) {
+      } else if (contactNumbers.includes("+63" + contactNumberInput)) {
         this.validationErrors[contactInputName] =
           "You already added that contact number";
       } else {

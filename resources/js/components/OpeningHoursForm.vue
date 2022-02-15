@@ -1,4 +1,5 @@
 <template>
+<div class="table-responsive">
   <table class="table text-center">
     <thead>
       <tr>
@@ -101,6 +102,7 @@
       </tr>
     </tbody>
   </table>
+  </div>
 </template>
 
 <script>

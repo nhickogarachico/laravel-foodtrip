@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" tabindex="-1" id="addRestaurantOutletModal" >
+  <div class="modal" tabindex="-1" id="addRestaurantOutletModal">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -105,7 +105,15 @@
                 />
                 <label for="floatingFullAddress">Full Address</label>
               </div>
-              <div class="d-flex justify-content-center align-items-center flex-column" v-if="this.reverseGeoCoding.loading">
+              <div
+                class="
+                  d-flex
+                  justify-content-center
+                  align-items-center
+                  flex-column
+                "
+                v-if="this.reverseGeoCoding.loading"
+              >
                 <div class="spinner-grow text-danger mt-2" role="status">
                   <span class="visually-hidden">Loading...</span>
                 </div>
@@ -127,6 +135,13 @@
               <p class="fw-600">Contact Information</p>
               <div>
                 <div
+                  class="alert alert-warning"
+                  v-if="validationErrors['mobileNumberInput']"
+                >
+                  <i class="fas fa-exclamation-circle me-2"></i>
+                  {{ validationErrors["mobileNumberInput"] }}
+                </div>
+                <div
                   class="
                     contact-container
                     d-flex
@@ -141,12 +156,9 @@
                     </div>
                     <p class="mb-0 fw-600 me-2">+63</p>
                     <div class="form-floating w-100">
-                      <input
-                        class="form-control"
-                        id="floatingMobile1"
-                        type="text"
-                        placeholder="mobile number 1"
-                        maxlength="10"
+                      <contact-number-input
+                        v-model="mobileNumberInput"
+                        ref="mobileNumberInputRef"
                       />
                       <label for="floatingMobile1">Mobile Number</label>
                     </div>
@@ -155,14 +167,54 @@
                     id="addMobileBtn"
                     type="button"
                     class="btn btn-main-red ms-2 add-contact-btn"
+                    v-on:click="
+                      addContactNumber(
+                        mobileNumberInput,
+                        mobileNumbers,
+                        'mobileNumberInput'
+                      )
+                    "
                   >
                     Add Mobile Number +
                   </button>
                 </div>
-                <div class="text-center mobile-numbers-div"></div>
+                <div class="text-center mobile-numbers-div">
+                  <div
+                    class="
+                      d-flex
+                      align-items-center
+                      justify-content-center
+                      mb-2
+                    "
+                    v-for="mobileNumber in mobileNumbers"
+                    :key="mobileNumbers.indexOf(mobileNumber)"
+                  >
+                    <p class="mb-0 fw-600">{{ mobileNumber }}</p>
+                    <button
+                      type="button"
+                      class="btn btn-main-red py-1 ms-2"
+                      v-on:click="
+                        removeContactNumber(
+                          mobileNumber,
+                          mobileNumbers,
+                          'mobileNumberInput'
+                        )
+                      "
+                    >
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
             <div>
+              <div
+                class="alert alert-warning"
+                v-if="validationErrors['telephoneNumberInput']"
+              >
+                <i class="fas fa-exclamation-circle me-2"></i>
+                {{ validationErrors["telephoneNumberInput"] }}
+              </div>
               <div
                 class="
                   contact-container
@@ -178,12 +230,9 @@
                   </div>
                   <p class="mb-0 fw-600 me-2">+63</p>
                   <div class="form-floating w-100">
-                    <input
-                      class="form-control"
-                      id="floatingTelephone1"
-                      type="text"
-                      placeholder="telephone number 1"
-                      maxlength="9"
+                    <contact-number-input
+                      v-model="telephoneNumberInput"
+                      ref="telephoneNumberInputRef"
                     />
                     <label for="floatingTelephone1">Telephone Number</label>
                   </div>
@@ -192,11 +241,39 @@
                   id="addTelephoneBtn"
                   type="button"
                   class="btn btn-main-red ms-2 add-contact-btn"
+                  v-on:click="
+                    addContactNumber(
+                      telephoneNumberInput,
+                      telephoneNumbers,
+                      'telephoneNumberInput'
+                    )
+                  "
                 >
                   Add Telephone Number +
                 </button>
               </div>
-              <div class="text-center telephone-numbers-div"></div>
+              <div class="text-center telephone-numbers-div">
+                <div
+                  class="d-flex align-items-center justify-content-center mb-2"
+                  v-for="telephoneNumber in telephoneNumbers"
+                  :key="telephoneNumbers.indexOf(telephoneNumber)"
+                >
+                  <p class="mb-0 fw-600">{{ telephoneNumber }}</p>
+                  <button
+                    type="button"
+                    class="btn btn-main-red py-1 ms-2"
+                    v-on:click="
+                      removeContactNumber(
+                        telephoneNumber,
+                        telephoneNumbers,
+                        'telephoneNumberInput'
+                      )
+                    "
+                  >
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
             </div>
           </form>
         </div>
@@ -217,7 +294,7 @@
 
 <script>
 import MapBoxMap from "./MapBoxMap.vue";
-import OpeningHoursForm from './OpeningHoursForm.vue'
+import OpeningHoursForm from "./OpeningHoursForm.vue";
 import mapBoxAPIKey from "./config/keys";
 
 export default {
@@ -238,6 +315,14 @@ export default {
       fullAddressInput: "",
       sameRestaurantOutletName: true,
       reverseGeoCoding: { loading: false },
+      mobileNumberInput: "",
+      mobileNumbers: [],
+      telephoneNumberInput: "",
+      telephoneNumbers: [],
+      validationErrors: {
+        mobileNumberInput: "",
+        telephoneNumberInput: "",
+      },
     };
   },
   methods: {
@@ -278,6 +363,32 @@ export default {
           this.reverseGeoCoding.loading = false;
         })
         .catch((err) => console.log(err));
+    },
+    addContactNumber: function (
+      contactNumberInput,
+      contactNumbers,
+      contactInputName
+    ) {
+      if (contactNumberInput === "" || contactNumberInput.length < 10) {
+        this.validationErrors[contactInputName] = "Invalid contact number";
+      } else if (contactNumbers.includes("+63" + contactNumberInput)) {
+        this.validationErrors[contactInputName] =
+          "You already added that contact number";
+      } else {
+        contactNumbers.push("+63" + contactNumberInput);
+        this.validationErrors[contactInputName] = "";
+      }
+      this[contactInputName] = "";
+      this.$refs[`${contactInputName}Ref`].focus();
+    },
+    removeContactNumber: function (
+      contactNumber,
+      contactNumbers,
+      contactInputName
+    ) {
+      let contactNumberToRemove = contactNumbers.indexOf(contactNumber);
+      contactNumbers.splice(contactNumberToRemove, 1);
+      this.$refs[`${contactInputName}Ref`].focus();
     },
   },
   mounted() {},

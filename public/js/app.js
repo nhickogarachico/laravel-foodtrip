@@ -5493,6 +5493,83 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -5518,6 +5595,14 @@ __webpack_require__.r(__webpack_exports__);
       sameRestaurantOutletName: true,
       reverseGeoCoding: {
         loading: false
+      },
+      mobileNumberInput: "",
+      mobileNumbers: [],
+      telephoneNumberInput: "",
+      telephoneNumbers: [],
+      validationErrors: {
+        mobileNumberInput: "",
+        telephoneNumberInput: ""
       }
     };
   },
@@ -5558,6 +5643,24 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         return console.log(err);
       });
+    },
+    addContactNumber: function addContactNumber(contactNumberInput, contactNumbers, contactInputName) {
+      if (contactNumberInput === "" || contactNumberInput.length < 10) {
+        this.validationErrors[contactInputName] = "Invalid contact number";
+      } else if (contactNumbers.includes("+63" + contactNumberInput)) {
+        this.validationErrors[contactInputName] = "You already added that contact number";
+      } else {
+        contactNumbers.push("+63" + contactNumberInput);
+        this.validationErrors[contactInputName] = "";
+      }
+
+      this[contactInputName] = "";
+      this.$refs["".concat(contactInputName, "Ref")].focus();
+    },
+    removeContactNumber: function removeContactNumber(contactNumber, contactNumbers, contactInputName) {
+      var contactNumberToRemove = contactNumbers.indexOf(contactNumber);
+      contactNumbers.splice(contactNumberToRemove, 1);
+      this.$refs["".concat(contactInputName, "Ref")].focus();
     }
   },
   mounted: function mounted() {}
@@ -5865,7 +5968,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     addContactNumber: function addContactNumber(contactNumberInput, contactNumbers, contactInputName) {
       if (contactNumberInput === "" || contactNumberInput.length < 10) {
         this.validationErrors[contactInputName] = "Invalid contact number";
-      } else if (contactNumbers.includes(contactNumberInput)) {
+      } else if (contactNumbers.includes("+63" + contactNumberInput)) {
         this.validationErrors[contactInputName] = "You already added that contact number";
       } else {
         contactNumbers.push("+63" + contactNumberInput);
@@ -6282,6 +6385,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
 //
 //
 //
@@ -37804,7 +37909,7 @@ var render = function () {
                       "div",
                       {
                         staticClass:
-                          "d-flex justify-content-center align-items-center flex-column",
+                          "\n                d-flex\n                justify-content-center\n                align-items-center\n                flex-column\n              ",
                       },
                       [
                         _vm._m(1),
@@ -37841,9 +37946,253 @@ var render = function () {
                 1
               ),
               _vm._v(" "),
-              _vm._m(2),
+              _c("div", [
+                _c("p", { staticClass: "fw-600" }, [
+                  _vm._v("Contact Information"),
+                ]),
+                _vm._v(" "),
+                _c("div", [
+                  _vm.validationErrors["mobileNumberInput"]
+                    ? _c("div", { staticClass: "alert alert-warning" }, [
+                        _c("i", {
+                          staticClass: "fas fa-exclamation-circle me-2",
+                        }),
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(_vm.validationErrors["mobileNumberInput"]) +
+                            "\n              "
+                        ),
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "\n                  contact-container\n                  d-flex\n                  justify-content-between\n                  align-items-center\n                  mb-3\n                ",
+                    },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "d-flex align-items-center flex-fill" },
+                        [
+                          _vm._m(2),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "mb-0 fw-600 me-2" }, [
+                            _vm._v("+63"),
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "form-floating w-100" },
+                            [
+                              _c("contact-number-input", {
+                                ref: "mobileNumberInputRef",
+                                model: {
+                                  value: _vm.mobileNumberInput,
+                                  callback: function ($$v) {
+                                    _vm.mobileNumberInput = $$v
+                                  },
+                                  expression: "mobileNumberInput",
+                                },
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "label",
+                                { attrs: { for: "floatingMobile1" } },
+                                [_vm._v("Mobile Number")]
+                              ),
+                            ],
+                            1
+                          ),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-main-red ms-2 add-contact-btn",
+                          attrs: { id: "addMobileBtn", type: "button" },
+                          on: {
+                            click: function ($event) {
+                              return _vm.addContactNumber(
+                                _vm.mobileNumberInput,
+                                _vm.mobileNumbers,
+                                "mobileNumberInput"
+                              )
+                            },
+                          },
+                        },
+                        [
+                          _vm._v(
+                            "\n                  Add Mobile Number +\n                "
+                          ),
+                        ]
+                      ),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "text-center mobile-numbers-div" },
+                    _vm._l(_vm.mobileNumbers, function (mobileNumber) {
+                      return _c(
+                        "div",
+                        {
+                          key: _vm.mobileNumbers.indexOf(mobileNumber),
+                          staticClass:
+                            "\n                    d-flex\n                    align-items-center\n                    justify-content-center\n                    mb-2\n                  ",
+                        },
+                        [
+                          _c("p", { staticClass: "mb-0 fw-600" }, [
+                            _vm._v(_vm._s(mobileNumber)),
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-main-red py-1 ms-2",
+                              attrs: { type: "button" },
+                              on: {
+                                click: function ($event) {
+                                  return _vm.removeContactNumber(
+                                    mobileNumber,
+                                    _vm.mobileNumbers,
+                                    "mobileNumberInput"
+                                  )
+                                },
+                              },
+                            },
+                            [_c("i", { staticClass: "fas fa-times" })]
+                          ),
+                        ]
+                      )
+                    }),
+                    0
+                  ),
+                ]),
+              ]),
               _vm._v(" "),
-              _vm._m(3),
+              _c("div", [
+                _vm.validationErrors["telephoneNumberInput"]
+                  ? _c("div", { staticClass: "alert alert-warning" }, [
+                      _c("i", {
+                        staticClass: "fas fa-exclamation-circle me-2",
+                      }),
+                      _vm._v(
+                        "\n              " +
+                          _vm._s(_vm.validationErrors["telephoneNumberInput"]) +
+                          "\n            "
+                      ),
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "\n                contact-container\n                d-flex\n                justify-content-between\n                align-items-center\n                mb-3\n              ",
+                  },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "d-flex align-items-center flex-fill" },
+                      [
+                        _vm._m(3),
+                        _vm._v(" "),
+                        _c("p", { staticClass: "mb-0 fw-600 me-2" }, [
+                          _vm._v("+63"),
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "form-floating w-100" },
+                          [
+                            _c("contact-number-input", {
+                              ref: "telephoneNumberInputRef",
+                              model: {
+                                value: _vm.telephoneNumberInput,
+                                callback: function ($$v) {
+                                  _vm.telephoneNumberInput = $$v
+                                },
+                                expression: "telephoneNumberInput",
+                              },
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              { attrs: { for: "floatingTelephone1" } },
+                              [_vm._v("Telephone Number")]
+                            ),
+                          ],
+                          1
+                        ),
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-main-red ms-2 add-contact-btn",
+                        attrs: { id: "addTelephoneBtn", type: "button" },
+                        on: {
+                          click: function ($event) {
+                            return _vm.addContactNumber(
+                              _vm.telephoneNumberInput,
+                              _vm.telephoneNumbers,
+                              "telephoneNumberInput"
+                            )
+                          },
+                        },
+                      },
+                      [
+                        _vm._v(
+                          "\n                Add Telephone Number +\n              "
+                        ),
+                      ]
+                    ),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "text-center telephone-numbers-div" },
+                  _vm._l(_vm.telephoneNumbers, function (telephoneNumber) {
+                    return _c(
+                      "div",
+                      {
+                        key: _vm.telephoneNumbers.indexOf(telephoneNumber),
+                        staticClass:
+                          "d-flex align-items-center justify-content-center mb-2",
+                      },
+                      [
+                        _c("p", { staticClass: "mb-0 fw-600" }, [
+                          _vm._v(_vm._s(telephoneNumber)),
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-main-red py-1 ms-2",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function ($event) {
+                                return _vm.removeContactNumber(
+                                  telephoneNumber,
+                                  _vm.telephoneNumbers,
+                                  "telephoneNumberInput"
+                                )
+                              },
+                            },
+                          },
+                          [_c("i", { staticClass: "fas fa-times" })]
+                        ),
+                      ]
+                    )
+                  }),
+                  0
+                ),
+              ]),
             ]),
           ]),
           _vm._v(" "),
@@ -37890,108 +38239,16 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("p", { staticClass: "fw-600" }, [_vm._v("Contact Information")]),
-      _vm._v(" "),
-      _c("div", [
-        _c(
-          "div",
-          {
-            staticClass:
-              "\n                  contact-container\n                  d-flex\n                  justify-content-between\n                  align-items-center\n                  mb-3\n                ",
-          },
-          [
-            _c("div", { staticClass: "d-flex align-items-center flex-fill" }, [
-              _c("div", { staticClass: "contact-icon" }, [
-                _c("i", { staticClass: "fas fa-mobile-alt me-3" }),
-              ]),
-              _vm._v(" "),
-              _c("p", { staticClass: "mb-0 fw-600 me-2" }, [_vm._v("+63")]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-floating w-100" }, [
-                _c("input", {
-                  staticClass: "form-control",
-                  attrs: {
-                    id: "floatingMobile1",
-                    type: "text",
-                    placeholder: "mobile number 1",
-                    maxlength: "10",
-                  },
-                }),
-                _vm._v(" "),
-                _c("label", { attrs: { for: "floatingMobile1" } }, [
-                  _vm._v("Mobile Number"),
-                ]),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-main-red ms-2 add-contact-btn",
-                attrs: { id: "addMobileBtn", type: "button" },
-              },
-              [
-                _vm._v(
-                  "\n                  Add Mobile Number +\n                "
-                ),
-              ]
-            ),
-          ]
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "text-center mobile-numbers-div" }),
-      ]),
+    return _c("div", { staticClass: "contact-icon" }, [
+      _c("i", { staticClass: "fas fa-mobile-alt me-3" }),
     ])
   },
   function () {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
-      _c(
-        "div",
-        {
-          staticClass:
-            "\n                contact-container\n                d-flex\n                justify-content-between\n                align-items-center\n                mb-3\n              ",
-        },
-        [
-          _c("div", { staticClass: "d-flex align-items-center flex-fill" }, [
-            _c("div", { staticClass: "contact-icon" }, [
-              _c("i", { staticClass: "fas fa-phone me-3" }),
-            ]),
-            _vm._v(" "),
-            _c("p", { staticClass: "mb-0 fw-600 me-2" }, [_vm._v("+63")]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-floating w-100" }, [
-              _c("input", {
-                staticClass: "form-control",
-                attrs: {
-                  id: "floatingTelephone1",
-                  type: "text",
-                  placeholder: "telephone number 1",
-                  maxlength: "9",
-                },
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "floatingTelephone1" } }, [
-                _vm._v("Telephone Number"),
-              ]),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-main-red ms-2 add-contact-btn",
-              attrs: { id: "addTelephoneBtn", type: "button" },
-            },
-            [_vm._v("\n                Add Telephone Number +\n              ")]
-          ),
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "text-center telephone-numbers-div" }),
+    return _c("div", { staticClass: "contact-icon" }, [
+      _c("i", { staticClass: "fas fa-phone me-3" }),
     ])
   },
   function () {
@@ -38701,249 +38958,255 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("table", { staticClass: "table text-center" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c(
-      "tbody",
-      _vm._l(_vm.daysOfTheWeek, function (day) {
-        return _c("tr", { key: day.value }, [
-          _c("th", { staticClass: "fw-600", attrs: { scope: "row" } }, [
-            _vm._v(_vm._s(day.day)),
-          ]),
-          _vm._v(" "),
-          _c("td", [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "form-check d-flex justify-content-center align-items-center",
-              },
-              [
-                _c("input", {
-                  staticClass: "form-check-input",
-                  attrs: { type: "checkbox" },
-                  on: {
-                    change: function ($event) {
-                      return _vm.changeToClosed(day)
-                    },
-                  },
-                }),
-              ]
-            ),
-          ]),
-          _vm._v(" "),
-          _c(
-            "td",
-            _vm._l(_vm.openingHours[day.value], function (openingHour, i) {
-              return _c("tr", { key: i }, [
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "d-flex align-items-center justify-content-between mb-2",
-                  },
-                  [
-                    _c(
-                      "select",
-                      {
-                        staticClass: "form-select w-50",
-                        attrs: {
-                          "aria-label": "Opening Hours",
-                          disabled: day.disabled,
-                        },
-                      },
-                      _vm._l(25, function (time) {
-                        return _c(
-                          "option",
-                          { key: time, domProps: { value: time } },
-                          [
-                            _vm._v(
-                              "\n                " +
-                                _vm._s(
-                                  (time - 1).toLocaleString("en-US", {
-                                    minimumIntegerDigits: 2,
-                                    useGrouping: false,
-                                  })
-                                ) +
-                                "\n              "
-                            ),
-                          ]
-                        )
-                      }),
-                      0
-                    ),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "mx-2 mb-0" }, [_vm._v(":")]),
-                    _vm._v(" "),
-                    _c(
-                      "select",
-                      {
-                        staticClass: "form-select w-50",
-                        attrs: {
-                          "aria-label": "Opening Minutes",
-                          disabled: day.disabled,
-                        },
-                      },
-                      _vm._l(60, function (time) {
-                        return _c(
-                          "option",
-                          { key: time, domProps: { value: time } },
-                          [
-                            _vm._v(
-                              "\n                " +
-                                _vm._s(
-                                  (time - 1).toLocaleString("en-US", {
-                                    minimumIntegerDigits: 2,
-                                    useGrouping: false,
-                                  })
-                                ) +
-                                "\n              "
-                            ),
-                          ]
-                        )
-                      }),
-                      0
-                    ),
-                  ]
-                ),
-              ])
-            }),
-            0
-          ),
-          _vm._v(" "),
-          _c(
-            "td",
-            _vm._l(_vm.openingHours[day.value], function (openingHour, i) {
-              return _c("tr", { key: i }, [
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "d-flex align-items-center justify-content-between mb-2",
-                  },
-                  [
-                    _c(
-                      "select",
-                      {
-                        staticClass: "form-select w-50",
-                        attrs: {
-                          "aria-label": "Closing Hours",
-                          disabled: day.disabled,
-                        },
-                      },
-                      _vm._l(25, function (time) {
-                        return _c(
-                          "option",
-                          { key: time, domProps: { value: time } },
-                          [
-                            _vm._v(
-                              "\n                " +
-                                _vm._s(
-                                  (time - 1).toLocaleString("en-US", {
-                                    minimumIntegerDigits: 2,
-                                    useGrouping: false,
-                                  })
-                                ) +
-                                "\n              "
-                            ),
-                          ]
-                        )
-                      }),
-                      0
-                    ),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "mx-2 mb-0" }, [_vm._v(":")]),
-                    _vm._v(" "),
-                    _c(
-                      "select",
-                      {
-                        staticClass: "form-select w-50",
-                        attrs: {
-                          "aria-label": "Closing Minutes",
-                          disabled: day.disabled,
-                        },
-                      },
-                      _vm._l(60, function (time) {
-                        return _c(
-                          "option",
-                          { key: time, domProps: { value: time } },
-                          [
-                            _vm._v(
-                              "\n                " +
-                                _vm._s(
-                                  (time - 1).toLocaleString("en-US", {
-                                    minimumIntegerDigits: 2,
-                                    useGrouping: false,
-                                  })
-                                ) +
-                                "\n              "
-                            ),
-                          ]
-                        )
-                      }),
-                      0
-                    ),
-                  ]
-                ),
-              ])
-            }),
-            0
-          ),
-          _vm._v(" "),
-          _c(
-            "td",
-            _vm._l(_vm.openingHours[day.value], function (openingHour, i) {
-              return _c("tr", { key: i }, [
-                _c("input", {
-                  staticClass: "form-control mb-2",
-                  attrs: { type: "date", disabled: day.disabled },
-                }),
-              ])
-            }),
-            0
-          ),
-          _vm._v(" "),
-          _c(
-            "td",
-            _vm._l(_vm.openingHours[day.value], function (openingHour, i) {
-              return _c("tr", { key: i }, [
-                _c("input", {
-                  staticClass: "form-control mb-2",
-                  attrs: { type: "date", disabled: day.disabled },
-                }),
-              ])
-            }),
-            0
-          ),
-          _vm._v(" "),
-          _c(
-            "td",
-            _vm._l(_vm.openingHours[day.value], function (openingHour, i) {
-              return _c("div", { key: i, staticClass: "btn-margin" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-main-red py-0 px-1",
-                    attrs: { type: "button", disabled: day.disabled },
+  return _c("div", { staticClass: "table-responsive" }, [
+    _c("table", { staticClass: "table text-center" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "tbody",
+        _vm._l(_vm.daysOfTheWeek, function (day) {
+          return _c("tr", { key: day.value }, [
+            _c("th", { staticClass: "fw-600", attrs: { scope: "row" } }, [
+              _vm._v(_vm._s(day.day)),
+            ]),
+            _vm._v(" "),
+            _c("td", [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "form-check d-flex justify-content-center align-items-center",
+                },
+                [
+                  _c("input", {
+                    staticClass: "form-check-input",
+                    attrs: { type: "checkbox" },
                     on: {
-                      click: function ($event) {
-                        i === 0
-                          ? _vm.addOpeningHours(day.value)
-                          : _vm.removeOpeningHours(day.value, i)
+                      change: function ($event) {
+                        return _vm.changeToClosed(day)
                       },
                     },
-                  },
-                  [_c("i", { class: i === 0 ? "fas fa-plus" : "fas fa-trash" })]
-                ),
-              ])
-            }),
-            0
-          ),
-        ])
-      }),
-      0
-    ),
+                  }),
+                ]
+              ),
+            ]),
+            _vm._v(" "),
+            _c(
+              "td",
+              _vm._l(_vm.openingHours[day.value], function (openingHour, i) {
+                return _c("tr", { key: i }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex align-items-center justify-content-between mb-2",
+                    },
+                    [
+                      _c(
+                        "select",
+                        {
+                          staticClass: "form-select w-50",
+                          attrs: {
+                            "aria-label": "Opening Hours",
+                            disabled: day.disabled,
+                          },
+                        },
+                        _vm._l(25, function (time) {
+                          return _c(
+                            "option",
+                            { key: time, domProps: { value: time } },
+                            [
+                              _vm._v(
+                                "\r\n                  " +
+                                  _vm._s(
+                                    (time - 1).toLocaleString("en-US", {
+                                      minimumIntegerDigits: 2,
+                                      useGrouping: false,
+                                    })
+                                  ) +
+                                  "\r\n                "
+                              ),
+                            ]
+                          )
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "mx-2 mb-0" }, [_vm._v(":")]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          staticClass: "form-select w-50",
+                          attrs: {
+                            "aria-label": "Opening Minutes",
+                            disabled: day.disabled,
+                          },
+                        },
+                        _vm._l(60, function (time) {
+                          return _c(
+                            "option",
+                            { key: time, domProps: { value: time } },
+                            [
+                              _vm._v(
+                                "\r\n                  " +
+                                  _vm._s(
+                                    (time - 1).toLocaleString("en-US", {
+                                      minimumIntegerDigits: 2,
+                                      useGrouping: false,
+                                    })
+                                  ) +
+                                  "\r\n                "
+                              ),
+                            ]
+                          )
+                        }),
+                        0
+                      ),
+                    ]
+                  ),
+                ])
+              }),
+              0
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              _vm._l(_vm.openingHours[day.value], function (openingHour, i) {
+                return _c("tr", { key: i }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "d-flex align-items-center justify-content-between mb-2",
+                    },
+                    [
+                      _c(
+                        "select",
+                        {
+                          staticClass: "form-select w-50",
+                          attrs: {
+                            "aria-label": "Closing Hours",
+                            disabled: day.disabled,
+                          },
+                        },
+                        _vm._l(25, function (time) {
+                          return _c(
+                            "option",
+                            { key: time, domProps: { value: time } },
+                            [
+                              _vm._v(
+                                "\r\n                  " +
+                                  _vm._s(
+                                    (time - 1).toLocaleString("en-US", {
+                                      minimumIntegerDigits: 2,
+                                      useGrouping: false,
+                                    })
+                                  ) +
+                                  "\r\n                "
+                              ),
+                            ]
+                          )
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "mx-2 mb-0" }, [_vm._v(":")]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          staticClass: "form-select w-50",
+                          attrs: {
+                            "aria-label": "Closing Minutes",
+                            disabled: day.disabled,
+                          },
+                        },
+                        _vm._l(60, function (time) {
+                          return _c(
+                            "option",
+                            { key: time, domProps: { value: time } },
+                            [
+                              _vm._v(
+                                "\r\n                  " +
+                                  _vm._s(
+                                    (time - 1).toLocaleString("en-US", {
+                                      minimumIntegerDigits: 2,
+                                      useGrouping: false,
+                                    })
+                                  ) +
+                                  "\r\n                "
+                              ),
+                            ]
+                          )
+                        }),
+                        0
+                      ),
+                    ]
+                  ),
+                ])
+              }),
+              0
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              _vm._l(_vm.openingHours[day.value], function (openingHour, i) {
+                return _c("tr", { key: i }, [
+                  _c("input", {
+                    staticClass: "form-control mb-2",
+                    attrs: { type: "date", disabled: day.disabled },
+                  }),
+                ])
+              }),
+              0
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              _vm._l(_vm.openingHours[day.value], function (openingHour, i) {
+                return _c("tr", { key: i }, [
+                  _c("input", {
+                    staticClass: "form-control mb-2",
+                    attrs: { type: "date", disabled: day.disabled },
+                  }),
+                ])
+              }),
+              0
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              _vm._l(_vm.openingHours[day.value], function (openingHour, i) {
+                return _c("div", { key: i, staticClass: "btn-margin" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-main-red py-0 px-1",
+                      attrs: { type: "button", disabled: day.disabled },
+                      on: {
+                        click: function ($event) {
+                          i === 0
+                            ? _vm.addOpeningHours(day.value)
+                            : _vm.removeOpeningHours(day.value, i)
+                        },
+                      },
+                    },
+                    [
+                      _c("i", {
+                        class: i === 0 ? "fas fa-plus" : "fas fa-trash",
+                      }),
+                    ]
+                  ),
+                ])
+              }),
+              0
+            ),
+          ])
+        }),
+        0
+      ),
+    ]),
   ])
 }
 var staticRenderFns = [
