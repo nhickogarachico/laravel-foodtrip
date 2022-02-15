@@ -21,7 +21,8 @@ export default {
       [14.569299483936252, 120.99557384062871],
       15
     );
-    L.tileLayer(
+
+    let tileLayer = L.tileLayer(
       `https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=${this.mapboxApiKey}`,
       {
         attribution:
@@ -31,6 +32,9 @@ export default {
       }
     ).addTo(map);
 
+    map.on("move", () => {
+      map.invalidateSize();
+    });
     let marker = {};
     map.on("click", (e) => {
       this.getAddress(e.latlng);

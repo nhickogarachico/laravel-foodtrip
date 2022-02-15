@@ -28,6 +28,7 @@ Vue.component('create-restaurant-page-step-two', require('./components/CreateRes
 Vue.component('contact-number-input', require('./components/ContactNumberInput.vue').default);
 Vue.component('add-restaurant-outlet-modal', require('./components/AddRestaurantOutletModal.vue').default);
 Vue.component('mapbox-map', require('./components/MapBoxMap.vue').default);
+Vue.component('opening-hours-form', require('./components/OpeningHoursForm.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

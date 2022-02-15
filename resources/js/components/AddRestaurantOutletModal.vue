@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" tabindex="-1" id="addRestaurantOutletModal">
+  <div class="modal" tabindex="-1" id="addRestaurantOutletModal" >
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -112,12 +112,16 @@
                 <span class="fst-italic">Fetching address ...</span>
               </div>
             </div>
-            <div>
+            <div class="mb-2">
               <p class="fw-600">Map Location</p>
               <map-box-map
                 :mapbox-api-key="mapBoxAPIKey"
                 v-on:map-click="setFullAddress"
               ></map-box-map>
+            </div>
+            <div>
+              <p class="fw-600">Opening Hours</p>
+              <opening-hours-form></opening-hours-form>
             </div>
             <div>
               <p class="fw-600">Contact Information</p>
@@ -204,7 +208,7 @@
           >
             Close
           </button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-primary">Add</button>
         </div>
       </div>
     </div>
@@ -213,10 +217,11 @@
 
 <script>
 import MapBoxMap from "./MapBoxMap.vue";
+import OpeningHoursForm from './OpeningHoursForm.vue'
 import mapBoxAPIKey from "./config/keys";
 
 export default {
-  components: { MapBoxMap },
+  components: { MapBoxMap, OpeningHoursForm },
   props: {
     areas: Array,
     localities: Array,
@@ -281,6 +286,6 @@ export default {
 
 <style>
 .modal-dialog {
-  max-width: 800px;
+  max-width: 1000px;
 }
 </style>
