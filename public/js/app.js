@@ -5592,6 +5592,7 @@ __webpack_require__.r(__webpack_exports__);
       localityInput: 0,
       locationInput: 0,
       fullAddressInput: "",
+      addressCoordinates: {},
       sameRestaurantOutletName: true,
       reverseGeoCoding: {
         loading: false
@@ -5603,6 +5604,15 @@ __webpack_require__.r(__webpack_exports__);
       validationErrors: {
         mobileNumberInput: "",
         telephoneNumberInput: ""
+      },
+      openingHours: {
+        1: [{}],
+        2: [{}],
+        3: [{}],
+        4: [{}],
+        5: [{}],
+        6: [{}],
+        7: [{}]
       }
     };
   },
@@ -5637,6 +5647,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.reverseGeoCoding.loading = true;
+      this.addressCoordinates = coordinates;
       axios.get("https://api.mapbox.com/geocoding/v5/mapbox.places/".concat(coordinates.lng, ", ").concat(coordinates.lat, ".json?access_token=").concat(this.mapBoxAPIKey)).then(function (response) {
         _this.fullAddressInput = response.data.features[0].place_name;
         _this.reverseGeoCoding.loading = false;
@@ -5661,6 +5672,16 @@ __webpack_require__.r(__webpack_exports__);
       var contactNumberToRemove = contactNumbers.indexOf(contactNumber);
       contactNumbers.splice(contactNumberToRemove, 1);
       this.$refs["".concat(contactInputName, "Ref")].focus();
+    },
+    addOpeningHours: function addOpeningHours(day) {
+      this.openingHours[day].push({});
+      console.log(this.openingHours);
+    },
+    removeOpeningHours: function removeOpeningHours(data) {
+      this.openingHours[data.day].splice(data.i, 1);
+    },
+    changeToClosed: function changeToClosed(day) {
+      !day.disabled ? day.disabled = true : day.disabled = false;
     }
   },
   mounted: function mounted() {}
@@ -6493,6 +6514,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    openingHours: Object
+  },
   data: function data() {
     return {
       daysOfTheWeek: [{
@@ -6523,27 +6547,21 @@ __webpack_require__.r(__webpack_exports__);
         day: "Sunday",
         value: 7,
         disabled: false
-      }],
-      openingHours: {
-        1: [{}],
-        2: [{}],
-        3: [{}],
-        4: [{}],
-        5: [{}],
-        6: [{}],
-        7: [{}]
-      }
+      }]
     };
   },
   methods: {
     addOpeningHours: function addOpeningHours(day) {
-      this.openingHours[day].push({});
+      this.$emit("add-opening-hours", day);
     },
     removeOpeningHours: function removeOpeningHours(day, i) {
-      this.openingHours[day].splice(i, 1);
+      this.$emit("remove-opening-hours", {
+        day: day,
+        i: i
+      });
     },
     changeToClosed: function changeToClosed(day) {
-      !day.disabled ? day.disabled = true : day.disabled = false;
+      this.$emit("change-to-closed", day);
     }
   },
   mounted: function mounted() {}
@@ -37941,7 +37959,14 @@ var render = function () {
                 [
                   _c("p", { staticClass: "fw-600" }, [_vm._v("Opening Hours")]),
                   _vm._v(" "),
-                  _c("opening-hours-form"),
+                  _c("opening-hours-form", {
+                    attrs: { "opening-hours": _vm.openingHours },
+                    on: {
+                      "add-opening-hours": _vm.addOpeningHours,
+                      "remove-opening-hours": _vm.removeOpeningHours,
+                      "change-to-closed": _vm.changeToClosed,
+                    },
+                  }),
                 ],
                 1
               ),
@@ -38262,12 +38287,12 @@ var staticRenderFns = [
           staticClass: "btn btn-secondary",
           attrs: { type: "button", "data-bs-dismiss": "modal" },
         },
-        [_vm._v("\n          Close\n        ")]
+        [_vm._v("\n          Cancel\n        ")]
       ),
       _vm._v(" "),
       _c(
         "button",
-        { staticClass: "btn btn-primary", attrs: { type: "button" } },
+        { staticClass: "btn btn-main-red", attrs: { type: "button" } },
         [_vm._v("Add")]
       ),
     ])

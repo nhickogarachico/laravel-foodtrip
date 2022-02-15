@@ -129,7 +129,7 @@
             </div>
             <div>
               <p class="fw-600">Opening Hours</p>
-              <opening-hours-form></opening-hours-form>
+              <opening-hours-form :opening-hours="openingHours" v-on:add-opening-hours="addOpeningHours" v-on:remove-opening-hours="removeOpeningHours" v-on:change-to-closed="changeToClosed"></opening-hours-form>
             </div>
             <div>
               <p class="fw-600">Contact Information</p>
@@ -283,9 +283,9 @@
             class="btn btn-secondary"
             data-bs-dismiss="modal"
           >
-            Close
+            Cancel
           </button>
-          <button type="button" class="btn btn-primary">Add</button>
+          <button type="button" class="btn btn-main-red">Add</button>
         </div>
       </div>
     </div>
@@ -313,6 +313,7 @@ export default {
       localityInput: 0,
       locationInput: 0,
       fullAddressInput: "",
+      addressCoordinates: {},
       sameRestaurantOutletName: true,
       reverseGeoCoding: { loading: false },
       mobileNumberInput: "",
@@ -322,6 +323,15 @@ export default {
       validationErrors: {
         mobileNumberInput: "",
         telephoneNumberInput: "",
+      },
+      openingHours: {
+        1: [{}],
+        2: [{}],
+        3: [{}],
+        4: [{}],
+        5: [{}],
+        6: [{}],
+        7: [{}],
       },
     };
   },
@@ -354,6 +364,7 @@ export default {
     },
     setFullAddress: function (coordinates) {
       this.reverseGeoCoding.loading = true;
+      this.addressCoordinates = coordinates;
       axios
         .get(
           `https://api.mapbox.com/geocoding/v5/mapbox.places/${coordinates.lng}, ${coordinates.lat}.json?access_token=${this.mapBoxAPIKey}`
@@ -390,6 +401,16 @@ export default {
       contactNumbers.splice(contactNumberToRemove, 1);
       this.$refs[`${contactInputName}Ref`].focus();
     },
+     addOpeningHours: function (day) {
+      this.openingHours[day].push({});
+      console.log(this.openingHours)
+    },
+     removeOpeningHours: function(data) {
+      this.openingHours[data.day].splice(data.i, 1)
+    },
+     changeToClosed: function(day) {
+      !day.disabled ? day.disabled = true : day.disabled = false;
+    }
   },
   mounted() {},
 };

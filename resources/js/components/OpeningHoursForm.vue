@@ -107,6 +107,9 @@
 
 <script>
 export default {
+  props: {
+    openingHours: Object,
+  },
   data() {
     return {
       daysOfTheWeek: [
@@ -146,26 +149,17 @@ export default {
           disabled: false,
         },
       ],
-      openingHours: {
-        1: [{}],
-        2: [{}],
-        3: [{}],
-        4: [{}],
-        5: [{}],
-        6: [{}],
-        7: [{}],
-      },
     };
   },
   methods: {
     addOpeningHours: function (day) {
-      this.openingHours[day].push({});
+      this.$emit("add-opening-hours", day)
     },
     removeOpeningHours: function(day, i) {
-      this.openingHours[day].splice(i, 1)
+      this.$emit("remove-opening-hours", {day, i})
     },
     changeToClosed: function(day) {
-      !day.disabled ? day.disabled = true : day.disabled = false;
+      this.$emit("change-to-closed", day)
     }
   },
   mounted() {},
