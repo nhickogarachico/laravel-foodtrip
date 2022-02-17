@@ -40,9 +40,28 @@ const app = new Vue({
     el: '#app',
     data() {
         return {
-            createRestaurantPageStorage: window.sessionStorage
+            restaurantOutlets: [],
+            loadingRestaurantOutletData: false,
+            addingRestaurantOutletData: false
         }
+    },
+    methods: {
+        fetchSessionData: function() {
+            this.loadingRestaurantOutletData = true;
+            axios
+                .get("/register/restaurant/session")
+                .then((response) => {
+
+                    if (response.data.sessionData.stepTwoData) {
+                        this.restaurantOutlets =
+                            response.data.sessionData.stepTwoData.restaurantOutlets;
+                    }
+                    this.loadingRestaurantOutletData = false;
+                })
+                .catch((err) => console.log(err.response));
+        },
+    },
+    mounted() {
+        this.fetchSessionData()
     }
 });
-
-// GLOBAL VARIABLES

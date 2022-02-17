@@ -5608,7 +5608,7 @@ var today = new Date();
       localityInput: 0,
       locationInput: 0,
       fullAddressInput: "",
-      addressCoordinates: {},
+      addressCoordinates: [],
       sameRestaurantOutletName: true,
       reverseGeoCoding: {
         loading: false
@@ -5623,6 +5623,7 @@ var today = new Date();
       },
       openingHours: {
         1: {
+          dayOfTheWeek: 1,
           closed: false,
           hours: [{
             openingHour: "00",
@@ -5634,6 +5635,7 @@ var today = new Date();
           }]
         },
         2: {
+          dayOfTheWeek: 2,
           closed: false,
           hours: [{
             openingHour: "00",
@@ -5645,6 +5647,7 @@ var today = new Date();
           }]
         },
         3: {
+          dayOfTheWeek: 3,
           closed: false,
           hours: [{
             openingHour: "00",
@@ -5656,6 +5659,7 @@ var today = new Date();
           }]
         },
         4: {
+          dayOfTheWeek: 4,
           closed: false,
           hours: [{
             openingHour: "00",
@@ -5667,6 +5671,7 @@ var today = new Date();
           }]
         },
         5: {
+          dayOfTheWeek: 5,
           closed: false,
           hours: [{
             openingHour: "00",
@@ -5678,6 +5683,7 @@ var today = new Date();
           }]
         },
         6: {
+          dayOfTheWeek: 6,
           closed: false,
           hours: [{
             openingHour: "00",
@@ -5689,6 +5695,7 @@ var today = new Date();
           }]
         },
         7: {
+          dayOfTheWeek: 7,
           closed: false,
           hours: [{
             openingHour: "00",
@@ -5765,7 +5772,7 @@ var today = new Date();
         openingMinute: "00",
         closingHour: "00",
         closingMinute: "00",
-        validFrom: Date.now(),
+        validFrom: today.toLocaleDateString("en-CA"),
         validThrough: ""
       });
     },
@@ -5785,13 +5792,36 @@ var today = new Date();
       this.openingHours[data.day].hours[data.index][data.key] = data.value;
     },
     addRestaurantOutlet: function addRestaurantOutlet() {
-      console.log(this.restaurantOutletName);
-      console.log(this.areaInput);
-      console.log(this.localityInput);
-      console.log(this.locationInput);
-      console.log(this.fullAddressInput);
-      console.log(this.addressCoordinates);
-      console.log(this.openingHours);
+      var _this2 = this;
+
+      this.$root.addingRestaurantOutletData = true;
+      axios.post("/register/restaurant/step/2", {
+        restaurantOutletName: this.restaurantOutletName,
+        area: this.areaInput,
+        locality: this.localityInput,
+        location: this.locationInput,
+        fullAddress: this.fullAddressInput,
+        addressLongitude: this.addressCoordinates[0],
+        addressLatitude: this.addressCoordinates[1],
+        openingHours: this.openingHours,
+        mobileNumbers: this.mobileNumbers,
+        telephoneNumbers: this.telephoneNumbers
+      }).then(function (response) {
+        _this2.$root.addingRestaurantOutletData = false;
+      })["catch"](function (error) {
+        return console.log(error.response.data);
+      });
+      this.fetchSessionData();
+    },
+    fetchSessionData: function fetchSessionData() {
+      var _this3 = this;
+
+      axios.get("/register/restaurant/session").then(function (response) {
+        _this3.$root.restaurantOutlets = response.data.sessionData.stepTwoData.restaurantOutlets;
+        x;
+      })["catch"](function (err) {
+        return console.log(err.response);
+      });
     }
   },
   mounted: function mounted() {}
@@ -6249,11 +6279,48 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     stepOneData: Object,
     stepTwoData: Object
+  },
+  data: function data() {
+    return {};
   },
   mounted: function mounted() {
     _sessionStorage__WEBPACK_IMPORTED_MODULE_0__.createRestaurantPageStorage.setItem("stepOneData", JSON.stringify(this.stepOneData));
@@ -6939,10 +7006,31 @@ var app = new Vue({
   el: '#app',
   data: function data() {
     return {
-      createRestaurantPageStorage: window.sessionStorage
+      restaurantOutlets: [],
+      loadingRestaurantOutletData: false,
+      addingRestaurantOutletData: false
     };
+  },
+  methods: {
+    fetchSessionData: function fetchSessionData() {
+      var _this = this;
+
+      this.loadingRestaurantOutletData = true;
+      axios.get("/register/restaurant/session").then(function (response) {
+        if (response.data.sessionData.stepTwoData) {
+          _this.restaurantOutlets = response.data.sessionData.stepTwoData.restaurantOutlets;
+        }
+
+        _this.loadingRestaurantOutletData = false;
+      })["catch"](function (err) {
+        return console.log(err.response);
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.fetchSessionData();
   }
-}); // GLOBAL VARIABLES
+});
 
 /***/ }),
 
@@ -38981,35 +39069,84 @@ var render = function () {
     _c("div", { staticClass: "card mb-4" }, [
       _vm._m(0),
       _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _vm.stepTwoData.restaurantOutlets.length === 0
-          ? _c(
-              "div",
-              {
-                staticClass:
-                  "\n          d-flex\n          justify-content-center\n          align-items-center\n          flex-column\n          text-center\n          p-3\n        ",
-              },
-              [
-                _c("p", [_vm._v("No restaurant outlets")]),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-main-red w-50",
-                    attrs: {
-                      "data-bs-toggle": "modal",
-                      "data-bs-target": "#addRestaurantOutletModal",
+      _c(
+        "div",
+        { staticClass: "card-body" },
+        [
+          _vm.$root.addingRestaurantOutletData
+            ? _c(
+                "div",
+                {
+                  staticClass:
+                    "d-flex justify-content-center align-items-center flex-column",
+                },
+                [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "fst-italic" }, [
+                    _vm._v("Adding restaurant outlet ..."),
+                  ]),
+                ]
+              )
+            : _vm.$root.loadingRestaurantOutletData
+            ? _c(
+                "div",
+                {
+                  staticClass:
+                    "d-flex justify-content-center align-items-center flex-column",
+                },
+                [
+                  _vm._m(2),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "fst-italic" }, [
+                    _vm._v("Loading restaurant outlets ..."),
+                  ]),
+                ]
+              )
+            : _vm.$root.restaurantOutlets.length === 0
+            ? _c(
+                "div",
+                {
+                  staticClass:
+                    "\n          d-flex\n          justify-content-center\n          align-items-center\n          flex-column\n          text-center\n          p-3\n        ",
+                },
+                [
+                  _c("p", [_vm._v("No restaurant outlets yet")]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-main-red w-50",
+                      attrs: {
+                        "data-bs-toggle": "modal",
+                        "data-bs-target": "#addRestaurantOutletModal",
+                      },
                     },
+                    [_vm._v("\n          Add Outlet\n        ")]
+                  ),
+                ]
+              )
+            : _vm._l(_vm.$root.restaurantOutlets, function (restaurantOutlet) {
+                return _c(
+                  "div",
+                  {
+                    key: _vm.$root.restaurantOutlets.indexOf(restaurantOutlet),
+                    staticClass:
+                      "\n          d-flex\n          justify-content-center\n          align-items-center\n          flex-column\n          text-center\n          p-3\n        ",
                   },
-                  [_vm._v("\n          Add Outlet\n        ")]
-                ),
-              ]
-            )
-          : _vm._e(),
-      ]),
+                  [
+                    _c("p", [
+                      _vm._v(_vm._s(restaurantOutlet.restaurantOutletName)),
+                    ]),
+                  ]
+                )
+              }),
+        ],
+        2
+      ),
     ]),
     _vm._v(" "),
-    _vm._m(1),
+    _vm._m(3),
   ])
 }
 var staticRenderFns = [
@@ -39030,6 +39167,32 @@ var staticRenderFns = [
         [_c("i", { staticClass: "fas fa-plus" })]
       ),
     ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "spinner-grow text-danger mt-2",
+        attrs: { role: "status" },
+      },
+      [_c("span", { staticClass: "visually-hidden" }, [_vm._v("Loading...")])]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "spinner-grow text-danger mt-2",
+        attrs: { role: "status" },
+      },
+      [_c("span", { staticClass: "visually-hidden" }, [_vm._v("Loading...")])]
+    )
   },
   function () {
     var _vm = this

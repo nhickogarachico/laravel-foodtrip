@@ -72,6 +72,12 @@ class RestaurantController extends Controller
 
     public function completeRestaurantPageCreationStepTwo(StoreStepTwoRequest $request)
     {
-        $request->session()->put('stepTwoData', $request->validated());
+        $request->session()->push('stepTwoData.restaurantOutlets', $request->validated());
+    }
+
+    public function fetchSessionData() {
+        return response()->json([
+            'sessionData' => session()->all()
+        ]);
     }
 }

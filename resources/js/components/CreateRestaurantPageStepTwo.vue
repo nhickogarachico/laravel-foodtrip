@@ -12,6 +12,25 @@
       </div>
       <div class="card-body">
         <div
+          v-if="$root.addingRestaurantOutletData"
+          class="d-flex justify-content-center align-items-center flex-column"
+        >
+          <div class="spinner-grow text-danger mt-2" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <span class="fst-italic">Adding restaurant outlet ...</span>
+        </div>
+        <div
+          v-else-if="$root.loadingRestaurantOutletData"
+          class="d-flex justify-content-center align-items-center flex-column"
+        >
+          <div class="spinner-grow text-danger mt-2" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <span class="fst-italic">Loading restaurant outlets ...</span>
+        </div>
+
+        <div
           class="
             d-flex
             justify-content-center
@@ -20,9 +39,9 @@
             text-center
             p-3
           "
-          v-if="stepTwoData.restaurantOutlets.length === 0"
+          v-else-if="$root.restaurantOutlets.length === 0"
         >
-          <p>No restaurant outlets</p>
+          <p>No restaurant outlets yet</p>
           <button
             class="btn btn-main-red w-50"
             data-bs-toggle="modal"
@@ -30,6 +49,21 @@
           >
             Add Outlet
           </button>
+        </div>
+        <div
+          class="
+            d-flex
+            justify-content-center
+            align-items-center
+            flex-column
+            text-center
+            p-3
+          "
+          v-else
+          v-for="restaurantOutlet in $root.restaurantOutlets"
+          :key="$root.restaurantOutlets.indexOf(restaurantOutlet)"
+        >
+          <p>{{ restaurantOutlet.restaurantOutletName }}</p>
         </div>
       </div>
     </div>
@@ -54,6 +88,9 @@ export default {
   props: {
     stepOneData: Object,
     stepTwoData: Object,
+  },
+  data() {
+    return {};
   },
   mounted() {
     createRestaurantPageStorage.setItem(

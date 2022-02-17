@@ -328,7 +328,7 @@ export default {
       localityInput: 0,
       locationInput: 0,
       fullAddressInput: "",
-      addressCoordinates: {},
+      addressCoordinates: [],
       sameRestaurantOutletName: true,
       reverseGeoCoding: { loading: false },
       mobileNumberInput: "",
@@ -341,6 +341,7 @@ export default {
       },
       openingHours: {
         1: {
+          dayOfTheWeek: 1,
           closed: false,
           hours: [
             {
@@ -354,6 +355,7 @@ export default {
           ],
         },
         2: {
+          dayOfTheWeek: 2,
           closed: false,
           hours: [
             {
@@ -367,6 +369,7 @@ export default {
           ],
         },
         3: {
+          dayOfTheWeek: 3,
           closed: false,
           hours: [
             {
@@ -380,6 +383,7 @@ export default {
           ],
         },
         4: {
+          dayOfTheWeek: 4,
           closed: false,
           hours: [
             {
@@ -393,6 +397,7 @@ export default {
           ],
         },
         5: {
+          dayOfTheWeek: 5,
           closed: false,
           hours: [
             {
@@ -406,6 +411,7 @@ export default {
           ],
         },
         6: {
+          dayOfTheWeek: 6,
           closed: false,
           hours: [
             {
@@ -419,6 +425,7 @@ export default {
           ],
         },
         7: {
+          dayOfTheWeek: 7,
           closed: false,
           hours: [
             {
@@ -506,7 +513,7 @@ export default {
         openingMinute: "00",
         closingHour: "00",
         closingMinute: "00",
-        validFrom: Date.now(),
+        validFrom: today.toLocaleDateString("en-CA"),
         validThrough: "",
       });
     },
@@ -526,13 +533,34 @@ export default {
       this.openingHours[data.day].hours[data.index][data.key] = data.value;
     },
     addRestaurantOutlet: function () {
-      console.log(this.restaurantOutletName);
-      console.log(this.areaInput);
-      console.log(this.localityInput);
-      console.log(this.locationInput);
-      console.log(this.fullAddressInput);
-      console.log(this.addressCoordinates);
-      console.log(this.openingHours);
+      this.$root.addingRestaurantOutletData = true;
+      axios
+        .post("/register/restaurant/step/2", {
+          restaurantOutletName: this.restaurantOutletName,
+          area: this.areaInput,
+          locality: this.localityInput,
+          location: this.locationInput,
+          fullAddress: this.fullAddressInput,
+          addressLongitude: this.addressCoordinates[0],
+          addressLatitude: this.addressCoordinates[1],
+          openingHours: this.openingHours,
+          mobileNumbers: this.mobileNumbers,
+          telephoneNumbers: this.telephoneNumbers,
+        })
+        .then((response) => {
+          this.$root.addingRestaurantOutletData = false;
+        })
+        .catch((error) => console.log(error.response.data));
+        
+        this.fetchSessionData();
+    },
+    fetchSessionData: function () {
+      axios
+        .get("/register/restaurant/session")
+        .then((response) => {
+          this.$root.restaurantOutlets = response.data.sessionData.stepTwoData.restaurantOutlets;x
+        })
+        .catch((err) => console.log(err.response));
     },
   },
   mounted() {},

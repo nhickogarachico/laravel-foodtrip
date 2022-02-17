@@ -24,25 +24,25 @@ class StoreStepTwoRequest extends FormRequest
     public function rules()
     {
         return [
-            "restaurantOutlets" => ['required', 'array'],
-            "restaurantOulets.*.restaurantOutletName" => 'required',
-            "restaurantOutlets.*.area" => 'required',
-            "restaurantOutlets.*.locality" => 'required',
-            "restaurantOutlets.*.location" => 'required',
-            'restaurantOutlets.*.fullAddress' => 'nullable',
-            'restaurantOutlets.*.addressLongitude' => ['required', 'numeric'],
-            'restaurantOutlets.*.addressLatitude' => ['required', 'numeric'],
-            'restaurantOutlets.*.openingHours' => ['required', 'array'],
-            'restaurantOutlets.*.openingHours.*.dayOfTheWeek' => ['required','integer'],
-            'restaurantOutlets.*.openingHours.*.isClosed' => ['required', 'boolean'],
-            'restaurantOutlets.*.openingHours.*.openingHour' => ['required', 'string'],
-            'restaurantOutlets.*.openingHours.*.openingMinute' => ['required', 'string'],
-            'restaurantOutlets.*.openingHours.*.closingHour' => ['required', 'string'],
-            'restaurantOutlets.*.openingHours.*.closingHour' => ['required', 'string'],
-            'restaurantOutlets.*.openingHours.*.validFrom' => ['nullable','date'],
-            'restaurantOutlets.*.openingHours.*.validThrough' => ['nullable', 'date'],
-            'restaurantOutlets.*.mobileNumbers' => ['nullable', 'array'],
-            'restaurantOutlets.*.telephoneNumbers' => ['nullable', 'array']
+            "restaurantOutletName" => 'required',
+            "area" => 'required',
+            "locality" => 'required',
+            "location" => 'required',
+            'fullAddress' => 'nullable',
+            'addressLongitude' => ['required', 'numeric'],
+            'addressLatitude' => ['required', 'numeric'],
+            'openingHours' => ['required', 'array'],
+            'openingHours.*.dayOfTheWeek' => ['required','integer'],
+            'openingHours.*.closed' => ['required', 'boolean'],
+            'openingHours.*.hours' => ['required', 'array'],
+            'openingHours.*.hours.*.openingHour' => ['required', 'string'],
+            'openingHours.*.hours.*.openingMinute' => ['required', 'string'],
+            'openingHours.*.hours.*.closingHour' => ['required', 'string'],
+            'openingHours.*.hours.*.closingHour' => ['required', 'string'],
+            'openingHours.*.hours.*.validFrom' => ['nullable','string'],
+            'openingHours.*.hours.*.validThrough' => ['nullable', 'string'],
+            'mobileNumbers' => ['nullable', 'array'],
+            'telephoneNumbers' => ['nullable', 'array']
         ];
     }
 }
