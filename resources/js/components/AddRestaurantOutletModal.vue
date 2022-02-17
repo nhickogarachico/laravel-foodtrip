@@ -129,7 +129,13 @@
             </div>
             <div>
               <p class="fw-600">Opening Hours</p>
-              <opening-hours-form :opening-hours="openingHours" v-on:add-opening-hours="addOpeningHours" v-on:remove-opening-hours="removeOpeningHours" v-on:change-to-closed="changeToClosed"></opening-hours-form>
+              <opening-hours-form
+                :opening-hours="openingHours"
+                v-on:add-opening-hours="addOpeningHours"
+                v-on:remove-opening-hours="removeOpeningHours"
+                v-on:change-to-closed="changeToClosed"
+                v-on:change-opening-hours="changeOpeningHours"
+              ></opening-hours-form>
             </div>
             <div>
               <p class="fw-600">Contact Information</p>
@@ -285,7 +291,14 @@
           >
             Cancel
           </button>
-          <button type="button" class="btn btn-main-red">Add</button>
+          <button
+            type="button"
+            class="btn btn-main-red"
+            data-bs-dismiss="modal"
+            v-on:click="addRestaurantOutlet"
+          >
+            Add
+          </button>
         </div>
       </div>
     </div>
@@ -293,9 +306,11 @@
 </template>
 
 <script>
+import { Modal } from "bootstrap";
 import MapBoxMap from "./MapBoxMap.vue";
 import OpeningHoursForm from "./OpeningHoursForm.vue";
 import mapBoxAPIKey from "./config/keys";
+let today = new Date();
 
 export default {
   components: { MapBoxMap, OpeningHoursForm },
@@ -325,13 +340,97 @@ export default {
         telephoneNumberInput: "",
       },
       openingHours: {
-        1: [{}],
-        2: [{}],
-        3: [{}],
-        4: [{}],
-        5: [{}],
-        6: [{}],
-        7: [{}],
+        1: {
+          closed: false,
+          hours: [
+            {
+              openingHour: "00",
+              openingMinute: "00",
+              closingHour: "00",
+              closingMinute: "00",
+              validFrom: today.toLocaleDateString("en-CA"),
+              validThrough: "",
+            },
+          ],
+        },
+        2: {
+          closed: false,
+          hours: [
+            {
+              openingHour: "00",
+              openingMinute: "00",
+              closingHour: "00",
+              closingMinute: "00",
+              validFrom: today.toLocaleDateString("en-CA"),
+              validThrough: "",
+            },
+          ],
+        },
+        3: {
+          closed: false,
+          hours: [
+            {
+              openingHour: "00",
+              openingMinute: "00",
+              closingHour: "00",
+              closingMinute: "00",
+              validFrom: today.toLocaleDateString("en-CA"),
+              validThrough: "",
+            },
+          ],
+        },
+        4: {
+          closed: false,
+          hours: [
+            {
+              openingHour: "00",
+              openingMinute: "00",
+              closingHour: "00",
+              closingMinute: "00",
+              validFrom: today.toLocaleDateString("en-CA"),
+              validThrough: "",
+            },
+          ],
+        },
+        5: {
+          closed: false,
+          hours: [
+            {
+              openingHour: "00",
+              openingMinute: "00",
+              closingHour: "00",
+              closingMinute: "00",
+              validFrom: today.toLocaleDateString("en-CA"),
+              validThrough: "",
+            },
+          ],
+        },
+        6: {
+          closed: false,
+          hours: [
+            {
+              openingHour: "00",
+              openingMinute: "00",
+              closingHour: "00",
+              closingMinute: "00",
+              validFrom: today.toLocaleDateString("en-CA"),
+              validThrough: "",
+            },
+          ],
+        },
+        7: {
+          closed: false,
+          hours: [
+            {
+              openingHour: "00",
+              openingMinute: "00",
+              closingHour: "00",
+              closingMinute: "00",
+              validFrom: today.toLocaleDateString("en-CA"),
+              validThrough: "00",
+            },
+          ],
+        },
       },
     };
   },
@@ -364,7 +463,7 @@ export default {
     },
     setFullAddress: function (coordinates) {
       this.reverseGeoCoding.loading = true;
-      this.addressCoordinates = coordinates;
+      this.addressCoordinates = [coordinates.lng, coordinates.lat];
       axios
         .get(
           `https://api.mapbox.com/geocoding/v5/mapbox.places/${coordinates.lng}, ${coordinates.lat}.json?access_token=${this.mapBoxAPIKey}`
@@ -401,16 +500,40 @@ export default {
       contactNumbers.splice(contactNumberToRemove, 1);
       this.$refs[`${contactInputName}Ref`].focus();
     },
-     addOpeningHours: function (day) {
-      this.openingHours[day].push({});
-      console.log(this.openingHours)
+    addOpeningHours: function (day) {
+      this.openingHours[day].hours.push({
+        openingHour: "00",
+        openingMinute: "00",
+        closingHour: "00",
+        closingMinute: "00",
+        validFrom: Date.now(),
+        validThrough: "",
+      });
     },
-     removeOpeningHours: function(data) {
-      this.openingHours[data.day].splice(data.i, 1)
+    removeOpeningHours: function (data) {
+      this.openingHours[data.day].hours.splice(data.i, 1);
     },
-     changeToClosed: function(day) {
-      !day.disabled ? day.disabled = true : day.disabled = false;
-    }
+    changeToClosed: function (data) {
+      if (!data.day.disabled) {
+        data.day.disabled = true;
+      } else {
+        data.day.disabled = false;
+      }
+      this.openingHours[data.day.value].closed =
+        !this.openingHours[data.day.value].closed;
+    },
+    changeOpeningHours: function (data) {
+      this.openingHours[data.day].hours[data.index][data.key] = data.value;
+    },
+    addRestaurantOutlet: function () {
+      console.log(this.restaurantOutletName);
+      console.log(this.areaInput);
+      console.log(this.localityInput);
+      console.log(this.locationInput);
+      console.log(this.fullAddressInput);
+      console.log(this.addressCoordinates);
+      console.log(this.openingHours);
+    },
   },
   mounted() {},
 };

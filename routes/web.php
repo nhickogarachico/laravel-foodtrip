@@ -19,7 +19,7 @@ Route::post('/register', [RegisterController::class, 'registerNewUser']);
 Route::get('/register/restaurant/step/1', [RestaurantController::class, 'showRegisterRestaurantStepOneView']);
 Route::get('/register/restaurant/step/2', [RestaurantController::class, 'showRegisterRestaurantStepTwoView']);
 Route::post('/register/restaurant/step/1', [RestaurantController::class, 'completeRestaurantPageCreationStepOne']);
-Route::get('/register/restaurant/session', [RestaurantController::class, 'fetchSessionData']);
+Route::post('/register/restaurant/step/2', [RestaurantController::class, 'completeRestaurantPageCreationStepTwo']);
 
 Route::get('/login', [AuthController::class, 'showLoginView'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);

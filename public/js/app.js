@@ -5273,9 +5273,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _MapBoxMap_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MapBoxMap.vue */ "./resources/js/components/MapBoxMap.vue");
-/* harmony import */ var _OpeningHoursForm_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./OpeningHoursForm.vue */ "./resources/js/components/OpeningHoursForm.vue");
-/* harmony import */ var _config_keys__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./config/keys */ "./resources/js/components/config/keys.js");
+/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
+/* harmony import */ var _MapBoxMap_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MapBoxMap.vue */ "./resources/js/components/MapBoxMap.vue");
+/* harmony import */ var _OpeningHoursForm_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./OpeningHoursForm.vue */ "./resources/js/components/OpeningHoursForm.vue");
+/* harmony import */ var _config_keys__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./config/keys */ "./resources/js/components/config/keys.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5573,10 +5587,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+var today = new Date();
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    MapBoxMap: _MapBoxMap_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    OpeningHoursForm: _OpeningHoursForm_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    MapBoxMap: _MapBoxMap_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    OpeningHoursForm: _OpeningHoursForm_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   props: {
     areas: Array,
@@ -5586,7 +5602,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      mapBoxAPIKey: _config_keys__WEBPACK_IMPORTED_MODULE_2__["default"],
+      mapBoxAPIKey: _config_keys__WEBPACK_IMPORTED_MODULE_3__["default"],
       restaurantOutletName: this.stepOneData.restaurantName,
       areaInput: 0,
       localityInput: 0,
@@ -5606,13 +5622,83 @@ __webpack_require__.r(__webpack_exports__);
         telephoneNumberInput: ""
       },
       openingHours: {
-        1: [{}],
-        2: [{}],
-        3: [{}],
-        4: [{}],
-        5: [{}],
-        6: [{}],
-        7: [{}]
+        1: {
+          closed: false,
+          hours: [{
+            openingHour: "00",
+            openingMinute: "00",
+            closingHour: "00",
+            closingMinute: "00",
+            validFrom: today.toLocaleDateString("en-CA"),
+            validThrough: ""
+          }]
+        },
+        2: {
+          closed: false,
+          hours: [{
+            openingHour: "00",
+            openingMinute: "00",
+            closingHour: "00",
+            closingMinute: "00",
+            validFrom: today.toLocaleDateString("en-CA"),
+            validThrough: ""
+          }]
+        },
+        3: {
+          closed: false,
+          hours: [{
+            openingHour: "00",
+            openingMinute: "00",
+            closingHour: "00",
+            closingMinute: "00",
+            validFrom: today.toLocaleDateString("en-CA"),
+            validThrough: ""
+          }]
+        },
+        4: {
+          closed: false,
+          hours: [{
+            openingHour: "00",
+            openingMinute: "00",
+            closingHour: "00",
+            closingMinute: "00",
+            validFrom: today.toLocaleDateString("en-CA"),
+            validThrough: ""
+          }]
+        },
+        5: {
+          closed: false,
+          hours: [{
+            openingHour: "00",
+            openingMinute: "00",
+            closingHour: "00",
+            closingMinute: "00",
+            validFrom: today.toLocaleDateString("en-CA"),
+            validThrough: ""
+          }]
+        },
+        6: {
+          closed: false,
+          hours: [{
+            openingHour: "00",
+            openingMinute: "00",
+            closingHour: "00",
+            closingMinute: "00",
+            validFrom: today.toLocaleDateString("en-CA"),
+            validThrough: ""
+          }]
+        },
+        7: {
+          closed: false,
+          hours: [{
+            openingHour: "00",
+            openingMinute: "00",
+            closingHour: "00",
+            closingMinute: "00",
+            validFrom: today.toLocaleDateString("en-CA"),
+            validThrough: "00"
+          }]
+        }
       }
     };
   },
@@ -5647,7 +5733,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.reverseGeoCoding.loading = true;
-      this.addressCoordinates = coordinates;
+      this.addressCoordinates = [coordinates.lng, coordinates.lat];
       axios.get("https://api.mapbox.com/geocoding/v5/mapbox.places/".concat(coordinates.lng, ", ").concat(coordinates.lat, ".json?access_token=").concat(this.mapBoxAPIKey)).then(function (response) {
         _this.fullAddressInput = response.data.features[0].place_name;
         _this.reverseGeoCoding.loading = false;
@@ -5674,14 +5760,38 @@ __webpack_require__.r(__webpack_exports__);
       this.$refs["".concat(contactInputName, "Ref")].focus();
     },
     addOpeningHours: function addOpeningHours(day) {
-      this.openingHours[day].push({});
-      console.log(this.openingHours);
+      this.openingHours[day].hours.push({
+        openingHour: "00",
+        openingMinute: "00",
+        closingHour: "00",
+        closingMinute: "00",
+        validFrom: Date.now(),
+        validThrough: ""
+      });
     },
     removeOpeningHours: function removeOpeningHours(data) {
-      this.openingHours[data.day].splice(data.i, 1);
+      this.openingHours[data.day].hours.splice(data.i, 1);
     },
-    changeToClosed: function changeToClosed(day) {
-      !day.disabled ? day.disabled = true : day.disabled = false;
+    changeToClosed: function changeToClosed(data) {
+      if (!data.day.disabled) {
+        data.day.disabled = true;
+      } else {
+        data.day.disabled = false;
+      }
+
+      this.openingHours[data.day.value].closed = !this.openingHours[data.day.value].closed;
+    },
+    changeOpeningHours: function changeOpeningHours(data) {
+      this.openingHours[data.day].hours[data.index][data.key] = data.value;
+    },
+    addRestaurantOutlet: function addRestaurantOutlet() {
+      console.log(this.restaurantOutletName);
+      console.log(this.areaInput);
+      console.log(this.localityInput);
+      console.log(this.locationInput);
+      console.log(this.fullAddressInput);
+      console.log(this.addressCoordinates);
+      console.log(this.openingHours);
     }
   },
   mounted: function mounted() {}
@@ -6106,13 +6216,50 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    stepOneData: Object
+    stepOneData: Object,
+    stepTwoData: Object
   },
   mounted: function mounted() {
-    _sessionStorage__WEBPACK_IMPORTED_MODULE_0__.createRestaurantPageStorage.setItem('stepOneData', JSON.stringify(this.stepOneData));
+    _sessionStorage__WEBPACK_IMPORTED_MODULE_0__.createRestaurantPageStorage.setItem("stepOneData", JSON.stringify(this.stepOneData));
+  },
+  beforeMount: function beforeMount() {
+    _sessionStorage__WEBPACK_IMPORTED_MODULE_0__.createRestaurantPageStorage.setItem("stepTwoData", JSON.stringify(this.stepTwoData));
   }
 });
 
@@ -6513,6 +6660,64 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     openingHours: Object
@@ -6547,10 +6752,24 @@ __webpack_require__.r(__webpack_exports__);
         day: "Sunday",
         value: 7,
         disabled: false
-      }]
+      }],
+      openingHourSpecification: {
+        openingHour: "00",
+        openingMinute: "00",
+        closingHour: "00",
+        closingMinute: "00",
+        validFrom: Date.now(),
+        validThrough: ""
+      }
     };
   },
   methods: {
+    convertToLocaleString: function convertToLocaleString(time) {
+      return (time - 1).toLocaleString("en-US", {
+        minimumIntegerDigits: 2,
+        useGrouping: false
+      });
+    },
     addOpeningHours: function addOpeningHours(day) {
       this.$emit("add-opening-hours", day);
     },
@@ -6560,8 +6779,20 @@ __webpack_require__.r(__webpack_exports__);
         i: i
       });
     },
-    changeToClosed: function changeToClosed(day) {
-      this.$emit("change-to-closed", day);
+    changeToClosed: function changeToClosed(day, i) {
+      this.$emit("change-to-closed", {
+        day: day,
+        i: i
+      });
+    },
+    changeOpeningHourSpecification: function changeOpeningHourSpecification(event, key, day, index) {
+      var openingHourData = {
+        value: event.target.value,
+        key: key,
+        day: day,
+        index: index
+      };
+      this.$emit('change-opening-hours', openingHourData);
     }
   },
   mounted: function mounted() {}
@@ -11879,7 +12110,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-main-red-hover:hover {\n  background-color: var(--main-red);\n  color: white;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-main-red-hover:hover {\r\n  background-color: var(--main-red);\r\n  color: white;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -11927,7 +12158,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-margin {\n  margin-bottom: 20px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-margin {\r\n  margin-bottom: 20px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -37965,6 +38196,7 @@ var render = function () {
                       "add-opening-hours": _vm.addOpeningHours,
                       "remove-opening-hours": _vm.removeOpeningHours,
                       "change-to-closed": _vm.changeToClosed,
+                      "change-opening-hours": _vm.changeOpeningHours,
                     },
                   }),
                 ],
@@ -38221,7 +38453,26 @@ var render = function () {
             ]),
           ]),
           _vm._v(" "),
-          _vm._m(4),
+          _c("div", { staticClass: "modal-footer" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary",
+                attrs: { type: "button", "data-bs-dismiss": "modal" },
+              },
+              [_vm._v("\n          Cancel\n        ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-main-red",
+                attrs: { type: "button", "data-bs-dismiss": "modal" },
+                on: { click: _vm.addRestaurantOutlet },
+              },
+              [_vm._v("\n          Add\n        ")]
+            ),
+          ]),
         ]),
       ]),
     ]
@@ -38274,27 +38525,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "contact-icon" }, [
       _c("i", { staticClass: "fas fa-phone me-3" }),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-secondary",
-          attrs: { type: "button", "data-bs-dismiss": "modal" },
-        },
-        [_vm._v("\n          Cancel\n        ")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-main-red", attrs: { type: "button" } },
-        [_vm._v("Add")]
-      ),
     ])
   },
 ]
@@ -38747,52 +38977,82 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _c("div", { staticClass: "card mb-4" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        _vm.stepTwoData.restaurantOutlets.length === 0
+          ? _c(
+              "div",
+              {
+                staticClass:
+                  "\n          d-flex\n          justify-content-center\n          align-items-center\n          flex-column\n          text-center\n          p-3\n        ",
+              },
+              [
+                _c("p", [_vm._v("No restaurant outlets")]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-main-red w-50",
+                    attrs: {
+                      "data-bs-toggle": "modal",
+                      "data-bs-target": "#addRestaurantOutletModal",
+                    },
+                  },
+                  [_vm._v("\n          Add Outlet\n        ")]
+                ),
+              ]
+            )
+          : _vm._e(),
+      ]),
+    ]),
+    _vm._v(" "),
+    _vm._m(1),
+  ])
 }
 var staticRenderFns = [
   function () {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-header d-flex bg-white" }, [
-        _c(
-          "button",
-          {
-            staticClass: "btn py-0 px-1 btn-main-red-hover",
-            attrs: {
-              "data-bs-toggle": "modal",
-              "data-bs-target": "#addRestaurantOutletModal",
-            },
+    return _c("div", { staticClass: "card-header d-flex bg-white" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn py-0 px-1 btn-main-red-hover",
+          attrs: {
+            "data-bs-toggle": "modal",
+            "data-bs-target": "#addRestaurantOutletModal",
           },
-          [_c("i", { staticClass: "fas fa-plus" })]
-        ),
-      ]),
+        },
+        [_c("i", { staticClass: "fas fa-plus" })]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "d-flex" }, [
+      _c(
+        "a",
+        {
+          staticClass: "btn btn-main-red-outline w-100 me-3",
+          attrs: { href: "/register/restaurant/step/1" },
+        },
+        [_vm._v("Back")]
+      ),
       _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c(
-          "div",
-          {
-            staticClass:
-              "d-flex justify-content-center align-items-center flex-column text-center p-3",
-          },
-          [
-            _c("p", [_vm._v("No restaurant outlets")]),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-main-red w-50",
-                attrs: {
-                  "data-bs-toggle": "modal",
-                  "data-bs-target": "#addRestaurantOutletModal",
-                },
-              },
-              [_vm._v("Add Outlet")]
-            ),
-          ]
-        ),
-      ]),
+      _c(
+        "a",
+        {
+          staticClass: "btn btn-main-red w-100",
+          attrs: { href: "./create-restaurant-page-step-3.html" },
+        },
+        [_vm._v("Next")]
+      ),
     ])
   },
 ]
@@ -38989,8 +39249,8 @@ var render = function () {
       _vm._v(" "),
       _c(
         "tbody",
-        _vm._l(_vm.daysOfTheWeek, function (day) {
-          return _c("tr", { key: day.value }, [
+        _vm._l(_vm.daysOfTheWeek, function (day, i) {
+          return _c("tr", { key: i }, [
             _c("th", { staticClass: "fw-600", attrs: { scope: "row" } }, [
               _vm._v(_vm._s(day.day)),
             ]),
@@ -39000,7 +39260,7 @@ var render = function () {
                 "div",
                 {
                   staticClass:
-                    "form-check d-flex justify-content-center align-items-center",
+                    "\n              form-check\n              d-flex\n              justify-content-center\n              align-items-center\n            ",
                 },
                 [
                   _c("input", {
@@ -39008,7 +39268,7 @@ var render = function () {
                     attrs: { type: "checkbox" },
                     on: {
                       change: function ($event) {
-                        return _vm.changeToClosed(day)
+                        return _vm.changeToClosed(day, i)
                       },
                     },
                   }),
@@ -39018,213 +39278,311 @@ var render = function () {
             _vm._v(" "),
             _c(
               "td",
-              _vm._l(_vm.openingHours[day.value], function (openingHour, i) {
-                return _c("tr", { key: i }, [
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "d-flex align-items-center justify-content-between mb-2",
-                    },
-                    [
-                      _c(
-                        "select",
-                        {
-                          staticClass: "form-select w-50",
-                          attrs: {
-                            "aria-label": "Opening Hours",
-                            disabled: day.disabled,
+              _vm._l(
+                _vm.openingHours[day.value].hours,
+                function (openingHour, i) {
+                  return _c("tr", { key: i }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "d-flex align-items-center justify-content-between mb-2",
+                      },
+                      [
+                        _c(
+                          "select",
+                          {
+                            staticClass: "form-select w-50",
+                            attrs: {
+                              "aria-label": "Opening Hours",
+                              disabled: day.disabled,
+                            },
+                            domProps: {
+                              value:
+                                _vm.openingHours[day.value].hours[i]
+                                  .openingHour,
+                            },
+                            on: {
+                              change: function ($event) {
+                                return _vm.changeOpeningHourSpecification(
+                                  $event,
+                                  "openingHour",
+                                  day.value,
+                                  i
+                                )
+                              },
+                            },
                           },
-                        },
-                        _vm._l(25, function (time) {
-                          return _c(
-                            "option",
-                            { key: time, domProps: { value: time } },
-                            [
-                              _vm._v(
-                                "\r\n                  " +
-                                  _vm._s(
-                                    (time - 1).toLocaleString("en-US", {
-                                      minimumIntegerDigits: 2,
-                                      useGrouping: false,
-                                    })
-                                  ) +
-                                  "\r\n                "
-                              ),
-                            ]
-                          )
-                        }),
-                        0
-                      ),
-                      _vm._v(" "),
-                      _c("p", { staticClass: "mx-2 mb-0" }, [_vm._v(":")]),
-                      _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          staticClass: "form-select w-50",
-                          attrs: {
-                            "aria-label": "Opening Minutes",
-                            disabled: day.disabled,
+                          _vm._l(25, function (time) {
+                            return _c(
+                              "option",
+                              {
+                                key: time,
+                                domProps: {
+                                  value: _vm.convertToLocaleString(time),
+                                },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                  " +
+                                    _vm._s(_vm.convertToLocaleString(time)) +
+                                    "\n                "
+                                ),
+                              ]
+                            )
+                          }),
+                          0
+                        ),
+                        _vm._v(" "),
+                        _c("p", { staticClass: "mx-2 mb-0" }, [_vm._v(":")]),
+                        _vm._v(" "),
+                        _c(
+                          "select",
+                          {
+                            staticClass: "form-select w-50",
+                            attrs: {
+                              "aria-label": "Opening Minutes",
+                              disabled: day.disabled,
+                            },
+                            domProps: {
+                              value:
+                                _vm.openingHours[day.value].hours[i]
+                                  .openingMinute,
+                            },
+                            on: {
+                              change: function ($event) {
+                                return _vm.changeOpeningHourSpecification(
+                                  $event,
+                                  "openingMinute",
+                                  day.value,
+                                  i
+                                )
+                              },
+                            },
                           },
-                        },
-                        _vm._l(60, function (time) {
-                          return _c(
-                            "option",
-                            { key: time, domProps: { value: time } },
-                            [
-                              _vm._v(
-                                "\r\n                  " +
-                                  _vm._s(
-                                    (time - 1).toLocaleString("en-US", {
-                                      minimumIntegerDigits: 2,
-                                      useGrouping: false,
-                                    })
-                                  ) +
-                                  "\r\n                "
-                              ),
-                            ]
-                          )
-                        }),
-                        0
-                      ),
-                    ]
-                  ),
-                ])
-              }),
+                          _vm._l(60, function (time) {
+                            return _c(
+                              "option",
+                              {
+                                key: time,
+                                domProps: {
+                                  value: _vm.convertToLocaleString(time),
+                                },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                  " +
+                                    _vm._s(_vm.convertToLocaleString(time)) +
+                                    "\n                "
+                                ),
+                              ]
+                            )
+                          }),
+                          0
+                        ),
+                      ]
+                    ),
+                  ])
+                }
+              ),
               0
             ),
             _vm._v(" "),
             _c(
               "td",
-              _vm._l(_vm.openingHours[day.value], function (openingHour, i) {
-                return _c("tr", { key: i }, [
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "d-flex align-items-center justify-content-between mb-2",
-                    },
-                    [
-                      _c(
-                        "select",
-                        {
-                          staticClass: "form-select w-50",
-                          attrs: {
-                            "aria-label": "Closing Hours",
-                            disabled: day.disabled,
+              _vm._l(
+                _vm.openingHours[day.value].hours,
+                function (openingHour, i) {
+                  return _c("tr", { key: i }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "d-flex align-items-center justify-content-between mb-2",
+                      },
+                      [
+                        _c(
+                          "select",
+                          {
+                            staticClass: "form-select w-50",
+                            attrs: {
+                              "aria-label": "Closing Hours",
+                              disabled: day.disabled,
+                            },
+                            domProps: {
+                              value:
+                                _vm.openingHours[day.value].hours[i]
+                                  .closingHour,
+                            },
+                            on: {
+                              change: function ($event) {
+                                return _vm.changeOpeningHourSpecification(
+                                  $event,
+                                  "closingHour",
+                                  day.value,
+                                  i
+                                )
+                              },
+                            },
                           },
-                        },
-                        _vm._l(25, function (time) {
-                          return _c(
-                            "option",
-                            { key: time, domProps: { value: time } },
-                            [
-                              _vm._v(
-                                "\r\n                  " +
-                                  _vm._s(
-                                    (time - 1).toLocaleString("en-US", {
-                                      minimumIntegerDigits: 2,
-                                      useGrouping: false,
-                                    })
-                                  ) +
-                                  "\r\n                "
-                              ),
-                            ]
-                          )
-                        }),
-                        0
-                      ),
-                      _vm._v(" "),
-                      _c("p", { staticClass: "mx-2 mb-0" }, [_vm._v(":")]),
-                      _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          staticClass: "form-select w-50",
-                          attrs: {
-                            "aria-label": "Closing Minutes",
-                            disabled: day.disabled,
+                          _vm._l(25, function (time) {
+                            return _c(
+                              "option",
+                              {
+                                key: time,
+                                domProps: {
+                                  value: _vm.convertToLocaleString(time),
+                                },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                  " +
+                                    _vm._s(_vm.convertToLocaleString(time)) +
+                                    "\n                "
+                                ),
+                              ]
+                            )
+                          }),
+                          0
+                        ),
+                        _vm._v(" "),
+                        _c("p", { staticClass: "mx-2 mb-0" }, [_vm._v(":")]),
+                        _vm._v(" "),
+                        _c(
+                          "select",
+                          {
+                            staticClass: "form-select w-50",
+                            attrs: {
+                              "aria-label": "Closing Minutes",
+                              disabled: day.disabled,
+                            },
+                            domProps: {
+                              value:
+                                _vm.openingHours[day.value].hours[i]
+                                  .closingMinute,
+                            },
+                            on: {
+                              change: function ($event) {
+                                return _vm.changeOpeningHourSpecification(
+                                  $event,
+                                  "closingMinute",
+                                  day.value,
+                                  i
+                                )
+                              },
+                            },
                           },
-                        },
-                        _vm._l(60, function (time) {
-                          return _c(
-                            "option",
-                            { key: time, domProps: { value: time } },
-                            [
-                              _vm._v(
-                                "\r\n                  " +
-                                  _vm._s(
-                                    (time - 1).toLocaleString("en-US", {
-                                      minimumIntegerDigits: 2,
-                                      useGrouping: false,
-                                    })
-                                  ) +
-                                  "\r\n                "
-                              ),
-                            ]
-                          )
-                        }),
-                        0
-                      ),
-                    ]
-                  ),
-                ])
-              }),
+                          _vm._l(60, function (time) {
+                            return _c(
+                              "option",
+                              {
+                                key: time,
+                                domProps: {
+                                  value: _vm.convertToLocaleString(time),
+                                },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                  " +
+                                    _vm._s(_vm.convertToLocaleString(time)) +
+                                    "\n                "
+                                ),
+                              ]
+                            )
+                          }),
+                          0
+                        ),
+                      ]
+                    ),
+                  ])
+                }
+              ),
               0
             ),
             _vm._v(" "),
             _c(
               "td",
-              _vm._l(_vm.openingHours[day.value], function (openingHour, i) {
-                return _c("tr", { key: i }, [
-                  _c("input", {
-                    staticClass: "form-control mb-2",
-                    attrs: { type: "date", disabled: day.disabled },
-                  }),
-                ])
-              }),
-              0
-            ),
-            _vm._v(" "),
-            _c(
-              "td",
-              _vm._l(_vm.openingHours[day.value], function (openingHour, i) {
-                return _c("tr", { key: i }, [
-                  _c("input", {
-                    staticClass: "form-control mb-2",
-                    attrs: { type: "date", disabled: day.disabled },
-                  }),
-                ])
-              }),
-              0
-            ),
-            _vm._v(" "),
-            _c(
-              "td",
-              _vm._l(_vm.openingHours[day.value], function (openingHour, i) {
-                return _c("div", { key: i, staticClass: "btn-margin" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-main-red py-0 px-1",
-                      attrs: { type: "button", disabled: day.disabled },
+              _vm._l(
+                _vm.openingHours[day.value].hours,
+                function (openingHour, i) {
+                  return _c("tr", { key: i }, [
+                    _c("input", {
+                      staticClass: "form-control mb-2",
+                      attrs: { type: "date", disabled: day.disabled },
+                      domProps: {
+                        value: _vm.openingHours[day.value].hours[i].validFrom,
+                      },
                       on: {
-                        click: function ($event) {
-                          i === 0
-                            ? _vm.addOpeningHours(day.value)
-                            : _vm.removeOpeningHours(day.value, i)
+                        change: function ($event) {
+                          return _vm.changeOpeningHourSpecification(
+                            $event,
+                            "validFrom",
+                            day.value,
+                            i
+                          )
                         },
                       },
-                    },
-                    [
-                      _c("i", {
-                        class: i === 0 ? "fas fa-plus" : "fas fa-trash",
-                      }),
-                    ]
-                  ),
-                ])
-              }),
+                    }),
+                  ])
+                }
+              ),
+              0
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              _vm._l(
+                _vm.openingHours[day.value].hours,
+                function (openingHour, i) {
+                  return _c("tr", { key: i }, [
+                    _c("input", {
+                      staticClass: "form-control mb-2",
+                      attrs: { type: "date", disabled: day.disabled },
+                      on: {
+                        change: function ($event) {
+                          return _vm.changeOpeningHourSpecification(
+                            $event,
+                            "validThrough",
+                            day.value,
+                            i
+                          )
+                        },
+                      },
+                    }),
+                  ])
+                }
+              ),
+              0
+            ),
+            _vm._v(" "),
+            _c(
+              "td",
+              _vm._l(
+                _vm.openingHours[day.value].hours,
+                function (openingHour, i) {
+                  return _c("div", { key: i, staticClass: "btn-margin" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-main-red py-0 px-1",
+                        attrs: { type: "button", disabled: day.disabled },
+                        on: {
+                          click: function ($event) {
+                            i === 0
+                              ? _vm.addOpeningHours(day.value)
+                              : _vm.removeOpeningHours(day.value, i)
+                          },
+                        },
+                      },
+                      [
+                        _c("i", {
+                          class: i === 0 ? "fas fa-plus" : "fas fa-trash",
+                        }),
+                      ]
+                    ),
+                  ])
+                }
+              ),
               0
             ),
           ])
