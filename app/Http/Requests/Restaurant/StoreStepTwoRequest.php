@@ -25,9 +25,9 @@ class StoreStepTwoRequest extends FormRequest
     {
         return [
             "restaurantOutletName" => 'required',
-            "area" => 'required',
-            "locality" => 'required',
-            "location" => 'required',
+            "area" => ['required', 'gt:0'],
+            "locality" => ['required', 'gt:0'],
+            "location" => ['required', 'gt:0'],
             'fullAddress' => 'nullable',
             'addressLongitude' => ['required', 'numeric'],
             'addressLatitude' => ['required', 'numeric'],
@@ -43,6 +43,27 @@ class StoreStepTwoRequest extends FormRequest
             'openingHours.*.hours.*.validThrough' => ['nullable', 'string'],
             'mobileNumbers' => ['nullable', 'array'],
             'telephoneNumbers' => ['nullable', 'array']
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'restaurantOutletName.required' => 'Restaurant outlet name is required',
+            'area.required' => 'Area is required',
+            'area.gt' => 'Area is required',
+            'locality.required' => 'Locality is required',
+            'locality.gt' => 'Locality is required',
+            'location.required' => 'Location is required',
+            'location.gt' => 'Location is required',
+            'addressLongitude.required' => 'Click your address on the map',
+            'addressLatitude.required' => 'Click your address on the map',
+            
         ];
     }
 }

@@ -49,7 +49,6 @@
         </main>
     </div>
 
-    {{-- Bootstrap 5 JS --}}
     
     <script src="{{ mix('js/app.js') }}"></script>
     @stack('scripts')

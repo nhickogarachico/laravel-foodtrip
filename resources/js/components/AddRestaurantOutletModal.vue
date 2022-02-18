@@ -1,5 +1,10 @@
 <template>
-  <div class="modal" tabindex="-1" id="addRestaurantOutletModal">
+  <div
+    class="modal"
+    tabindex="-1"
+    id="addRestaurantOutletModal"
+    ref="addRestaurantOutletModal"
+  >
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -12,7 +17,14 @@
           ></button>
         </div>
         <div class="modal-body">
-          <form action="">
+          <form>
+            <div
+              class="alert alert-warning"
+              v-if="validationErrors.restaurantOutletName.length > 0"
+            >
+              <i class="fas fa-exclamation-circle me-2"></i>
+              {{ validationErrors.restaurantOutletName[0] }}
+            </div>
             <div class="form-floating mb-1">
               <input
                 class="form-control"
@@ -40,6 +52,27 @@
             </div>
             <div class="mb-3">
               <p class="fw-600 mb-1">Address</p>
+              <div
+                class="alert alert-warning"
+                v-if="validationErrors.area.length > 0"
+              >
+                <i class="fas fa-exclamation-circle me-2"></i>
+                {{ validationErrors.area[0] }}
+              </div>
+              <div
+                class="alert alert-warning"
+                v-if="validationErrors.locality.length > 0"
+              >
+                <i class="fas fa-exclamation-circle me-2"></i>
+                {{ validationErrors.locality[0] }}
+              </div>
+              <div
+                class="alert alert-warning"
+                v-if="validationErrors.location.length > 0"
+              >
+                <i class="fas fa-exclamation-circle me-2"></i>
+                {{ validationErrors.location[0] }}
+              </div>
               <div class="d-flex justify-content-between">
                 <div class="flex-fill">
                   <label for="" class="fw-600">Area</label>
@@ -95,6 +128,13 @@
               </div>
             </div>
             <div class="mb-2">
+              <div
+                class="alert alert-warning"
+                v-if="validationErrors.addressLongitude.length > 0"
+              >
+                <i class="fas fa-exclamation-circle me-2"></i>
+                {{ validationErrors.addressLongitude[0] }}
+              </div>
               <div class="form-floating">
                 <input
                   class="form-control"
@@ -294,7 +334,6 @@
           <button
             type="button"
             class="btn btn-main-red"
-            data-bs-dismiss="modal"
             v-on:click="addRestaurantOutlet"
           >
             Add
@@ -322,6 +361,7 @@ export default {
   },
   data() {
     return {
+      addRestaurantOutletModal: "",
       mapBoxAPIKey: mapBoxAPIKey,
       restaurantOutletName: this.stepOneData.restaurantName,
       areaInput: 0,
@@ -336,6 +376,13 @@ export default {
       telephoneNumberInput: "",
       telephoneNumbers: [],
       validationErrors: {
+        restaurantOutletName: [],
+        area: [],
+        locality: [],
+        location: [],
+        addressLongitude: [],
+        addressLatitude: [],
+        openingHours: [],
         mobileNumberInput: "",
         telephoneNumberInput: "",
       },
@@ -549,21 +596,62 @@ export default {
         })
         .then((response) => {
           this.$root.addingRestaurantOutletData = false;
+          this.addRestaurantOutletModal.hide();
         })
-        .catch((error) => console.log(error.response.data));
-        
-        this.fetchSessionData();
+        .catch((error) => {
+          this.$root.addingRestaurantOutletData = false;
+          if (error.response.data.errors.restaurantOutletName) {
+            this.validationErrors.restaurantOutletName =
+              error.response.data.errors.restaurantOutletName;
+          } else {
+            this.validationErrors.restaurantOutletName = [];
+          }
+          if (error.response.data.errors.area) {
+            this.validationErrors.area = error.response.data.errors.area;
+          } else {
+            this.validationErrors.area = [];
+          }
+          if (error.response.data.errors.locality) {
+            this.validationErrors.locality =
+              error.response.data.errors.locality;
+          } else {
+            this.validationErrors.locality = [];
+          }
+          if (error.response.data.errors.location) {
+            this.validationErrors.location =
+              error.response.data.errors.location;
+          } else {
+            this.validationErrors.location = [];
+          }
+          if (error.response.data.errors.area) {
+            this.validationErrors.addressLongitude =
+              error.response.data.errors.addressLongitude;
+          } else {
+            this.validationErrors.addressLongitude = [];
+          }
+
+          this.$nextTick(() => {
+            this.$refs.addRestaurantOutletModal.scrollTo(0, 0);
+          });
+        });
+
+      this.fetchSessionData();
     },
     fetchSessionData: function () {
       axios
         .get("/register/restaurant/session")
         .then((response) => {
-          this.$root.restaurantOutlets = response.data.sessionData.stepTwoData.restaurantOutlets;x
+          this.$root.restaurantOutlets =
+            response.data.sessionData.stepTwoData.restaurantOutlets;
         })
         .catch((err) => console.log(err.response));
     },
   },
-  mounted() {},
+  mounted() {
+    this.addRestaurantOutletModal = new Modal(
+      document.getElementById("addRestaurantOutletModal")
+    );
+  },
 };
 </script>
 

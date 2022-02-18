@@ -5584,6 +5584,45 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -5602,6 +5641,7 @@ var today = new Date();
   },
   data: function data() {
     return {
+      addRestaurantOutletModal: "",
       mapBoxAPIKey: _config_keys__WEBPACK_IMPORTED_MODULE_3__["default"],
       restaurantOutletName: this.stepOneData.restaurantName,
       areaInput: 0,
@@ -5618,6 +5658,13 @@ var today = new Date();
       telephoneNumberInput: "",
       telephoneNumbers: [],
       validationErrors: {
+        restaurantOutletName: [],
+        area: [],
+        locality: [],
+        location: [],
+        addressLongitude: [],
+        addressLatitude: [],
+        openingHours: [],
         mobileNumberInput: "",
         telephoneNumberInput: ""
       },
@@ -5808,8 +5855,44 @@ var today = new Date();
         telephoneNumbers: this.telephoneNumbers
       }).then(function (response) {
         _this2.$root.addingRestaurantOutletData = false;
+
+        _this2.addRestaurantOutletModal.hide();
       })["catch"](function (error) {
-        return console.log(error.response.data);
+        _this2.$root.addingRestaurantOutletData = false;
+
+        if (error.response.data.errors.restaurantOutletName) {
+          _this2.validationErrors.restaurantOutletName = error.response.data.errors.restaurantOutletName;
+        } else {
+          _this2.validationErrors.restaurantOutletName = [];
+        }
+
+        if (error.response.data.errors.area) {
+          _this2.validationErrors.area = error.response.data.errors.area;
+        } else {
+          _this2.validationErrors.area = [];
+        }
+
+        if (error.response.data.errors.locality) {
+          _this2.validationErrors.locality = error.response.data.errors.locality;
+        } else {
+          _this2.validationErrors.locality = [];
+        }
+
+        if (error.response.data.errors.location) {
+          _this2.validationErrors.location = error.response.data.errors.location;
+        } else {
+          _this2.validationErrors.location = [];
+        }
+
+        if (error.response.data.errors.area) {
+          _this2.validationErrors.addressLongitude = error.response.data.errors.addressLongitude;
+        } else {
+          _this2.validationErrors.addressLongitude = [];
+        }
+
+        _this2.$nextTick(function () {
+          _this2.$refs.addRestaurantOutletModal.scrollTo(0, 0);
+        });
       });
       this.fetchSessionData();
     },
@@ -5818,13 +5901,14 @@ var today = new Date();
 
       axios.get("/register/restaurant/session").then(function (response) {
         _this3.$root.restaurantOutlets = response.data.sessionData.stepTwoData.restaurantOutlets;
-        x;
       })["catch"](function (err) {
         return console.log(err.response);
       });
     }
   },
-  mounted: function mounted() {}
+  mounted: function mounted() {
+    this.addRestaurantOutletModal = new bootstrap__WEBPACK_IMPORTED_MODULE_0__.Modal(document.getElementById("addRestaurantOutletModal"));
+  }
 });
 
 /***/ }),
@@ -37909,6 +37993,7 @@ var render = function () {
   return _c(
     "div",
     {
+      ref: "addRestaurantOutletModal",
       staticClass: "modal",
       attrs: { tabindex: "-1", id: "addRestaurantOutletModal" },
     },
@@ -37918,7 +38003,18 @@ var render = function () {
           _vm._m(0),
           _vm._v(" "),
           _c("div", { staticClass: "modal-body" }, [
-            _c("form", { attrs: { action: "" } }, [
+            _c("form", [
+              _vm.validationErrors.restaurantOutletName.length > 0
+                ? _c("div", { staticClass: "alert alert-warning" }, [
+                    _c("i", { staticClass: "fas fa-exclamation-circle me-2" }),
+                    _vm._v(
+                      "\n            " +
+                        _vm._s(_vm.validationErrors.restaurantOutletName[0]) +
+                        "\n          "
+                    ),
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
               _c("div", { staticClass: "form-floating mb-1" }, [
                 _c("input", {
                   directives: [
@@ -38017,6 +38113,45 @@ var render = function () {
               _vm._v(" "),
               _c("div", { staticClass: "mb-3" }, [
                 _c("p", { staticClass: "fw-600 mb-1" }, [_vm._v("Address")]),
+                _vm._v(" "),
+                _vm.validationErrors.area.length > 0
+                  ? _c("div", { staticClass: "alert alert-warning" }, [
+                      _c("i", {
+                        staticClass: "fas fa-exclamation-circle me-2",
+                      }),
+                      _vm._v(
+                        "\n              " +
+                          _vm._s(_vm.validationErrors.area[0]) +
+                          "\n            "
+                      ),
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.validationErrors.locality.length > 0
+                  ? _c("div", { staticClass: "alert alert-warning" }, [
+                      _c("i", {
+                        staticClass: "fas fa-exclamation-circle me-2",
+                      }),
+                      _vm._v(
+                        "\n              " +
+                          _vm._s(_vm.validationErrors.locality[0]) +
+                          "\n            "
+                      ),
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.validationErrors.location.length > 0
+                  ? _c("div", { staticClass: "alert alert-warning" }, [
+                      _c("i", {
+                        staticClass: "fas fa-exclamation-circle me-2",
+                      }),
+                      _vm._v(
+                        "\n              " +
+                          _vm._s(_vm.validationErrors.location[0]) +
+                          "\n            "
+                      ),
+                    ])
+                  : _vm._e(),
                 _vm._v(" "),
                 _c("div", { staticClass: "d-flex justify-content-between" }, [
                   _c("div", { staticClass: "flex-fill" }, [
@@ -38209,6 +38344,19 @@ var render = function () {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "mb-2" }, [
+                _vm.validationErrors.addressLongitude.length > 0
+                  ? _c("div", { staticClass: "alert alert-warning" }, [
+                      _c("i", {
+                        staticClass: "fas fa-exclamation-circle me-2",
+                      }),
+                      _vm._v(
+                        "\n              " +
+                          _vm._s(_vm.validationErrors.addressLongitude[0]) +
+                          "\n            "
+                      ),
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
                 _c("div", { staticClass: "form-floating" }, [
                   _c("input", {
                     directives: [
@@ -38555,7 +38703,7 @@ var render = function () {
               "button",
               {
                 staticClass: "btn btn-main-red",
-                attrs: { type: "button", "data-bs-dismiss": "modal" },
+                attrs: { type: "button" },
                 on: { click: _vm.addRestaurantOutlet },
               },
               [_vm._v("\n          Add\n        ")]
