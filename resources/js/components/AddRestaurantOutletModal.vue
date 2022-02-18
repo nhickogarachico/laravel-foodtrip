@@ -85,7 +85,7 @@
                     <option
                       v-for="area in areas.sort()"
                       :key="area.id"
-                      :value="area.id"
+                      :value="{id: area.id, text: area.area}"
                     >
                       {{ area.area }}
                     </option>
@@ -102,7 +102,7 @@
                     <option
                       v-for="locality in localities.filter(filterLocalities)"
                       :key="locality.id"
-                      :value="locality.id"
+                      :value="{id: locality.id, text: locality.locality}"
                     >
                       {{ locality.locality }}
                     </option>
@@ -119,7 +119,7 @@
                     <option
                       v-for="location in locations.filter(filterLocations)"
                       :key="location.id"
-                      :value="location.id"
+                      :value="{id: location.id, text: location.location}"
                     >
                       {{ location.location }}
                     </option>
@@ -481,7 +481,7 @@ export default {
               closingHour: "00",
               closingMinute: "00",
               validFrom: today.toLocaleDateString("en-CA"),
-              validThrough: "00",
+              validThrough: "",
             },
           ],
         },
@@ -510,10 +510,10 @@ export default {
       this.locationInput = 0;
     },
     filterLocalities: function (locality) {
-      return locality.area_id === this.areaInput;
+      return locality.area_id === this.areaInput.id;
     },
     filterLocations: function (location) {
-      return location.locality_id === this.localityInput;
+      return location.locality_id === this.localityInput.id;
     },
     setFullAddress: function (coordinates) {
       this.reverseGeoCoding.loading = true;
@@ -584,9 +584,9 @@ export default {
       axios
         .post("/register/restaurant/step/2", {
           restaurantOutletName: this.restaurantOutletName,
-          area: this.areaInput,
-          locality: this.localityInput,
-          location: this.locationInput,
+          area:{id:  this.areaInput.id, area: this.areaInput.text},
+          locality: {id: this.localityInput.id, locality: this.localityInput.text},
+          location: {id: this.locationInput.id, location: this.locationInput.text},
           fullAddress: this.fullAddressInput,
           addressLongitude: this.addressCoordinates[0],
           addressLatitude: this.addressCoordinates[1],

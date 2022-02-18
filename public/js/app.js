@@ -5750,7 +5750,7 @@ var today = new Date();
             closingHour: "00",
             closingMinute: "00",
             validFrom: today.toLocaleDateString("en-CA"),
-            validThrough: "00"
+            validThrough: ""
           }]
         }
       }
@@ -5778,10 +5778,10 @@ var today = new Date();
       this.locationInput = 0;
     },
     filterLocalities: function filterLocalities(locality) {
-      return locality.area_id === this.areaInput;
+      return locality.area_id === this.areaInput.id;
     },
     filterLocations: function filterLocations(location) {
-      return location.locality_id === this.localityInput;
+      return location.locality_id === this.localityInput.id;
     },
     setFullAddress: function setFullAddress(coordinates) {
       var _this = this;
@@ -5844,9 +5844,18 @@ var today = new Date();
       this.$root.addingRestaurantOutletData = true;
       axios.post("/register/restaurant/step/2", {
         restaurantOutletName: this.restaurantOutletName,
-        area: this.areaInput,
-        locality: this.localityInput,
-        location: this.locationInput,
+        area: {
+          id: this.areaInput.id,
+          area: this.areaInput.text
+        },
+        locality: {
+          id: this.localityInput.id,
+          locality: this.localityInput.text
+        },
+        location: {
+          id: this.locationInput.id,
+          location: this.locationInput.text
+        },
         fullAddress: this.fullAddressInput,
         addressLongitude: this.addressCoordinates[0],
         addressLatitude: this.addressCoordinates[1],
@@ -6397,6 +6406,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
@@ -6404,7 +6424,17 @@ __webpack_require__.r(__webpack_exports__);
     stepTwoData: Object
   },
   data: function data() {
-    return {};
+    return {
+      daysOfTheWeek: {
+        1: "Monday",
+        2: "Tuesday",
+        3: "Wednesday",
+        4: "Thursday",
+        5: "Friday",
+        6: "Saturday",
+        7: "Sunday"
+      }
+    };
   },
   mounted: function mounted() {
     _sessionStorage__WEBPACK_IMPORTED_MODULE_0__.createRestaurantPageStorage.setItem("stepOneData", JSON.stringify(this.stepOneData));
@@ -38198,7 +38228,12 @@ var render = function () {
                         _vm._l(_vm.areas.sort(), function (area) {
                           return _c(
                             "option",
-                            { key: area.id, domProps: { value: area.id } },
+                            {
+                              key: area.id,
+                              domProps: {
+                                value: { id: area.id, text: area.area },
+                              },
+                            },
                             [
                               _vm._v(
                                 "\n                    " +
@@ -38261,7 +38296,12 @@ var render = function () {
                               "option",
                               {
                                 key: locality.id,
-                                domProps: { value: locality.id },
+                                domProps: {
+                                  value: {
+                                    id: locality.id,
+                                    text: locality.locality,
+                                  },
+                                },
                               },
                               [
                                 _vm._v(
@@ -38324,7 +38364,12 @@ var render = function () {
                               "option",
                               {
                                 key: location.id,
-                                domProps: { value: location.id },
+                                domProps: {
+                                  value: {
+                                    id: location.id,
+                                    text: location.location,
+                                  },
+                                },
                               },
                               [
                                 _vm._v(
@@ -39280,13 +39325,70 @@ var render = function () {
                   {
                     key: _vm.$root.restaurantOutlets.indexOf(restaurantOutlet),
                     staticClass:
-                      "\n          d-flex\n          justify-content-center\n          align-items-center\n          flex-column\n          text-center\n          p-3\n        ",
+                      "d-flex justify-content-center flex-column p-3",
                   },
                   [
-                    _c("p", [
+                    _c("p", { staticClass: "fw-600 mb-1" }, [
                       _vm._v(_vm._s(restaurantOutlet.restaurantOutletName)),
                     ]),
-                  ]
+                    _vm._v(" "),
+                    _c("p", { staticClass: "mb-1" }, [
+                      _vm._v(
+                        "\n          " +
+                          _vm._s(restaurantOutlet.location.location) +
+                          ",\n          " +
+                          _vm._s(restaurantOutlet.locality.locality) +
+                          ",\n          " +
+                          _vm._s(restaurantOutlet.area.area) +
+                          "\n        "
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c("p", [_vm._v(_vm._s(restaurantOutlet.fullAddress))]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "fw-600" }, [
+                      _vm._v("Opening Hours"),
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(7, function (i) {
+                      return _c(
+                        "div",
+                        { key: i, staticClass: "mb-2" },
+                        [
+                          _c("p", { staticClass: "mb-0" }, [
+                            _vm._v(_vm._s(_vm.daysOfTheWeek[i]) + " : "),
+                          ]),
+                          _vm._v(" "),
+                          restaurantOutlet.openingHours[i].closed
+                            ? _c("div", [_vm._v("CLOSED")])
+                            : _vm._l(
+                                restaurantOutlet.openingHours[i].hours,
+                                function (openingHour, i) {
+                                  return _c("div", { key: i }, [
+                                    _c("span", [
+                                      _vm._v(
+                                        _vm._s(openingHour.openingHour) +
+                                          ":" +
+                                          _vm._s(openingHour.openingMinute) +
+                                          "-" +
+                                          _vm._s(openingHour.closingHour) +
+                                          ":" +
+                                          _vm._s(openingHour.closingMinute)
+                                      ),
+                                    ]),
+                                  ])
+                                }
+                              ),
+                        ],
+                        2
+                      )
+                    }),
+                    _vm._v(" "),
+                    _c("div"),
+                    _vm._v(" "),
+                    _c("hr"),
+                  ],
+                  2
                 )
               }),
         ],
@@ -39314,6 +39416,8 @@ var staticRenderFns = [
         },
         [_c("i", { staticClass: "fas fa-plus" })]
       ),
+      _vm._v(" "),
+      _c("span", { staticClass: "fw-600 ms-2" }, [_vm._v("Outlets")]),
     ])
   },
   function () {

@@ -9,6 +9,7 @@
         >
           <i class="fas fa-plus"></i>
         </button>
+        <span class="fw-600 ms-2">Outlets</span>
       </div>
       <div class="card-body">
         <div
@@ -42,6 +43,7 @@
           v-else-if="$root.restaurantOutlets.length === 0"
         >
           <p>No restaurant outlets yet</p>
+
           <button
             class="btn btn-main-red w-50"
             data-bs-toggle="modal"
@@ -51,19 +53,28 @@
           </button>
         </div>
         <div
-          class="
-            d-flex
-            justify-content-center
-            align-items-center
-            flex-column
-            text-center
-            p-3
-          "
+          class="d-flex justify-content-center flex-column p-3"
           v-else
           v-for="restaurantOutlet in $root.restaurantOutlets"
           :key="$root.restaurantOutlets.indexOf(restaurantOutlet)"
         >
-          <p>{{ restaurantOutlet.restaurantOutletName }}</p>
+          <p class="fw-600 mb-1">{{ restaurantOutlet.restaurantOutletName }}</p>
+          <p class="mb-1">
+            {{ restaurantOutlet.location.location }},
+            {{ restaurantOutlet.locality.locality }},
+            {{ restaurantOutlet.area.area }}
+          </p>
+          <p>{{ restaurantOutlet.fullAddress }}</p>
+          <p class="fw-600">Opening Hours</p>
+          <div v-for="i in 7" :key="i" class="mb-2">
+            <p class="mb-0">{{daysOfTheWeek[i]}} : </p>
+            <div v-if="restaurantOutlet.openingHours[i].closed">CLOSED</div>
+            <div v-else v-for="(openingHour, i) in restaurantOutlet.openingHours[i].hours" :key="i">
+              <span>{{openingHour.openingHour}}:{{openingHour.openingMinute}}-{{openingHour.closingHour}}:{{openingHour.closingMinute}}</span>
+            </div>
+          </div>
+          <div></div>
+          <hr />
         </div>
       </div>
     </div>
@@ -90,7 +101,17 @@ export default {
     stepTwoData: Object,
   },
   data() {
-    return {};
+    return {
+      daysOfTheWeek: {
+        1: "Monday",
+        2: "Tuesday",
+        3: "Wednesday",
+        4: "Thursday",
+        5: "Friday",
+        6: "Saturday",
+        7: "Sunday",
+      },
+    };
   },
   mounted() {
     createRestaurantPageStorage.setItem(

@@ -25,9 +25,15 @@ class StoreStepTwoRequest extends FormRequest
     {
         return [
             "restaurantOutletName" => 'required',
-            "area" => ['required', 'gt:0'],
-            "locality" => ['required', 'gt:0'],
-            "location" => ['required', 'gt:0'],
+            "area" => ['required'],
+            "area.id" => ['required', 'gt:0'],
+            "area.area" => ['required', 'string'],
+            "locality" => ['required'],
+            "locality.id" => ['required', 'gt:0'],
+            "locality.locality" => ['required', 'string'],
+            "location" => ['required'],
+            "location.id" => ['required', 'gt:0'],
+            "location.location" => ['required', 'string'],
             'fullAddress' => 'nullable',
             'addressLongitude' => ['required', 'numeric'],
             'addressLatitude' => ['required', 'numeric'],
