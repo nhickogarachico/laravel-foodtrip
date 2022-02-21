@@ -5,10 +5,12 @@
 export default {
   props: {
     mapboxApiKey: String,
+    addressCoordinates: Array,
   },
   data() {
     return {
       addressFromCoordinates: "",
+      mapCenter: [14.569299483936252, 120.99557384062871],
     };
   },
   methods: {
@@ -17,12 +19,19 @@ export default {
     },
   },
   mounted() {
-    let map = L.map("map").setView(
-      [14.569299483936252, 120.99557384062871],
-      15
-    );
+    let map = L.map("map");
+    let marker = {};
 
-    let tileLayer = L.tileLayer(
+    // check if there is already data for coordinates then set center of map as well as place marker
+    if (this.addressCoordinates !== undefined) {
+      if (this.addressCoordinates.length > 0) {
+        this.mapCenter = this.addressCoordinates;
+        marker = L.marker(this.addressCoordinates).addTo(map);
+      }
+    }
+
+    map.setView(this.mapCenter, 15);
+    L.tileLayer(
       `https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=${this.mapboxApiKey}`,
       {
         attribution:
@@ -35,10 +44,9 @@ export default {
     map.on("move", () => {
       map.invalidateSize();
     });
-    let marker = {};
+
     map.on("click", (e) => {
       this.getAddress(e.latlng);
-
       if (marker) {
         map.removeLayer(marker);
       }

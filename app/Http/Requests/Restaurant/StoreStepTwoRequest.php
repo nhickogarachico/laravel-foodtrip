@@ -67,8 +67,8 @@ class StoreStepTwoRequest extends FormRequest
             'locality.gt' => 'Locality is required',
             'location.required' => 'Location is required',
             'location.gt' => 'Location is required',
-            'addressLongitude.required' => 'Click your address on the map',
-            'addressLatitude.required' => 'Click your address on the map',
+            'addressLongitude.required' => 'Click your location on the map',
+            'addressLatitude.required' => 'Click your location on the map',
             
         ];
     }

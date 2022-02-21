@@ -29,7 +29,7 @@ Vue.component('contact-number-input', require('./components/ContactNumberInput.v
 Vue.component('add-restaurant-outlet-modal', require('./components/AddRestaurantOutletModal.vue').default);
 Vue.component('mapbox-map', require('./components/MapBoxMap.vue').default);
 Vue.component('opening-hours-form', require('./components/OpeningHoursForm.vue').default);
-
+Vue.component('edit-restaurant-outlet-modal', require('./components/EditRestaurantOutletModal.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -59,6 +59,7 @@ const app = new Vue({
                     this.loadingRestaurantOutletData = false;
                 })
                 .catch((err) => console.log(err.response));
+
         },
     },
     mounted() {

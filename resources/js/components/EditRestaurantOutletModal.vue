@@ -1,23 +1,28 @@
 <template>
-  <div
-    class="modal"
-    tabindex="-1"
-    id="addRestaurantOutletModal"
-    ref="addRestaurantOutletModal"
-  >
-    <div class="modal-dialog">
-      <div class="modal-content">
+  <div class="modal-custom">
+    <div class="modal-content">
+      <div class="card">
         <div class="modal-header">
-          <h5 class="modal-title">Add Restaurant Outlet</h5>
+          <p class="mb-0">Edit Restaurant Outlet Modal</p>
           <button
             type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+            class="btn p-0"
+            v-on:click="$emit('close-modal')"
+          >
+            <i class="fas fa-times fs-3"></i>
+          </button>
         </div>
         <div class="modal-body">
-          <form>
+          <div
+            class="d-flex justify-content-center align-items-center flex-column"
+            v-if="loadingData"
+          >
+            <div class="spinner-grow text-danger mt-2" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <span class="fst-italic">Loading data ...</span>
+          </div>
+          <div v-else>
             <div
               class="alert alert-warning"
               v-if="validationErrors.restaurantOutletName.length > 0"
@@ -85,7 +90,7 @@
                     <option
                       v-for="area in areas.sort()"
                       :key="area.id"
-                      :value="{id: area.id, area: area.area}"
+                      :value="{ id: area.id, area: area.area }"
                     >
                       {{ area.area }}
                     </option>
@@ -102,7 +107,7 @@
                     <option
                       v-for="locality in localities.filter(filterLocalities)"
                       :key="locality.id"
-                      :value="{id: locality.id, locality: locality.locality}"
+                      :value="{ id: locality.id, locality: locality.locality }"
                     >
                       {{ locality.locality }}
                     </option>
@@ -119,7 +124,7 @@
                     <option
                       v-for="location in locations.filter(filterLocations)"
                       :key="location.id"
-                      :value="{id: location.id, location: location.location}"
+                      :value="{ id: location.id, location: location.location }"
                     >
                       {{ location.location }}
                     </option>
@@ -152,7 +157,7 @@
                   align-items-center
                   flex-column
                 "
-                v-if="this.reverseGeoCoding.loading"
+                v-if="reverseGeoCoding.loading"
               >
                 <div class="spinner-grow text-danger mt-2" role="status">
                   <span class="visually-hidden">Loading...</span>
@@ -164,6 +169,7 @@
               <p class="fw-600">Map Location</p>
               <map-box-map
                 :mapbox-api-key="mapBoxAPIKey"
+                :address-coordinates="addressCoordinates"
                 v-on:map-click="setFullAddress"
               ></map-box-map>
             </div>
@@ -321,49 +327,50 @@
                 </div>
               </div>
             </div>
-          </form>
+          </div>
         </div>
         <div class="modal-footer">
           <button
             type="button"
             class="btn btn-secondary"
-            data-bs-dismiss="modal"
+            v-on:click="$emit('close-modal')"
           >
             Cancel
           </button>
           <button
             type="button"
             class="btn btn-main-red"
-            v-on:click="addRestaurantOutlet"
+            v-on:click="editRestaurantOutlet"
           >
-            Add
+            Save
           </button>
         </div>
       </div>
     </div>
   </div>
 </template>
-
 <script>
-import { Modal } from "bootstrap";
+import mapBoxAPIKey from "./config/keys";
 import MapBoxMap from "./MapBoxMap.vue";
 import OpeningHoursForm from "./OpeningHoursForm.vue";
-import mapBoxAPIKey from "./config/keys";
 let today = new Date();
 
 export default {
   components: { MapBoxMap, OpeningHoursForm },
   props: {
+    stepOneData: Object,
+    isModalOpen: Boolean,
+    openModalButton: Array,
+    restaurantOutletIndex: Number,
     areas: Array,
     localities: Array,
     locations: Array,
-    stepOneData: Object,
   },
   data() {
     return {
-      addRestaurantOutletModal: "",
+      loadingData: false,
       mapBoxAPIKey: mapBoxAPIKey,
-      restaurantOutletName: this.stepOneData.restaurantName,
+      restaurantOutletName: "",
       areaInput: 0,
       localityInput: 0,
       locationInput: 0,
@@ -515,6 +522,7 @@ export default {
     filterLocations: function (location) {
       return location.locality_id === this.localityInput.id;
     },
+
     setFullAddress: function (coordinates) {
       this.reverseGeoCoding.loading = true;
       this.addressCoordinates = [coordinates.lng, coordinates.lat];
@@ -527,6 +535,31 @@ export default {
           this.reverseGeoCoding.loading = false;
         })
         .catch((err) => console.log(err));
+    },
+    addOpeningHours: function (day) {
+      this.openingHours[day].hours.push({
+        openingHour: "00",
+        openingMinute: "00",
+        closingHour: "00",
+        closingMinute: "00",
+        validFrom: today.toLocaleDateString("en-CA"),
+        validThrough: "",
+      });
+    },
+    removeOpeningHours: function (data) {
+      this.openingHours[data.day].hours.splice(data.i, 1);
+    },
+    changeToClosed: function (data) {
+      if (!data.day.disabled) {
+        data.day.disabled = true;
+      } else {
+        data.day.disabled = false;
+      }
+      this.openingHours[data.day.value].closed =
+        !this.openingHours[data.day.value].closed;
+    },
+    changeOpeningHours: function (data) {
+      this.openingHours[data.day].hours[data.index][data.key] = data.value;
     },
     addContactNumber: function (
       contactNumberInput,
@@ -554,109 +587,87 @@ export default {
       contactNumbers.splice(contactNumberToRemove, 1);
       this.$refs[`${contactInputName}Ref`].focus();
     },
-    addOpeningHours: function (day) {
-      this.openingHours[day].hours.push({
-        openingHour: "00",
-        openingMinute: "00",
-        closingHour: "00",
-        closingMinute: "00",
-        validFrom: today.toLocaleDateString("en-CA"),
-        validThrough: "",
-      });
-    },
-    removeOpeningHours: function (data) {
-      this.openingHours[data.day].hours.splice(data.i, 1);
-    },
-    changeToClosed: function (data) {
-      if (!data.day.disabled) {
-        data.day.disabled = true;
-      } else {
-        data.day.disabled = false;
-      }
-      this.openingHours[data.day.value].closed =
-        !this.openingHours[data.day.value].closed;
-    },
-    changeOpeningHours: function (data) {
-      this.openingHours[data.day].hours[data.index][data.key] = data.value;
-    },
-    addRestaurantOutlet: function () {
-      this.$root.addingRestaurantOutletData = true;
+    editRestaurantOutlet: function () {
       axios
-        .post("/register/restaurant/step/2", {
+        .put("/register/restaurant/step/2", {
+          restaurantOutletId: this.restaurantOutletIndex,
           restaurantOutletName: this.restaurantOutletName,
-          area:{id:  this.areaInput.id, area: this.areaInput.area},
-          locality: {id: this.localityInput.id, locality: this.localityInput.locality},
-          location: {id: this.locationInput.id, location: this.locationInput.location},
-          fullAddress: this.fullAddressInput,
-          addressLongitude: this.addressCoordinates[0],
-          addressLatitude: this.addressCoordinates[1],
-          openingHours: this.openingHours,
-          mobileNumbers: this.mobileNumbers,
-          telephoneNumbers: this.telephoneNumbers,
         })
         .then((response) => {
-          this.$root.addingRestaurantOutletData = false;
-          this.addRestaurantOutletModal.hide();
+          this.$root.fetchSessionData();
+          this.$emit("close-modal");
+          this.$emit('display-update-success-message');
         })
-        .catch((error) => {
-          this.$root.addingRestaurantOutletData = false;
-          if (error.response.data.errors.restaurantOutletName) {
-            this.validationErrors.restaurantOutletName =
-              error.response.data.errors.restaurantOutletName;
-          } else {
-            this.validationErrors.restaurantOutletName = [];
-          }
-          if (error.response.data.errors.area) {
-            this.validationErrors.area = error.response.data.errors.area;
-          } else {
-            this.validationErrors.area = [];
-          }
-          if (error.response.data.errors.locality) {
-            this.validationErrors.locality =
-              error.response.data.errors.locality;
-          } else {
-            this.validationErrors.locality = [];
-          }
-          if (error.response.data.errors.location) {
-            this.validationErrors.location =
-              error.response.data.errors.location;
-          } else {
-            this.validationErrors.location = [];
-          }
-          if (error.response.data.errors.area) {
-            this.validationErrors.addressLongitude =
-              error.response.data.errors.addressLongitude;
-          } else {
-            this.validationErrors.addressLongitude = [];
-          }
-
-          this.$nextTick(() => {
-            this.$refs.addRestaurantOutletModal.scrollTo(0, 0);
-          });
-        });
-
-      this.fetchSessionData();
+        .catch((error) => console.log(error.response.data));
     },
     fetchSessionData: function () {
+      this.loadingData = true;
       axios
         .get("/register/restaurant/session")
         .then((response) => {
-          this.$root.restaurantOutlets =
-            response.data.sessionData.stepTwoData.restaurantOutlets;
+          if (response.data.sessionData.stepTwoData) {
+            let restaurantOutlet =
+              response.data.sessionData.stepTwoData.restaurantOutlets[
+                this.restaurantOutletIndex
+              ];
+            // Populate data with the specific restaurant outlet
+            this.restaurantOutletName = restaurantOutlet.restaurantOutletName;
+            this.areaInput = restaurantOutlet.area;
+            this.localityInput = restaurantOutlet.locality;
+            this.locationInput = restaurantOutlet.location;
+            this.fullAddressInput = restaurantOutlet.fullAddress;
+            this.addressCoordinates = [
+              restaurantOutlet.addressLatitude,
+              restaurantOutlet.addressLongitude,
+            ];
+            this.openingHours = restaurantOutlet.openingHours;
+            this.mobileNumbers = restaurantOutlet.mobileNumbers;
+            this.telephoneNumbers = restaurantOutlet.telephoneNumbers;
+            this.loadingData = false;
+          }
         })
         .catch((err) => console.log(err.response));
     },
   },
   mounted() {
-    this.addRestaurantOutletModal = new Modal(
-      document.getElementById("addRestaurantOutletModal")
-    );
+    const customModal = document.querySelector(".modal-custom");
+    const body = document.body;
+    window.addEventListener("click", (e) => {
+      if (e.target === customModal) {
+        this.$emit("close-modal");
+      }
+    });
+
+    this.fetchSessionData();
   },
 };
 </script>
-
+    
 <style>
-.modal-dialog {
+.modal-custom {
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  top: 0;
+  left: 0;
+}
+
+.modal-content {
   max-width: 1000px;
+  margin: 30px auto;
+}
+
+.modal-header {
+  border-bottom: 1px solid #dee2e6;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.modal-header p {
+  font-size: 1.25rem;
 }
 </style>

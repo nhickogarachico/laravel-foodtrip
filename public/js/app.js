@@ -5846,15 +5846,15 @@ var today = new Date();
         restaurantOutletName: this.restaurantOutletName,
         area: {
           id: this.areaInput.id,
-          area: this.areaInput.text
+          area: this.areaInput.area
         },
         locality: {
           id: this.localityInput.id,
-          locality: this.localityInput.text
+          locality: this.localityInput.locality
         },
         location: {
           id: this.locationInput.id,
-          location: this.locationInput.text
+          location: this.locationInput.location
         },
         fullAddress: this.fullAddressInput,
         addressLongitude: this.addressCoordinates[0],
@@ -6417,14 +6417,92 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     stepOneData: Object,
-    stepTwoData: Object
+    stepTwoData: Object,
+    areas: Array,
+    localities: Array,
+    locations: Array
   },
   data: function data() {
     return {
+      isModalOpen: false,
+      updateSuccess: false,
+      openModalButton: {},
       daysOfTheWeek: {
         1: "Monday",
         2: "Tuesday",
@@ -6433,14 +6511,678 @@ __webpack_require__.r(__webpack_exports__);
         5: "Friday",
         6: "Saturday",
         7: "Sunday"
-      }
+      },
+      currentRestaurantOutletIndex: 0
     };
+  },
+  methods: {
+    convertDateStringToNumber: function convertDateStringToNumber(dateString) {
+      var dateInteger = parseInt(dateString);
+
+      if (dateInteger > 12) {
+        return String(dateInteger - 12);
+      } else {
+        return dateString;
+      }
+    },
+    changeCurrentRestaurantOutlet: function changeCurrentRestaurantOutlet(index) {
+      this.currentRestaurantOutletIndex = index;
+      this.isModalOpen = true;
+      this.openModalButton = this.$refs["openModalButton".concat(index)];
+      document.body.style.overflow = "hidden";
+    },
+    closeModal: function closeModal() {
+      this.isModalOpen = false;
+      document.body.style.overflow = "auto";
+      document.body.removeAttribute("style");
+    },
+    displayUpdateSuccessMessage: function displayUpdateSuccessMessage() {
+      this.updateSuccess = true;
+    }
   },
   mounted: function mounted() {
     _sessionStorage__WEBPACK_IMPORTED_MODULE_0__.createRestaurantPageStorage.setItem("stepOneData", JSON.stringify(this.stepOneData));
   },
   beforeMount: function beforeMount() {
     _sessionStorage__WEBPACK_IMPORTED_MODULE_0__.createRestaurantPageStorage.setItem("stepTwoData", JSON.stringify(this.stepTwoData));
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditRestaurantOutletModal.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditRestaurantOutletModal.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _config_keys__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./config/keys */ "./resources/js/components/config/keys.js");
+/* harmony import */ var _MapBoxMap_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MapBoxMap.vue */ "./resources/js/components/MapBoxMap.vue");
+/* harmony import */ var _OpeningHoursForm_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./OpeningHoursForm.vue */ "./resources/js/components/OpeningHoursForm.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+var today = new Date();
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    MapBoxMap: _MapBoxMap_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    OpeningHoursForm: _OpeningHoursForm_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
+  props: {
+    stepOneData: Object,
+    isModalOpen: Boolean,
+    openModalButton: Array,
+    restaurantOutletIndex: Number,
+    areas: Array,
+    localities: Array,
+    locations: Array
+  },
+  data: function data() {
+    return {
+      loadingData: false,
+      mapBoxAPIKey: _config_keys__WEBPACK_IMPORTED_MODULE_0__["default"],
+      restaurantOutletName: "",
+      areaInput: 0,
+      localityInput: 0,
+      locationInput: 0,
+      fullAddressInput: "",
+      addressCoordinates: [],
+      sameRestaurantOutletName: true,
+      reverseGeoCoding: {
+        loading: false
+      },
+      mobileNumberInput: "",
+      mobileNumbers: [],
+      telephoneNumberInput: "",
+      telephoneNumbers: [],
+      validationErrors: {
+        restaurantOutletName: [],
+        area: [],
+        locality: [],
+        location: [],
+        addressLongitude: [],
+        addressLatitude: [],
+        openingHours: [],
+        mobileNumberInput: "",
+        telephoneNumberInput: ""
+      },
+      openingHours: {
+        1: {
+          dayOfTheWeek: 1,
+          closed: false,
+          hours: [{
+            openingHour: "00",
+            openingMinute: "00",
+            closingHour: "00",
+            closingMinute: "00",
+            validFrom: today.toLocaleDateString("en-CA"),
+            validThrough: ""
+          }]
+        },
+        2: {
+          dayOfTheWeek: 2,
+          closed: false,
+          hours: [{
+            openingHour: "00",
+            openingMinute: "00",
+            closingHour: "00",
+            closingMinute: "00",
+            validFrom: today.toLocaleDateString("en-CA"),
+            validThrough: ""
+          }]
+        },
+        3: {
+          dayOfTheWeek: 3,
+          closed: false,
+          hours: [{
+            openingHour: "00",
+            openingMinute: "00",
+            closingHour: "00",
+            closingMinute: "00",
+            validFrom: today.toLocaleDateString("en-CA"),
+            validThrough: ""
+          }]
+        },
+        4: {
+          dayOfTheWeek: 4,
+          closed: false,
+          hours: [{
+            openingHour: "00",
+            openingMinute: "00",
+            closingHour: "00",
+            closingMinute: "00",
+            validFrom: today.toLocaleDateString("en-CA"),
+            validThrough: ""
+          }]
+        },
+        5: {
+          dayOfTheWeek: 5,
+          closed: false,
+          hours: [{
+            openingHour: "00",
+            openingMinute: "00",
+            closingHour: "00",
+            closingMinute: "00",
+            validFrom: today.toLocaleDateString("en-CA"),
+            validThrough: ""
+          }]
+        },
+        6: {
+          dayOfTheWeek: 6,
+          closed: false,
+          hours: [{
+            openingHour: "00",
+            openingMinute: "00",
+            closingHour: "00",
+            closingMinute: "00",
+            validFrom: today.toLocaleDateString("en-CA"),
+            validThrough: ""
+          }]
+        },
+        7: {
+          dayOfTheWeek: 7,
+          closed: false,
+          hours: [{
+            openingHour: "00",
+            openingMinute: "00",
+            closingHour: "00",
+            closingMinute: "00",
+            validFrom: today.toLocaleDateString("en-CA"),
+            validThrough: ""
+          }]
+        }
+      }
+    };
+  },
+  methods: {
+    checkIfSameWithRestaurantName: function checkIfSameWithRestaurantName() {
+      if (this.restaurantOutletName !== this.stepOneData.restaurantName) {
+        this.sameRestaurantOutletName = false;
+      } else {
+        this.sameRestaurantOutletName = true;
+      }
+    },
+    changeOutletNameToRestaurantName: function changeOutletNameToRestaurantName() {
+      if (this.sameRestaurantOutletName) {
+        this.restaurantOutletName = this.stepOneData.restaurantName;
+        this.$refs["restaurantOutletNameInput"].focus();
+      }
+    },
+    onChangeAreaInput: function onChangeAreaInput() {
+      this.localityInput = 0;
+      this.locationInput = 0;
+    },
+    onChangeLocalityInput: function onChangeLocalityInput() {
+      this.locationInput = 0;
+    },
+    filterLocalities: function filterLocalities(locality) {
+      return locality.area_id === this.areaInput.id;
+    },
+    filterLocations: function filterLocations(location) {
+      return location.locality_id === this.localityInput.id;
+    },
+    setFullAddress: function setFullAddress(coordinates) {
+      var _this = this;
+
+      this.reverseGeoCoding.loading = true;
+      this.addressCoordinates = [coordinates.lng, coordinates.lat];
+      axios.get("https://api.mapbox.com/geocoding/v5/mapbox.places/".concat(coordinates.lng, ", ").concat(coordinates.lat, ".json?access_token=").concat(this.mapBoxAPIKey)).then(function (response) {
+        _this.fullAddressInput = response.data.features[0].place_name;
+        _this.reverseGeoCoding.loading = false;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    addOpeningHours: function addOpeningHours(day) {
+      this.openingHours[day].hours.push({
+        openingHour: "00",
+        openingMinute: "00",
+        closingHour: "00",
+        closingMinute: "00",
+        validFrom: today.toLocaleDateString("en-CA"),
+        validThrough: ""
+      });
+    },
+    removeOpeningHours: function removeOpeningHours(data) {
+      this.openingHours[data.day].hours.splice(data.i, 1);
+    },
+    changeToClosed: function changeToClosed(data) {
+      if (!data.day.disabled) {
+        data.day.disabled = true;
+      } else {
+        data.day.disabled = false;
+      }
+
+      this.openingHours[data.day.value].closed = !this.openingHours[data.day.value].closed;
+    },
+    changeOpeningHours: function changeOpeningHours(data) {
+      this.openingHours[data.day].hours[data.index][data.key] = data.value;
+    },
+    addContactNumber: function addContactNumber(contactNumberInput, contactNumbers, contactInputName) {
+      if (contactNumberInput === "" || contactNumberInput.length < 10) {
+        this.validationErrors[contactInputName] = "Invalid contact number";
+      } else if (contactNumbers.includes("+63" + contactNumberInput)) {
+        this.validationErrors[contactInputName] = "You already added that contact number";
+      } else {
+        contactNumbers.push("+63" + contactNumberInput);
+        this.validationErrors[contactInputName] = "";
+      }
+
+      this[contactInputName] = "";
+      this.$refs["".concat(contactInputName, "Ref")].focus();
+    },
+    removeContactNumber: function removeContactNumber(contactNumber, contactNumbers, contactInputName) {
+      var contactNumberToRemove = contactNumbers.indexOf(contactNumber);
+      contactNumbers.splice(contactNumberToRemove, 1);
+      this.$refs["".concat(contactInputName, "Ref")].focus();
+    },
+    editRestaurantOutlet: function editRestaurantOutlet() {
+      var _this2 = this;
+
+      axios.put("/register/restaurant/step/2", {
+        restaurantOutletId: this.restaurantOutletIndex,
+        restaurantOutletName: this.restaurantOutletName
+      }).then(function (response) {
+        _this2.$root.fetchSessionData();
+
+        _this2.$emit("close-modal");
+
+        _this2.$emit('display-update-success-message');
+      })["catch"](function (error) {
+        return console.log(error.response.data);
+      });
+    },
+    fetchSessionData: function fetchSessionData() {
+      var _this3 = this;
+
+      this.loadingData = true;
+      axios.get("/register/restaurant/session").then(function (response) {
+        if (response.data.sessionData.stepTwoData) {
+          var restaurantOutlet = response.data.sessionData.stepTwoData.restaurantOutlets[_this3.restaurantOutletIndex]; // Populate data with the specific restaurant outlet
+
+          _this3.restaurantOutletName = restaurantOutlet.restaurantOutletName;
+          _this3.areaInput = restaurantOutlet.area;
+          _this3.localityInput = restaurantOutlet.locality;
+          _this3.locationInput = restaurantOutlet.location;
+          _this3.fullAddressInput = restaurantOutlet.fullAddress;
+          _this3.addressCoordinates = [restaurantOutlet.addressLatitude, restaurantOutlet.addressLongitude];
+          _this3.openingHours = restaurantOutlet.openingHours;
+          _this3.mobileNumbers = restaurantOutlet.mobileNumbers;
+          _this3.telephoneNumbers = restaurantOutlet.telephoneNumbers;
+          _this3.loadingData = false;
+        }
+      })["catch"](function (err) {
+        return console.log(err.response);
+      });
+    }
+  },
+  mounted: function mounted() {
+    var _this4 = this;
+
+    var customModal = document.querySelector(".modal-custom");
+    var body = document.body;
+    window.addEventListener("click", function (e) {
+      if (e.target === customModal) {
+        _this4.$emit("close-modal");
+      }
+    });
+    this.fetchSessionData();
   }
 });
 
@@ -6548,11 +7290,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    mapboxApiKey: String
+    mapboxApiKey: String,
+    addressCoordinates: Array
   },
   data: function data() {
     return {
-      addressFromCoordinates: ""
+      addressFromCoordinates: "",
+      mapCenter: [14.569299483936252, 120.99557384062871]
     };
   },
   methods: {
@@ -6563,8 +7307,18 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
 
-    var map = L.map("map").setView([14.569299483936252, 120.99557384062871], 15);
-    var tileLayer = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=".concat(this.mapboxApiKey), {
+    var map = L.map("map");
+    var marker = {}; // check if there is already data for coordinates then set center of map as well as place marker
+
+    if (this.addressCoordinates !== undefined) {
+      if (this.addressCoordinates.length > 0) {
+        this.mapCenter = this.addressCoordinates;
+        marker = L.marker(this.addressCoordinates).addTo(map);
+      }
+    }
+
+    map.setView(this.mapCenter, 15);
+    L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=".concat(this.mapboxApiKey), {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
       tileSize: 512,
       zoomOffset: -1
@@ -6572,7 +7326,6 @@ __webpack_require__.r(__webpack_exports__);
     map.on("move", function () {
       map.invalidateSize();
     });
-    var marker = {};
     map.on("click", function (e) {
       _this.getAddress(e.latlng);
 
@@ -7110,6 +7863,7 @@ Vue.component('contact-number-input', (__webpack_require__(/*! ./components/Cont
 Vue.component('add-restaurant-outlet-modal', (__webpack_require__(/*! ./components/AddRestaurantOutletModal.vue */ "./resources/js/components/AddRestaurantOutletModal.vue")["default"]));
 Vue.component('mapbox-map', (__webpack_require__(/*! ./components/MapBoxMap.vue */ "./resources/js/components/MapBoxMap.vue")["default"]));
 Vue.component('opening-hours-form', (__webpack_require__(/*! ./components/OpeningHoursForm.vue */ "./resources/js/components/OpeningHoursForm.vue")["default"]));
+Vue.component('edit-restaurant-outlet-modal', (__webpack_require__(/*! ./components/EditRestaurantOutletModal.vue */ "./resources/js/components/EditRestaurantOutletModal.vue")["default"]));
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -12313,6 +13067,30 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, "\n.btn-main-red-hover:hover {\r\n  background-color: var(--main-red);\r\n  color: white;\n}\r\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditRestaurantOutletModal.vue?vue&type=style&index=0&lang=css&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditRestaurantOutletModal.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.modal-custom {\r\n  position: fixed;\r\n  z-index: 1;\r\n  width: 100%;\r\n  height: 100%;\r\n  overflow: auto;\r\n  background-color: rgba(0, 0, 0, 0.4);\r\n  top: 0;\r\n  left: 0;\n}\n.modal-content {\r\n  max-width: 1000px;\r\n  margin: 30px auto;\n}\n.modal-header {\r\n  border-bottom: 1px solid #dee2e6;\r\n  padding: 1rem;\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\n}\n.modal-header p {\r\n  font-size: 1.25rem;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -36870,6 +37648,36 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditRestaurantOutletModal.vue?vue&type=style&index=0&lang=css&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditRestaurantOutletModal.vue?vue&type=style&index=0&lang=css& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EditRestaurantOutletModal_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EditRestaurantOutletModal.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditRestaurantOutletModal.vue?vue&type=style&index=0&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EditRestaurantOutletModal_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EditRestaurantOutletModal_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/MapBoxMap.vue?vue&type=style&index=0&lang=css&":
 /*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/MapBoxMap.vue?vue&type=style&index=0&lang=css& ***!
@@ -37371,6 +38179,47 @@ component.options.__file = "resources/js/components/CreateRestaurantPageStepTwo.
 
 /***/ }),
 
+/***/ "./resources/js/components/EditRestaurantOutletModal.vue":
+/*!***************************************************************!*\
+  !*** ./resources/js/components/EditRestaurantOutletModal.vue ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _EditRestaurantOutletModal_vue_vue_type_template_id_dda70244___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EditRestaurantOutletModal.vue?vue&type=template&id=dda70244& */ "./resources/js/components/EditRestaurantOutletModal.vue?vue&type=template&id=dda70244&");
+/* harmony import */ var _EditRestaurantOutletModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EditRestaurantOutletModal.vue?vue&type=script&lang=js& */ "./resources/js/components/EditRestaurantOutletModal.vue?vue&type=script&lang=js&");
+/* harmony import */ var _EditRestaurantOutletModal_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./EditRestaurantOutletModal.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/EditRestaurantOutletModal.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _EditRestaurantOutletModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _EditRestaurantOutletModal_vue_vue_type_template_id_dda70244___WEBPACK_IMPORTED_MODULE_0__.render,
+  _EditRestaurantOutletModal_vue_vue_type_template_id_dda70244___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/EditRestaurantOutletModal.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/LikeButton.vue":
 /*!************************************************!*\
   !*** ./resources/js/components/LikeButton.vue ***!
@@ -37673,6 +38522,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/EditRestaurantOutletModal.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/EditRestaurantOutletModal.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EditRestaurantOutletModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EditRestaurantOutletModal.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditRestaurantOutletModal.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EditRestaurantOutletModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/LikeButton.vue?vue&type=script&lang=js&":
 /*!*************************************************************************!*\
   !*** ./resources/js/components/LikeButton.vue?vue&type=script&lang=js& ***!
@@ -37808,6 +38673,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/EditRestaurantOutletModal.vue?vue&type=style&index=0&lang=css&":
+/*!************************************************************************************************!*\
+  !*** ./resources/js/components/EditRestaurantOutletModal.vue?vue&type=style&index=0&lang=css& ***!
+  \************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_EditRestaurantOutletModal_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader/dist/cjs.js!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EditRestaurantOutletModal.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditRestaurantOutletModal.vue?vue&type=style&index=0&lang=css&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/MapBoxMap.vue?vue&type=style&index=0&lang=css&":
 /*!********************************************************************************!*\
   !*** ./resources/js/components/MapBoxMap.vue?vue&type=style&index=0&lang=css& ***!
@@ -37898,6 +38776,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateRestaurantPageStepTwo_vue_vue_type_template_id_1d96f41d___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateRestaurantPageStepTwo_vue_vue_type_template_id_1d96f41d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CreateRestaurantPageStepTwo.vue?vue&type=template&id=1d96f41d& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CreateRestaurantPageStepTwo.vue?vue&type=template&id=1d96f41d&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/EditRestaurantOutletModal.vue?vue&type=template&id=dda70244&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/components/EditRestaurantOutletModal.vue?vue&type=template&id=dda70244& ***!
+  \**********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditRestaurantOutletModal_vue_vue_type_template_id_dda70244___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditRestaurantOutletModal_vue_vue_type_template_id_dda70244___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditRestaurantOutletModal_vue_vue_type_template_id_dda70244___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EditRestaurantOutletModal.vue?vue&type=template&id=dda70244& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditRestaurantOutletModal.vue?vue&type=template&id=dda70244&");
 
 
 /***/ }),
@@ -38231,7 +39126,7 @@ var render = function () {
                             {
                               key: area.id,
                               domProps: {
-                                value: { id: area.id, text: area.area },
+                                value: { id: area.id, area: area.area },
                               },
                             },
                             [
@@ -38299,7 +39194,7 @@ var render = function () {
                                 domProps: {
                                   value: {
                                     id: locality.id,
-                                    text: locality.locality,
+                                    locality: locality.locality,
                                   },
                                 },
                               },
@@ -38367,7 +39262,7 @@ var render = function () {
                                 domProps: {
                                   value: {
                                     id: location.id,
-                                    text: location.location,
+                                    location: location.location,
                                   },
                                 },
                               },
@@ -39258,146 +40153,300 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "card mb-4" }, [
-      _vm._m(0),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "card-body" },
-        [
-          _vm.$root.addingRestaurantOutletData
-            ? _c(
-                "div",
-                {
-                  staticClass:
-                    "d-flex justify-content-center align-items-center flex-column",
-                },
-                [
-                  _vm._m(1),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "fst-italic" }, [
-                    _vm._v("Adding restaurant outlet ..."),
-                  ]),
-                ]
-              )
-            : _vm.$root.loadingRestaurantOutletData
-            ? _c(
-                "div",
-                {
-                  staticClass:
-                    "d-flex justify-content-center align-items-center flex-column",
-                },
-                [
-                  _vm._m(2),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "fst-italic" }, [
-                    _vm._v("Loading restaurant outlets ..."),
-                  ]),
-                ]
-              )
-            : _vm.$root.restaurantOutlets.length === 0
-            ? _c(
-                "div",
-                {
-                  staticClass:
-                    "\n          d-flex\n          justify-content-center\n          align-items-center\n          flex-column\n          text-center\n          p-3\n        ",
-                },
-                [
-                  _c("p", [_vm._v("No restaurant outlets yet")]),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-main-red w-50",
-                      attrs: {
-                        "data-bs-toggle": "modal",
-                        "data-bs-target": "#addRestaurantOutletModal",
-                      },
-                    },
-                    [_vm._v("\n          Add Outlet\n        ")]
-                  ),
-                ]
-              )
-            : _vm._l(_vm.$root.restaurantOutlets, function (restaurantOutlet) {
-                return _c(
+  return _c(
+    "div",
+    [
+      _c("div", { staticClass: "card mb-4" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "card-body" },
+          [
+            _vm.updateSuccess
+              ? _c(
                   "div",
                   {
-                    key: _vm.$root.restaurantOutlets.indexOf(restaurantOutlet),
                     staticClass:
-                      "d-flex justify-content-center flex-column p-3",
+                      "alert alert-success d-flex justify-content-between",
                   },
                   [
-                    _c("p", { staticClass: "fw-600 mb-1" }, [
-                      _vm._v(_vm._s(restaurantOutlet.restaurantOutletName)),
+                    _vm._v("\n        Updated successfully.\n        "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn p-0",
+                        on: {
+                          click: function ($event) {
+                            _vm.updateSuccess = false
+                          },
+                        },
+                      },
+                      [_c("i", { staticClass: "fas fa-times" })]
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.$root.addingRestaurantOutletData
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex justify-content-center align-items-center flex-column",
+                  },
+                  [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "fst-italic" }, [
+                      _vm._v("Adding restaurant outlet ..."),
                     ]),
+                  ]
+                )
+              : _vm.$root.loadingRestaurantOutletData
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex justify-content-center align-items-center flex-column",
+                  },
+                  [
+                    _vm._m(2),
                     _vm._v(" "),
-                    _c("p", { staticClass: "mb-1" }, [
-                      _vm._v(
-                        "\n          " +
-                          _vm._s(restaurantOutlet.location.location) +
-                          ",\n          " +
-                          _vm._s(restaurantOutlet.locality.locality) +
-                          ",\n          " +
-                          _vm._s(restaurantOutlet.area.area) +
-                          "\n        "
-                      ),
+                    _c("span", { staticClass: "fst-italic" }, [
+                      _vm._v("Loading restaurant outlets ..."),
                     ]),
+                  ]
+                )
+              : _vm.$root.restaurantOutlets.length === 0
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "\n          d-flex\n          justify-content-center\n          align-items-center\n          flex-column\n          text-center\n          p-3\n        ",
+                  },
+                  [
+                    _c("p", [_vm._v("No restaurant outlets yet")]),
                     _vm._v(" "),
-                    _c("p", [_vm._v(_vm._s(restaurantOutlet.fullAddress))]),
-                    _vm._v(" "),
-                    _c("p", { staticClass: "fw-600" }, [
-                      _vm._v("Opening Hours"),
-                    ]),
-                    _vm._v(" "),
-                    _vm._l(7, function (i) {
-                      return _c(
-                        "div",
-                        { key: i, staticClass: "mb-2" },
-                        [
-                          _c("p", { staticClass: "mb-0" }, [
-                            _vm._v(_vm._s(_vm.daysOfTheWeek[i]) + " : "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-main-red w-50",
+                        attrs: {
+                          "data-bs-toggle": "modal",
+                          "data-bs-target": "#addRestaurantOutletModal",
+                        },
+                      },
+                      [_vm._v("\n          Add Outlet\n        ")]
+                    ),
+                  ]
+                )
+              : _vm._l(
+                  _vm.$root.restaurantOutlets,
+                  function (restaurantOutlet, i) {
+                    return _c(
+                      "div",
+                      {
+                        key: i,
+                        staticClass:
+                          "d-flex justify-content-center flex-column p-3",
+                      },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "d-flex justify-content-between" },
+                          [
+                            _c("p", { staticClass: "fw-600 mb-1" }, [
+                              _vm._v(
+                                "\n            " +
+                                  _vm._s(
+                                    restaurantOutlet.restaurantOutletName
+                                  ) +
+                                  "\n          "
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                ref: "openModalButton" + i,
+                                refInFor: true,
+                                staticClass: "btn py-0 px-1 btn-main-red-hover",
+                                attrs: { type: "button" },
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.changeCurrentRestaurantOutlet(i)
+                                  },
+                                },
+                              },
+                              [_c("i", { staticClass: "fas fa-pencil" })]
+                            ),
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("p", { staticClass: "mb-1" }, [
+                          _vm._v(
+                            "\n          " +
+                              _vm._s(restaurantOutlet.location.location) +
+                              ",\n          " +
+                              _vm._s(restaurantOutlet.locality.locality) +
+                              ",\n          " +
+                              _vm._s(restaurantOutlet.area.area) +
+                              "\n        "
+                          ),
+                        ]),
+                        _vm._v(" "),
+                        _c("p", [_vm._v(_vm._s(restaurantOutlet.fullAddress))]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          [
+                            _c("p", { staticClass: "fw-600" }, [
+                              _vm._v("Opening Hours"),
+                            ]),
+                            _vm._v(" "),
+                            _vm._l(7, function (i) {
+                              return _c(
+                                "div",
+                                { key: i, staticClass: "mb-2" },
+                                [
+                                  _c("p", { staticClass: "mb-0" }, [
+                                    _vm._v(_vm._s(_vm.daysOfTheWeek[i]) + " :"),
+                                  ]),
+                                  _vm._v(" "),
+                                  restaurantOutlet.openingHours[i].closed
+                                    ? _c("div", [_vm._v("CLOSED")])
+                                    : _vm._l(
+                                        restaurantOutlet.openingHours[i].hours,
+                                        function (openingHour, i) {
+                                          return _c("div", { key: i }, [
+                                            _c("span", [
+                                              _vm._v(
+                                                _vm._s(
+                                                  openingHour.openingHour
+                                                ) +
+                                                  ":" +
+                                                  _vm._s(
+                                                    openingHour.openingMinute
+                                                  ) +
+                                                  _vm._s(
+                                                    openingHour.openingHour > 12
+                                                      ? "PM"
+                                                      : "AM"
+                                                  ) +
+                                                  " -\n                " +
+                                                  _vm._s(
+                                                    _vm.convertDateStringToNumber(
+                                                      openingHour.closingHour
+                                                    )
+                                                  ) +
+                                                  ":" +
+                                                  _vm._s(
+                                                    openingHour.closingMinute
+                                                  ) +
+                                                  _vm._s(
+                                                    openingHour.closingHour > 12
+                                                      ? "PM"
+                                                      : "AM"
+                                                  )
+                                              ),
+                                            ]),
+                                          ])
+                                        }
+                                      ),
+                                ],
+                                2
+                              )
+                            }),
+                          ],
+                          2
+                        ),
+                        _vm._v(" "),
+                        _c("div", [
+                          _c("p", { staticClass: "fw-600 mb-2" }, [
+                            _vm._v("Contact Numbers"),
                           ]),
                           _vm._v(" "),
-                          restaurantOutlet.openingHours[i].closed
-                            ? _c("div", [_vm._v("CLOSED")])
-                            : _vm._l(
-                                restaurantOutlet.openingHours[i].hours,
-                                function (openingHour, i) {
-                                  return _c("div", { key: i }, [
-                                    _c("span", [
-                                      _vm._v(
-                                        _vm._s(openingHour.openingHour) +
-                                          ":" +
-                                          _vm._s(openingHour.openingMinute) +
-                                          "-" +
-                                          _vm._s(openingHour.closingHour) +
-                                          ":" +
-                                          _vm._s(openingHour.closingMinute)
-                                      ),
-                                    ]),
-                                  ])
-                                }
+                          restaurantOutlet.mobileNumbers.length === 0 ||
+                          restaurantOutlet.telephoneNumbers.length === 0
+                            ? _c("div", [
+                                _vm._v(
+                                  "\n            No contact numbers\n          "
+                                ),
+                              ])
+                            : _c(
+                                "div",
+                                [
+                                  _c("p", { staticClass: "fw-600 mb-2" }, [
+                                    _vm._v("Mobile Numbers"),
+                                  ]),
+                                  _vm._v(" "),
+                                  _vm._l(
+                                    restaurantOutlet.mobileNumbers,
+                                    function (mobileNumber, i) {
+                                      return _c("p", { key: i }, [
+                                        _vm._v(
+                                          "\n              " +
+                                            _vm._s(mobileNumber) +
+                                            "\n            "
+                                        ),
+                                      ])
+                                    }
+                                  ),
+                                  _vm._v(" "),
+                                  _c("p", { staticClass: "fw-600 mb-2" }, [
+                                    _vm._v("Telephone Numbers"),
+                                  ]),
+                                  _vm._v(" "),
+                                  _vm._l(
+                                    restaurantOutlet.telephoneNumbers,
+                                    function (telephoneNumber) {
+                                      return _c("p", { key: telephoneNumber }, [
+                                        _vm._v(
+                                          "\n              " +
+                                            _vm._s(telephoneNumber) +
+                                            "\n            "
+                                        ),
+                                      ])
+                                    }
+                                  ),
+                                ],
+                                2
                               ),
-                        ],
-                        2
-                      )
-                    }),
-                    _vm._v(" "),
-                    _c("div"),
-                    _vm._v(" "),
-                    _c("hr"),
-                  ],
-                  2
-                )
-              }),
-        ],
-        2
-      ),
-    ]),
-    _vm._v(" "),
-    _vm._m(3),
-  ])
+                        ]),
+                        _vm._v(" "),
+                        _c("hr"),
+                      ]
+                    )
+                  }
+                ),
+          ],
+          2
+        ),
+      ]),
+      _vm._v(" "),
+      _vm._m(3),
+      _vm._v(" "),
+      _vm.isModalOpen
+        ? _c("edit-restaurant-outlet-modal", {
+            attrs: {
+              "step-one-data": _vm.stepOneData,
+              "is-modal-open": _vm.isModalOpen,
+              "open-modal-button": _vm.openModalButton,
+              restaurantOutletIndex: _vm.currentRestaurantOutletIndex,
+              areas: _vm.areas,
+              localities: _vm.localities,
+              locations: _vm.locations,
+            },
+            on: {
+              "close-modal": _vm.closeModal,
+              "display-update-success-message": _vm.displayUpdateSuccessMessage,
+            },
+          })
+        : _vm._e(),
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function () {
@@ -39468,6 +40517,871 @@ var staticRenderFns = [
         },
         [_vm._v("Next")]
       ),
+    ])
+  },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditRestaurantOutletModal.vue?vue&type=template&id=dda70244&":
+/*!*************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/EditRestaurantOutletModal.vue?vue&type=template&id=dda70244& ***!
+  \*************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "modal-custom" }, [
+    _c("div", { staticClass: "modal-content" }, [
+      _c("div", { staticClass: "card" }, [
+        _c("div", { staticClass: "modal-header" }, [
+          _c("p", { staticClass: "mb-0" }, [
+            _vm._v("Edit Restaurant Outlet Modal"),
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn p-0",
+              attrs: { type: "button" },
+              on: {
+                click: function ($event) {
+                  return _vm.$emit("close-modal")
+                },
+              },
+            },
+            [_c("i", { staticClass: "fas fa-times fs-3" })]
+          ),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "modal-body" }, [
+          _vm.loadingData
+            ? _c(
+                "div",
+                {
+                  staticClass:
+                    "d-flex justify-content-center align-items-center flex-column",
+                },
+                [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "fst-italic" }, [
+                    _vm._v("Loading data ..."),
+                  ]),
+                ]
+              )
+            : _c("div", [
+                _vm.validationErrors.restaurantOutletName.length > 0
+                  ? _c("div", { staticClass: "alert alert-warning" }, [
+                      _c("i", {
+                        staticClass: "fas fa-exclamation-circle me-2",
+                      }),
+                      _vm._v(
+                        "\n            " +
+                          _vm._s(_vm.validationErrors.restaurantOutletName[0]) +
+                          "\n          "
+                      ),
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-floating mb-1" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.restaurantOutletName,
+                        expression: "restaurantOutletName",
+                      },
+                    ],
+                    ref: "restaurantOutletNameInput",
+                    staticClass: "form-control",
+                    attrs: {
+                      id: "floatingRestaurantOutletName1",
+                      type: "text",
+                      placeholder: "restaurant outlet name",
+                      autofocus: "",
+                    },
+                    domProps: { value: _vm.restaurantOutletName },
+                    on: {
+                      input: [
+                        function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.restaurantOutletName = $event.target.value
+                        },
+                        _vm.checkIfSameWithRestaurantName,
+                      ],
+                    },
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "floatingName" } }, [
+                    _vm._v("Restaurant Outlet Name"),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-check mb-3" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.sameRestaurantOutletName,
+                        expression: "sameRestaurantOutletName",
+                      },
+                    ],
+                    staticClass: "form-check-input",
+                    attrs: { type: "checkbox" },
+                    domProps: {
+                      checked: _vm.sameRestaurantOutletName,
+                      checked: Array.isArray(_vm.sameRestaurantOutletName)
+                        ? _vm._i(_vm.sameRestaurantOutletName, null) > -1
+                        : _vm.sameRestaurantOutletName,
+                    },
+                    on: {
+                      change: [
+                        function ($event) {
+                          var $$a = _vm.sameRestaurantOutletName,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = null,
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 &&
+                                (_vm.sameRestaurantOutletName = $$a.concat([
+                                  $$v,
+                                ]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.sameRestaurantOutletName = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.sameRestaurantOutletName = $$c
+                          }
+                        },
+                        _vm.changeOutletNameToRestaurantName,
+                      ],
+                    },
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "label",
+                    {
+                      staticClass: "form-check-label",
+                      attrs: { for: "flexCheckDefault" },
+                    },
+                    [
+                      _vm._v(
+                        "\n              Same as Restaurant Name\n            "
+                      ),
+                    ]
+                  ),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "mb-3" }, [
+                  _c("p", { staticClass: "fw-600 mb-1" }, [_vm._v("Address")]),
+                  _vm._v(" "),
+                  _vm.validationErrors.area.length > 0
+                    ? _c("div", { staticClass: "alert alert-warning" }, [
+                        _c("i", {
+                          staticClass: "fas fa-exclamation-circle me-2",
+                        }),
+                        _vm._v(
+                          "\n              " +
+                            _vm._s(_vm.validationErrors.area[0]) +
+                            "\n            "
+                        ),
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.validationErrors.locality.length > 0
+                    ? _c("div", { staticClass: "alert alert-warning" }, [
+                        _c("i", {
+                          staticClass: "fas fa-exclamation-circle me-2",
+                        }),
+                        _vm._v(
+                          "\n              " +
+                            _vm._s(_vm.validationErrors.locality[0]) +
+                            "\n            "
+                        ),
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.validationErrors.location.length > 0
+                    ? _c("div", { staticClass: "alert alert-warning" }, [
+                        _c("i", {
+                          staticClass: "fas fa-exclamation-circle me-2",
+                        }),
+                        _vm._v(
+                          "\n              " +
+                            _vm._s(_vm.validationErrors.location[0]) +
+                            "\n            "
+                        ),
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "d-flex justify-content-between" }, [
+                    _c("div", { staticClass: "flex-fill" }, [
+                      _c(
+                        "label",
+                        { staticClass: "fw-600", attrs: { for: "" } },
+                        [_vm._v("Area")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.areaInput,
+                              expression: "areaInput",
+                            },
+                          ],
+                          staticClass: "form-select",
+                          on: {
+                            change: [
+                              function ($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function (o) {
+                                    return o.selected
+                                  })
+                                  .map(function (o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.areaInput = $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              },
+                              _vm.onChangeAreaInput,
+                            ],
+                          },
+                        },
+                        [
+                          _c(
+                            "option",
+                            { attrs: { value: "0", disabled: "" } },
+                            [_vm._v("--SELECT AREA--")]
+                          ),
+                          _vm._v(" "),
+                          _vm._l(_vm.areas.sort(), function (area) {
+                            return _c(
+                              "option",
+                              {
+                                key: area.id,
+                                domProps: {
+                                  value: { id: area.id, area: area.area },
+                                },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                    " +
+                                    _vm._s(area.area) +
+                                    "\n                  "
+                                ),
+                              ]
+                            )
+                          }),
+                        ],
+                        2
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "mx-2 flex-fill" }, [
+                      _c(
+                        "label",
+                        { staticClass: "fw-600", attrs: { for: "" } },
+                        [_vm._v("Locality")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.localityInput,
+                              expression: "localityInput",
+                            },
+                          ],
+                          staticClass: "form-select",
+                          on: {
+                            change: [
+                              function ($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function (o) {
+                                    return o.selected
+                                  })
+                                  .map(function (o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.localityInput = $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              },
+                              _vm.onChangeLocalityInput,
+                            ],
+                          },
+                        },
+                        [
+                          _c(
+                            "option",
+                            { attrs: { value: "0", disabled: "" } },
+                            [_vm._v("--SELECT LOCALITY--")]
+                          ),
+                          _vm._v(" "),
+                          _vm._l(
+                            _vm.localities.filter(_vm.filterLocalities),
+                            function (locality) {
+                              return _c(
+                                "option",
+                                {
+                                  key: locality.id,
+                                  domProps: {
+                                    value: {
+                                      id: locality.id,
+                                      locality: locality.locality,
+                                    },
+                                  },
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                    " +
+                                      _vm._s(locality.locality) +
+                                      "\n                  "
+                                  ),
+                                ]
+                              )
+                            }
+                          ),
+                        ],
+                        2
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "flex-fill" }, [
+                      _c(
+                        "label",
+                        { staticClass: "fw-600", attrs: { for: "" } },
+                        [_vm._v("Location")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.locationInput,
+                              expression: "locationInput",
+                            },
+                          ],
+                          staticClass: "form-select",
+                          attrs: { "aria-label": "Default select example" },
+                          on: {
+                            change: function ($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function (o) {
+                                  return o.selected
+                                })
+                                .map(function (o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.locationInput = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            },
+                          },
+                        },
+                        [
+                          _c(
+                            "option",
+                            { attrs: { value: "0", disabled: "" } },
+                            [_vm._v("--SELECT LOCATION--")]
+                          ),
+                          _vm._v(" "),
+                          _vm._l(
+                            _vm.locations.filter(_vm.filterLocations),
+                            function (location) {
+                              return _c(
+                                "option",
+                                {
+                                  key: location.id,
+                                  domProps: {
+                                    value: {
+                                      id: location.id,
+                                      location: location.location,
+                                    },
+                                  },
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                    " +
+                                      _vm._s(location.location) +
+                                      "\n                  "
+                                  ),
+                                ]
+                              )
+                            }
+                          ),
+                        ],
+                        2
+                      ),
+                    ]),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "mb-2" }, [
+                  _vm.validationErrors.addressLongitude.length > 0
+                    ? _c("div", { staticClass: "alert alert-warning" }, [
+                        _c("i", {
+                          staticClass: "fas fa-exclamation-circle me-2",
+                        }),
+                        _vm._v(
+                          "\n              " +
+                            _vm._s(_vm.validationErrors.addressLongitude[0]) +
+                            "\n            "
+                        ),
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-floating" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.fullAddressInput,
+                          expression: "fullAddressInput",
+                        },
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "floatingFullAddress1",
+                        type: "text",
+                        placeholder: "full address",
+                      },
+                      domProps: { value: _vm.fullAddressInput },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.fullAddressInput = $event.target.value
+                        },
+                      },
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "floatingFullAddress" } }, [
+                      _vm._v("Full Address"),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _vm.reverseGeoCoding.loading
+                    ? _c(
+                        "div",
+                        {
+                          staticClass:
+                            "\n                d-flex\n                justify-content-center\n                align-items-center\n                flex-column\n              ",
+                        },
+                        [
+                          _vm._m(1),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "fst-italic" }, [
+                            _vm._v("Fetching address ..."),
+                          ]),
+                        ]
+                      )
+                    : _vm._e(),
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "mb-2" },
+                  [
+                    _c("p", { staticClass: "fw-600" }, [
+                      _vm._v("Map Location"),
+                    ]),
+                    _vm._v(" "),
+                    _c("map-box-map", {
+                      attrs: {
+                        "mapbox-api-key": _vm.mapBoxAPIKey,
+                        "address-coordinates": _vm.addressCoordinates,
+                      },
+                      on: { "map-click": _vm.setFullAddress },
+                    }),
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  [
+                    _c("p", { staticClass: "fw-600" }, [
+                      _vm._v("Opening Hours"),
+                    ]),
+                    _vm._v(" "),
+                    _c("opening-hours-form", {
+                      attrs: { "opening-hours": _vm.openingHours },
+                      on: {
+                        "add-opening-hours": _vm.addOpeningHours,
+                        "remove-opening-hours": _vm.removeOpeningHours,
+                        "change-to-closed": _vm.changeToClosed,
+                        "change-opening-hours": _vm.changeOpeningHours,
+                      },
+                    }),
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("div", [
+                  _c("p", { staticClass: "fw-600" }, [
+                    _vm._v("Contact Information"),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [
+                    _vm.validationErrors["mobileNumberInput"]
+                      ? _c("div", { staticClass: "alert alert-warning" }, [
+                          _c("i", {
+                            staticClass: "fas fa-exclamation-circle me-2",
+                          }),
+                          _vm._v(
+                            "\n                " +
+                              _vm._s(
+                                _vm.validationErrors["mobileNumberInput"]
+                              ) +
+                              "\n              "
+                          ),
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "\n                  contact-container\n                  d-flex\n                  justify-content-between\n                  align-items-center\n                  mb-3\n                ",
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "d-flex align-items-center flex-fill",
+                          },
+                          [
+                            _vm._m(2),
+                            _vm._v(" "),
+                            _c("p", { staticClass: "mb-0 fw-600 me-2" }, [
+                              _vm._v("+63"),
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "form-floating w-100" },
+                              [
+                                _c("contact-number-input", {
+                                  ref: "mobileNumberInputRef",
+                                  model: {
+                                    value: _vm.mobileNumberInput,
+                                    callback: function ($$v) {
+                                      _vm.mobileNumberInput = $$v
+                                    },
+                                    expression: "mobileNumberInput",
+                                  },
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "label",
+                                  { attrs: { for: "floatingMobile1" } },
+                                  [_vm._v("Mobile Number")]
+                                ),
+                              ],
+                              1
+                            ),
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass:
+                              "btn btn-main-red ms-2 add-contact-btn",
+                            attrs: { id: "addMobileBtn", type: "button" },
+                            on: {
+                              click: function ($event) {
+                                return _vm.addContactNumber(
+                                  _vm.mobileNumberInput,
+                                  _vm.mobileNumbers,
+                                  "mobileNumberInput"
+                                )
+                              },
+                            },
+                          },
+                          [
+                            _vm._v(
+                              "\n                  Add Mobile Number +\n                "
+                            ),
+                          ]
+                        ),
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "text-center mobile-numbers-div" },
+                      _vm._l(_vm.mobileNumbers, function (mobileNumber) {
+                        return _c(
+                          "div",
+                          {
+                            key: _vm.mobileNumbers.indexOf(mobileNumber),
+                            staticClass:
+                              "\n                    d-flex\n                    align-items-center\n                    justify-content-center\n                    mb-2\n                  ",
+                          },
+                          [
+                            _c("p", { staticClass: "mb-0 fw-600" }, [
+                              _vm._v(_vm._s(mobileNumber)),
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-main-red py-1 ms-2",
+                                attrs: { type: "button" },
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.removeContactNumber(
+                                      mobileNumber,
+                                      _vm.mobileNumbers,
+                                      "mobileNumberInput"
+                                    )
+                                  },
+                                },
+                              },
+                              [_c("i", { staticClass: "fas fa-times" })]
+                            ),
+                          ]
+                        )
+                      }),
+                      0
+                    ),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", [
+                  _vm.validationErrors["telephoneNumberInput"]
+                    ? _c("div", { staticClass: "alert alert-warning" }, [
+                        _c("i", {
+                          staticClass: "fas fa-exclamation-circle me-2",
+                        }),
+                        _vm._v(
+                          "\n              " +
+                            _vm._s(
+                              _vm.validationErrors["telephoneNumberInput"]
+                            ) +
+                            "\n            "
+                        ),
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "\n                contact-container\n                d-flex\n                justify-content-between\n                align-items-center\n                mb-3\n              ",
+                    },
+                    [
+                      _c(
+                        "div",
+                        { staticClass: "d-flex align-items-center flex-fill" },
+                        [
+                          _vm._m(3),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "mb-0 fw-600 me-2" }, [
+                            _vm._v("+63"),
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "form-floating w-100" },
+                            [
+                              _c("contact-number-input", {
+                                ref: "telephoneNumberInputRef",
+                                model: {
+                                  value: _vm.telephoneNumberInput,
+                                  callback: function ($$v) {
+                                    _vm.telephoneNumberInput = $$v
+                                  },
+                                  expression: "telephoneNumberInput",
+                                },
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "label",
+                                { attrs: { for: "floatingTelephone1" } },
+                                [_vm._v("Telephone Number")]
+                              ),
+                            ],
+                            1
+                          ),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-main-red ms-2 add-contact-btn",
+                          attrs: { id: "addTelephoneBtn", type: "button" },
+                          on: {
+                            click: function ($event) {
+                              return _vm.addContactNumber(
+                                _vm.telephoneNumberInput,
+                                _vm.telephoneNumbers,
+                                "telephoneNumberInput"
+                              )
+                            },
+                          },
+                        },
+                        [
+                          _vm._v(
+                            "\n                Add Telephone Number +\n              "
+                          ),
+                        ]
+                      ),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "text-center telephone-numbers-div" },
+                    _vm._l(_vm.telephoneNumbers, function (telephoneNumber) {
+                      return _c(
+                        "div",
+                        {
+                          key: _vm.telephoneNumbers.indexOf(telephoneNumber),
+                          staticClass:
+                            "d-flex align-items-center justify-content-center mb-2",
+                        },
+                        [
+                          _c("p", { staticClass: "mb-0 fw-600" }, [
+                            _vm._v(_vm._s(telephoneNumber)),
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-main-red py-1 ms-2",
+                              attrs: { type: "button" },
+                              on: {
+                                click: function ($event) {
+                                  return _vm.removeContactNumber(
+                                    telephoneNumber,
+                                    _vm.telephoneNumbers,
+                                    "telephoneNumberInput"
+                                  )
+                                },
+                              },
+                            },
+                            [_c("i", { staticClass: "fas fa-times" })]
+                          ),
+                        ]
+                      )
+                    }),
+                    0
+                  ),
+                ]),
+              ]),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "modal-footer" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-secondary",
+              attrs: { type: "button" },
+              on: {
+                click: function ($event) {
+                  return _vm.$emit("close-modal")
+                },
+              },
+            },
+            [_vm._v("\n          Cancel\n        ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-main-red",
+              attrs: { type: "button" },
+              on: { click: _vm.editRestaurantOutlet },
+            },
+            [_vm._v("\n          Save\n        ")]
+          ),
+        ]),
+      ]),
+    ]),
+  ])
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "spinner-grow text-danger mt-2",
+        attrs: { role: "status" },
+      },
+      [_c("span", { staticClass: "visually-hidden" }, [_vm._v("Loading...")])]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "spinner-grow text-danger mt-2",
+        attrs: { role: "status" },
+      },
+      [_c("span", { staticClass: "visually-hidden" }, [_vm._v("Loading...")])]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "contact-icon" }, [
+      _c("i", { staticClass: "fas fa-mobile-alt me-3" }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "contact-icon" }, [
+      _c("i", { staticClass: "fas fa-phone me-3" }),
     ])
   },
 ]

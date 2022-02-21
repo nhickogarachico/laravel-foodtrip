@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Restaurant;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Restaurant\EditStepTwoRequest;
 use App\Http\Requests\Restaurant\StoreRestaurantOutletRequest;
 use App\Models\RestaurantCategory;
 use App\Http\Requests\Restaurant\StoreStepOneRequest;
@@ -75,9 +76,21 @@ class RestaurantController extends Controller
         $request->session()->push('stepTwoData.restaurantOutlets', $request->validated());
     }
 
-    public function fetchSessionData() {
+    public function fetchSessionData()
+    {
         return response()->json([
             'sessionData' => session()->all()
         ]);
     }
+
+    public function updateRestaurantOutletData(EditStepTwoRequest $request)
+    {
+        $restaurantOutletId = $request->validated()['restaurantOutletId'];
+        $restaurantOutlets = session("stepTwoData");
+        $restaurantOutlets['restaurantOutlets'][$restaurantOutletId]['restaurantOutletName'] = $request->validated()['restaurantOutletName'];
+        session()->put('stepTwoData', $restaurantOutlets);
+        return response()->json([
+            'restaurantOutlet' => session('stepTwoData')
+        ]);
+    }   
 }
