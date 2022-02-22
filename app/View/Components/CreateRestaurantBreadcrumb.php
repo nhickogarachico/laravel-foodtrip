@@ -6,6 +6,7 @@ use Illuminate\View\Component;
 
 class CreateRestaurantBreadcrumb extends Component
 {
+
     /**
      * Create a new component instance.
      *
@@ -13,7 +14,6 @@ class CreateRestaurantBreadcrumb extends Component
      */
     public function __construct()
     {
-        //
     }
 
     /**
@@ -23,6 +23,8 @@ class CreateRestaurantBreadcrumb extends Component
      */
     public function render()
     {
+        $this->sessionData = session()->all();
+
         return view('components.create-restaurant-breadcrumb');
     }
 }

@@ -1,7 +1,7 @@
 @extends('layouts.create-restaurant-page')
 
-@section('title', 'FoodTrip | Create Restaurant Page - Restaurant Outlets')
+@section('title', 'FoodTrip | Create Restaurant Page - Menu Items')
 
 @section('content')
-   <div>page 3</div>
+   <create-restaurant-page-step-three :step-three-data="{{$stepThreeData}}"></create-restaurant-page-step-three>
 @endsection

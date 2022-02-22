@@ -3,7 +3,7 @@
     <div class="modal-content">
       <div class="card">
         <div class="modal-header">
-          <p class="mb-0">Edit Restaurant Outlet Modal</p>
+          <p class="mb-0">Edit Restaurant Outlet</p>
           <button
             type="button"
             class="btn p-0"

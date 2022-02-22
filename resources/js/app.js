@@ -25,11 +25,13 @@ Vue.component('like-button', require('./components/LikeButton.vue').default);
 Vue.component('tag-search-input', require('./components/TagSearchInput.vue').default);
 Vue.component('create-restaurant-page-step-one', require('./components/CreateRestaurantPageStepOne.vue').default);
 Vue.component('create-restaurant-page-step-two', require('./components/CreateRestaurantPageStepTwo.vue').default);
+Vue.component('create-restaurant-page-step-three', require('./components/CreateRestaurantPageStepThree.vue').default);
 Vue.component('contact-number-input', require('./components/ContactNumberInput.vue').default);
 Vue.component('add-restaurant-outlet-modal', require('./components/AddRestaurantOutletModal.vue').default);
 Vue.component('mapbox-map', require('./components/MapBoxMap.vue').default);
 Vue.component('opening-hours-form', require('./components/OpeningHoursForm.vue').default);
 Vue.component('edit-restaurant-outlet-modal', require('./components/EditRestaurantOutletModal.vue').default);
+Vue.component('add-menu-item-modal', require('./components/AddMenuItemModal.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

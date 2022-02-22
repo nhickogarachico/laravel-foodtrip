@@ -30,6 +30,10 @@ class RestaurantController extends Controller
     protected $initialStepTwo = [
         "restaurantOutlets" => []
     ];
+
+    protected $initialStepThree = [
+        'menuItems' => []
+    ];
     public function __construct(RestaurantCategory $restaurantCategory, Area $area, Locality $locality, Location $location)
     {
         $this->restaurantCategory = $restaurantCategory;
@@ -55,13 +59,19 @@ class RestaurantController extends Controller
         $localities = $this->locality->all();
         $locations = $this->location->all();
 
+
+
         if (session('stepOneData')) {
+            // Initialize session data first if there's none
+            if (!session('stepTwoData')) {
+                session()->put('stepTwoData.restaurantOutlets', []);
+            }
             return view('screens.create-restaurant-page-step-2', [
                 'areas' => $areas,
                 'localities' => $localities,
                 'locations' => $locations,
                 'stepOneData' => json_encode($stepOneData),
-                'stepTwoData' => session('stepTwoData') ? json_encode(session('stepTwoData')) : json_encode($this->initialStepTwo)
+                'stepTwoData' => json_encode(session('stepTwoData'))
             ]);
         } else {
             return redirect('/register');
@@ -70,17 +80,17 @@ class RestaurantController extends Controller
 
     public function showRegisterRestaurantStepThreeView()
     {
-        if(count(session('stepTwoData.restaurantOutlets')) > 0 )
-        {
-            return view('screens.create-restaurant-page-step-3');
-        } else if(count(session('stepTwoData.restaurantOutlets')) === 0) {
+        if (session('stepTwoData') && count(session('stepTwoData.restaurantOutlets')) > 0) {
+            return view('screens.create-restaurant-page-step-3', [
+                'stepThreeData' => session('stepThreeData') ? json_encode(session('stepThreeData')) : json_encode($this->initialStepThree)
+            ]);
+        } else if (session('stepTwoData') && count(session('stepTwoData.restaurantOutlets')) === 0) {
             return back()->withErrors([
                 'stepTwoError' => 'There are no restaurant outlets yet.'
             ]);
-        }else {
+        } else {
             return redirect('/register');
         }
-        
     }
 
     public function completeRestaurantPageCreationStepOne(StoreStepOneRequest $request)
@@ -104,9 +114,10 @@ class RestaurantController extends Controller
     {
         $restaurantOutletId = $request->validated()['restaurantOutletId'];
         session()->put("stepTwoData.restaurantOutlets.$restaurantOutletId", $request->validated());
-    }   
+    }
 
-    public function deleteRestaurantOutletSession($restaurantOutletIndex) {
+    public function deleteRestaurantOutletSession($restaurantOutletIndex)
+    {
         session()->forget("stepTwoData.restaurantOutlets.$restaurantOutletIndex");
     }
 }

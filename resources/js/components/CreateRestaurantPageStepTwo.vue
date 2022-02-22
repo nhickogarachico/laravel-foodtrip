@@ -2,6 +2,7 @@
   <div>
     <div class="card mb-4">
       <div class="card-header d-flex bg-white">
+        <span class="fw-600 me-2">Outlets</span>
         <button
           class="btn py-0 px-1 btn-main-red-hover"
           data-bs-toggle="modal"
@@ -9,9 +10,20 @@
         >
           <i class="fas fa-plus"></i>
         </button>
-        <span class="fw-600 ms-2">Outlets</span>
       </div>
       <div class="card-body">
+        <div
+          class="alert alert-danger d-flex justify-content-between"
+          v-if="stepTwoError"
+        >
+          {{ errors.stepTwoError[0] }}
+          <button
+            class="btn p-0"
+            v-on:click="closeStepTwoError"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
         <div
           class="alert alert-success d-flex justify-content-between"
           v-if="updateSuccess"
@@ -196,6 +208,7 @@ export default {
   props: {
     stepOneData: Object,
     stepTwoData: Object,
+    errors: [Array, Object],
     areas: Array,
     localities: Array,
     locations: Array,
@@ -205,6 +218,7 @@ export default {
       isModalOpen: false,
       updateSuccess: false,
       deleteSuccess: false,
+      stepTwoError: false,
       openModalButton: {},
       daysOfTheWeek: {
         1: "Monday",
@@ -244,11 +258,17 @@ export default {
     displayUpdateSuccessMessage: function () {
       this.updateSuccess = true;
     },
-    deleteRestaurantOutlet: function(index) {
-      axios.delete(`/register/restaurant/step/2/${index}`).then((response) => {
-        this.deleteSuccess = true;
-                  this.$root.fetchSessionData();
-      }).catch((error) => console.log(error.response.data))
+    deleteRestaurantOutlet: function (index) {
+      axios
+        .delete(`/register/restaurant/step/2/${index}`)
+        .then((response) => {
+          this.deleteSuccess = true;
+          this.$root.fetchSessionData();
+        })
+        .catch((error) => console.log(error.response.data));
+    },
+    closeStepTwoError: function () {
+      this.stepTwoError = false;
     },
     proceedToStepThree: function () {
       window.location.href = "/register/restaurant/step/3";
@@ -259,6 +279,8 @@ export default {
       "stepOneData",
       JSON.stringify(this.stepOneData)
     );
+
+    if (this.errors.stepTwoError) this.stepTwoError = true;
   },
   beforeMount() {
     createRestaurantPageStorage.setItem(
