@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Restaurant;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Restaurant\DestroyStepTwoRequest;
 use App\Http\Requests\Restaurant\EditStepTwoRequest;
 use App\Http\Requests\Restaurant\StoreRestaurantOutletRequest;
 use App\Models\RestaurantCategory;
@@ -66,6 +67,22 @@ class RestaurantController extends Controller
             return redirect('/register');
         }
     }
+
+    public function showRegisterRestaurantStepThreeView()
+    {
+        if(count(session('stepTwoData.restaurantOutlets')) > 0 )
+        {
+            return view('screens.create-restaurant-page-step-3');
+        } else if(count(session('stepTwoData.restaurantOutlets')) === 0) {
+            return back()->withErrors([
+                'stepTwoError' => 'There are no restaurant outlets yet.'
+            ]);
+        }else {
+            return redirect('/register');
+        }
+        
+    }
+
     public function completeRestaurantPageCreationStepOne(StoreStepOneRequest $request)
     {
         $request->session()->put('stepOneData', $request->validated());
@@ -83,14 +100,13 @@ class RestaurantController extends Controller
         ]);
     }
 
-    public function updateRestaurantOutletData(EditStepTwoRequest $request)
+    public function updateRestaurantOutletDataSession(EditStepTwoRequest $request)
     {
         $restaurantOutletId = $request->validated()['restaurantOutletId'];
-        $restaurantOutlets = session("stepTwoData");
-        $restaurantOutlets['restaurantOutlets'][$restaurantOutletId]['restaurantOutletName'] = $request->validated()['restaurantOutletName'];
-        session()->put('stepTwoData', $restaurantOutlets);
-        return response()->json([
-            'restaurantOutlet' => session('stepTwoData')
-        ]);
+        session()->put("stepTwoData.restaurantOutlets.$restaurantOutletId", $request->validated());
     }   
+
+    public function deleteRestaurantOutletSession($restaurantOutletIndex) {
+        session()->forget("stepTwoData.restaurantOutlets.$restaurantOutletIndex");
+    }
 }

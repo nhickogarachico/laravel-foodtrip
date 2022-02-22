@@ -18,10 +18,12 @@ Route::post('/register', [RegisterController::class, 'registerNewUser']);
 
 Route::get('/register/restaurant/step/1', [RestaurantController::class, 'showRegisterRestaurantStepOneView']);
 Route::get('/register/restaurant/step/2', [RestaurantController::class, 'showRegisterRestaurantStepTwoView']);
+Route::get('/register/restaurant/step/3', [RestaurantController::class, 'showRegisterRestaurantStepThreeView']);
 Route::post('/register/restaurant/step/1', [RestaurantController::class, 'completeRestaurantPageCreationStepOne']);
 Route::post('/register/restaurant/step/2', [RestaurantController::class, 'completeRestaurantPageCreationStepTwo']);
 Route::get('/register/restaurant/session', [RestaurantController::class, 'fetchSessionData']);
-Route::put('/register/restaurant/step/2', [RestaurantController::class, 'updateRestaurantOutletData']);
+Route::put('/register/restaurant/step/2', [RestaurantController::class, 'updateRestaurantOutletDataSession']);
+Route::delete('/register/restaurant/step/2/{restaurantOutletIndex}', [RestaurantController::class, 'deleteRestaurantOutletSession']);
 
 Route::get('/login', [AuthController::class, 'showLoginView'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);

@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-custom">
+  <div class="modal-custom" ref="editRestaurantOutletModal">
     <div class="modal-content">
       <div class="card">
         <div class="modal-header">
@@ -592,13 +592,56 @@ export default {
         .put("/register/restaurant/step/2", {
           restaurantOutletId: this.restaurantOutletIndex,
           restaurantOutletName: this.restaurantOutletName,
+          area:{id:  this.areaInput.id, area: this.areaInput.area},
+          locality: {id: this.localityInput.id, locality: this.localityInput.locality},
+          location: {id: this.locationInput.id, location: this.locationInput.location},
+          fullAddress: this.fullAddressInput,
+          addressLongitude: this.addressCoordinates[0],
+          addressLatitude: this.addressCoordinates[1],
+          openingHours: this.openingHours,
+          mobileNumbers: this.mobileNumbers,
+          telephoneNumbers: this.telephoneNumbers,
         })
         .then((response) => {
           this.$root.fetchSessionData();
           this.$emit("close-modal");
           this.$emit('display-update-success-message');
         })
-        .catch((error) => console.log(error.response.data));
+        .catch((error) => {
+          if (error.response.data.errors.restaurantOutletName) {
+            this.validationErrors.restaurantOutletName =
+              error.response.data.errors.restaurantOutletName;
+          } else {
+            this.validationErrors.restaurantOutletName = [];
+          }
+          if (error.response.data.errors.area) {
+            this.validationErrors.area = error.response.data.errors.area;
+          } else {
+            this.validationErrors.area = [];
+          }
+          if (error.response.data.errors.locality) {
+            this.validationErrors.locality =
+              error.response.data.errors.locality;
+          } else {
+            this.validationErrors.locality = [];
+          }
+          if (error.response.data.errors.location) {
+            this.validationErrors.location =
+              error.response.data.errors.location;
+          } else {
+            this.validationErrors.location = [];
+          }
+          if (error.response.data.errors.area) {
+            this.validationErrors.addressLongitude =
+              error.response.data.errors.addressLongitude;
+          } else {
+            this.validationErrors.addressLongitude = [];
+          }
+
+          this.$nextTick(() => {
+           this.$refs.editRestaurantOutletModal.scrollTo(0, 0);
+          });
+        });
     },
     fetchSessionData: function () {
       this.loadingData = true;

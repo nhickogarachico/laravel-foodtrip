@@ -6489,6 +6489,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
@@ -6502,6 +6527,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       isModalOpen: false,
       updateSuccess: false,
+      deleteSuccess: false,
       openModalButton: {},
       daysOfTheWeek: {
         1: "Monday",
@@ -6520,7 +6546,10 @@ __webpack_require__.r(__webpack_exports__);
       var dateInteger = parseInt(dateString);
 
       if (dateInteger > 12) {
-        return String(dateInteger - 12);
+        return (dateInteger - 12).toLocaleString("en-US", {
+          minimumIntegerDigits: 2,
+          useGrouping: false
+        });
       } else {
         return dateString;
       }
@@ -6538,6 +6567,20 @@ __webpack_require__.r(__webpack_exports__);
     },
     displayUpdateSuccessMessage: function displayUpdateSuccessMessage() {
       this.updateSuccess = true;
+    },
+    deleteRestaurantOutlet: function deleteRestaurantOutlet(index) {
+      var _this = this;
+
+      axios["delete"]("/register/restaurant/step/2/".concat(index)).then(function (response) {
+        _this.deleteSuccess = true;
+
+        _this.$root.fetchSessionData();
+      })["catch"](function (error) {
+        return console.log(error.response.data);
+      });
+    },
+    proceedToStepThree: function proceedToStepThree() {
+      window.location.href = "/register/restaurant/step/3";
     }
   },
   mounted: function mounted() {
@@ -7137,7 +7180,25 @@ var today = new Date();
 
       axios.put("/register/restaurant/step/2", {
         restaurantOutletId: this.restaurantOutletIndex,
-        restaurantOutletName: this.restaurantOutletName
+        restaurantOutletName: this.restaurantOutletName,
+        area: {
+          id: this.areaInput.id,
+          area: this.areaInput.area
+        },
+        locality: {
+          id: this.localityInput.id,
+          locality: this.localityInput.locality
+        },
+        location: {
+          id: this.locationInput.id,
+          location: this.locationInput.location
+        },
+        fullAddress: this.fullAddressInput,
+        addressLongitude: this.addressCoordinates[0],
+        addressLatitude: this.addressCoordinates[1],
+        openingHours: this.openingHours,
+        mobileNumbers: this.mobileNumbers,
+        telephoneNumbers: this.telephoneNumbers
       }).then(function (response) {
         _this2.$root.fetchSessionData();
 
@@ -7145,7 +7206,39 @@ var today = new Date();
 
         _this2.$emit('display-update-success-message');
       })["catch"](function (error) {
-        return console.log(error.response.data);
+        if (error.response.data.errors.restaurantOutletName) {
+          _this2.validationErrors.restaurantOutletName = error.response.data.errors.restaurantOutletName;
+        } else {
+          _this2.validationErrors.restaurantOutletName = [];
+        }
+
+        if (error.response.data.errors.area) {
+          _this2.validationErrors.area = error.response.data.errors.area;
+        } else {
+          _this2.validationErrors.area = [];
+        }
+
+        if (error.response.data.errors.locality) {
+          _this2.validationErrors.locality = error.response.data.errors.locality;
+        } else {
+          _this2.validationErrors.locality = [];
+        }
+
+        if (error.response.data.errors.location) {
+          _this2.validationErrors.location = error.response.data.errors.location;
+        } else {
+          _this2.validationErrors.location = [];
+        }
+
+        if (error.response.data.errors.area) {
+          _this2.validationErrors.addressLongitude = error.response.data.errors.addressLongitude;
+        } else {
+          _this2.validationErrors.addressLongitude = [];
+        }
+
+        _this2.$nextTick(function () {
+          _this2.$refs.editRestaurantOutletModal.scrollTo(0, 0);
+        });
       });
     },
     fetchSessionData: function fetchSessionData() {
@@ -40188,6 +40281,31 @@ var render = function () {
                 )
               : _vm._e(),
             _vm._v(" "),
+            _vm.deleteSuccess
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "alert alert-success d-flex justify-content-between",
+                  },
+                  [
+                    _vm._v("\n        Deleted successfully.\n        "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn p-0",
+                        on: {
+                          click: function ($event) {
+                            _vm.deleteSuccess = false
+                          },
+                        },
+                      },
+                      [_c("i", { staticClass: "fas fa-times" })]
+                    ),
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
             _vm.$root.addingRestaurantOutletData
               ? _c(
                   "div",
@@ -40266,21 +40384,41 @@ var render = function () {
                               ),
                             ]),
                             _vm._v(" "),
-                            _c(
-                              "button",
-                              {
-                                ref: "openModalButton" + i,
-                                refInFor: true,
-                                staticClass: "btn py-0 px-1 btn-main-red-hover",
-                                attrs: { type: "button" },
-                                on: {
-                                  click: function ($event) {
-                                    return _vm.changeCurrentRestaurantOutlet(i)
+                            _c("div", [
+                              _c(
+                                "button",
+                                {
+                                  ref: "openModalButton" + i,
+                                  refInFor: true,
+                                  staticClass:
+                                    "btn py-0 px-1 btn-main-red-hover",
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.changeCurrentRestaurantOutlet(
+                                        i
+                                      )
+                                    },
                                   },
                                 },
-                              },
-                              [_c("i", { staticClass: "fas fa-pencil" })]
-                            ),
+                                [_c("i", { staticClass: "fas fa-pencil" })]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass:
+                                    "btn py-0 px-1 btn-main-red-hover ms-1",
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.deleteRestaurantOutlet(i)
+                                    },
+                                  },
+                                },
+                                [_c("i", { staticClass: "fas fa-trash" })]
+                              ),
+                            ]),
                           ]
                         ),
                         _vm._v(" "),
@@ -40323,7 +40461,9 @@ var render = function () {
                                             _c("span", [
                                               _vm._v(
                                                 _vm._s(
-                                                  openingHour.openingHour
+                                                  _vm.convertDateStringToNumber(
+                                                    openingHour.openingHour
+                                                  )
                                                 ) +
                                                   ":" +
                                                   _vm._s(
@@ -40367,14 +40507,17 @@ var render = function () {
                             _vm._v("Contact Numbers"),
                           ]),
                           _vm._v(" "),
-                          restaurantOutlet.mobileNumbers.length === 0 ||
+                          restaurantOutlet.mobileNumbers.length === 0 &&
                           restaurantOutlet.telephoneNumbers.length === 0
                             ? _c("div", [
                                 _vm._v(
                                   "\n            No contact numbers\n          "
                                 ),
                               ])
-                            : _c(
+                            : _vm._e(),
+                          _vm._v(" "),
+                          restaurantOutlet.mobileNumbers.length > 0
+                            ? _c(
                                 "div",
                                 [
                                   _c("p", { staticClass: "fw-600 mb-2" }, [
@@ -40393,7 +40536,15 @@ var render = function () {
                                       ])
                                     }
                                   ),
-                                  _vm._v(" "),
+                                ],
+                                2
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          restaurantOutlet.telephoneNumbers.length > 0
+                            ? _c(
+                                "div",
+                                [
                                   _c("p", { staticClass: "fw-600 mb-2" }, [
                                     _vm._v("Telephone Numbers"),
                                   ]),
@@ -40412,7 +40563,8 @@ var render = function () {
                                   ),
                                 ],
                                 2
-                              ),
+                              )
+                            : _vm._e(),
                         ]),
                         _vm._v(" "),
                         _c("hr"),
@@ -40425,7 +40577,26 @@ var render = function () {
         ),
       ]),
       _vm._v(" "),
-      _vm._m(3),
+      _c("div", { staticClass: "d-flex" }, [
+        _c(
+          "a",
+          {
+            staticClass: "btn btn-main-red-outline w-100 me-3",
+            attrs: { href: "/register/restaurant/step/1" },
+          },
+          [_vm._v("Back")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-main-red w-100",
+            attrs: { type: "button" },
+            on: { click: _vm.proceedToStepThree },
+          },
+          [_vm._v("\n      Next\n    ")]
+        ),
+      ]),
       _vm._v(" "),
       _vm.isModalOpen
         ? _c("edit-restaurant-outlet-modal", {
@@ -40495,30 +40666,6 @@ var staticRenderFns = [
       [_c("span", { staticClass: "visually-hidden" }, [_vm._v("Loading...")])]
     )
   },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "d-flex" }, [
-      _c(
-        "a",
-        {
-          staticClass: "btn btn-main-red-outline w-100 me-3",
-          attrs: { href: "/register/restaurant/step/1" },
-        },
-        [_vm._v("Back")]
-      ),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          staticClass: "btn btn-main-red w-100",
-          attrs: { href: "./create-restaurant-page-step-3.html" },
-        },
-        [_vm._v("Next")]
-      ),
-    ])
-  },
 ]
 render._withStripped = true
 
@@ -40542,536 +40689,684 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "modal-custom" }, [
-    _c("div", { staticClass: "modal-content" }, [
-      _c("div", { staticClass: "card" }, [
-        _c("div", { staticClass: "modal-header" }, [
-          _c("p", { staticClass: "mb-0" }, [
-            _vm._v("Edit Restaurant Outlet Modal"),
-          ]),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn p-0",
-              attrs: { type: "button" },
-              on: {
-                click: function ($event) {
-                  return _vm.$emit("close-modal")
+  return _c(
+    "div",
+    { ref: "editRestaurantOutletModal", staticClass: "modal-custom" },
+    [
+      _c("div", { staticClass: "modal-content" }, [
+        _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "modal-header" }, [
+            _c("p", { staticClass: "mb-0" }, [
+              _vm._v("Edit Restaurant Outlet Modal"),
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn p-0",
+                attrs: { type: "button" },
+                on: {
+                  click: function ($event) {
+                    return _vm.$emit("close-modal")
+                  },
                 },
               },
-            },
-            [_c("i", { staticClass: "fas fa-times fs-3" })]
-          ),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "modal-body" }, [
-          _vm.loadingData
-            ? _c(
-                "div",
-                {
-                  staticClass:
-                    "d-flex justify-content-center align-items-center flex-column",
-                },
-                [
-                  _vm._m(0),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "fst-italic" }, [
-                    _vm._v("Loading data ..."),
-                  ]),
-                ]
-              )
-            : _c("div", [
-                _vm.validationErrors.restaurantOutletName.length > 0
-                  ? _c("div", { staticClass: "alert alert-warning" }, [
-                      _c("i", {
-                        staticClass: "fas fa-exclamation-circle me-2",
-                      }),
-                      _vm._v(
-                        "\n            " +
-                          _vm._s(_vm.validationErrors.restaurantOutletName[0]) +
-                          "\n          "
-                      ),
-                    ])
-                  : _vm._e(),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-floating mb-1" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.restaurantOutletName,
-                        expression: "restaurantOutletName",
-                      },
-                    ],
-                    ref: "restaurantOutletNameInput",
-                    staticClass: "form-control",
-                    attrs: {
-                      id: "floatingRestaurantOutletName1",
-                      type: "text",
-                      placeholder: "restaurant outlet name",
-                      autofocus: "",
-                    },
-                    domProps: { value: _vm.restaurantOutletName },
-                    on: {
-                      input: [
-                        function ($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.restaurantOutletName = $event.target.value
-                        },
-                        _vm.checkIfSameWithRestaurantName,
-                      ],
-                    },
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: "floatingName" } }, [
-                    _vm._v("Restaurant Outlet Name"),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-check mb-3" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.sameRestaurantOutletName,
-                        expression: "sameRestaurantOutletName",
-                      },
-                    ],
-                    staticClass: "form-check-input",
-                    attrs: { type: "checkbox" },
-                    domProps: {
-                      checked: _vm.sameRestaurantOutletName,
-                      checked: Array.isArray(_vm.sameRestaurantOutletName)
-                        ? _vm._i(_vm.sameRestaurantOutletName, null) > -1
-                        : _vm.sameRestaurantOutletName,
-                    },
-                    on: {
-                      change: [
-                        function ($event) {
-                          var $$a = _vm.sameRestaurantOutletName,
-                            $$el = $event.target,
-                            $$c = $$el.checked ? true : false
-                          if (Array.isArray($$a)) {
-                            var $$v = null,
-                              $$i = _vm._i($$a, $$v)
-                            if ($$el.checked) {
-                              $$i < 0 &&
-                                (_vm.sameRestaurantOutletName = $$a.concat([
-                                  $$v,
-                                ]))
-                            } else {
-                              $$i > -1 &&
-                                (_vm.sameRestaurantOutletName = $$a
-                                  .slice(0, $$i)
-                                  .concat($$a.slice($$i + 1)))
-                            }
-                          } else {
-                            _vm.sameRestaurantOutletName = $$c
-                          }
-                        },
-                        _vm.changeOutletNameToRestaurantName,
-                      ],
-                    },
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "label",
-                    {
-                      staticClass: "form-check-label",
-                      attrs: { for: "flexCheckDefault" },
-                    },
-                    [
-                      _vm._v(
-                        "\n              Same as Restaurant Name\n            "
-                      ),
-                    ]
-                  ),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "mb-3" }, [
-                  _c("p", { staticClass: "fw-600 mb-1" }, [_vm._v("Address")]),
-                  _vm._v(" "),
-                  _vm.validationErrors.area.length > 0
-                    ? _c("div", { staticClass: "alert alert-warning" }, [
-                        _c("i", {
-                          staticClass: "fas fa-exclamation-circle me-2",
-                        }),
-                        _vm._v(
-                          "\n              " +
-                            _vm._s(_vm.validationErrors.area[0]) +
-                            "\n            "
-                        ),
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.validationErrors.locality.length > 0
-                    ? _c("div", { staticClass: "alert alert-warning" }, [
-                        _c("i", {
-                          staticClass: "fas fa-exclamation-circle me-2",
-                        }),
-                        _vm._v(
-                          "\n              " +
-                            _vm._s(_vm.validationErrors.locality[0]) +
-                            "\n            "
-                        ),
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.validationErrors.location.length > 0
-                    ? _c("div", { staticClass: "alert alert-warning" }, [
-                        _c("i", {
-                          staticClass: "fas fa-exclamation-circle me-2",
-                        }),
-                        _vm._v(
-                          "\n              " +
-                            _vm._s(_vm.validationErrors.location[0]) +
-                            "\n            "
-                        ),
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "d-flex justify-content-between" }, [
-                    _c("div", { staticClass: "flex-fill" }, [
-                      _c(
-                        "label",
-                        { staticClass: "fw-600", attrs: { for: "" } },
-                        [_vm._v("Area")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.areaInput,
-                              expression: "areaInput",
-                            },
-                          ],
-                          staticClass: "form-select",
-                          on: {
-                            change: [
-                              function ($event) {
-                                var $$selectedVal = Array.prototype.filter
-                                  .call($event.target.options, function (o) {
-                                    return o.selected
-                                  })
-                                  .map(function (o) {
-                                    var val = "_value" in o ? o._value : o.value
-                                    return val
-                                  })
-                                _vm.areaInput = $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
-                              },
-                              _vm.onChangeAreaInput,
-                            ],
-                          },
-                        },
-                        [
-                          _c(
-                            "option",
-                            { attrs: { value: "0", disabled: "" } },
-                            [_vm._v("--SELECT AREA--")]
-                          ),
-                          _vm._v(" "),
-                          _vm._l(_vm.areas.sort(), function (area) {
-                            return _c(
-                              "option",
-                              {
-                                key: area.id,
-                                domProps: {
-                                  value: { id: area.id, area: area.area },
-                                },
-                              },
-                              [
-                                _vm._v(
-                                  "\n                    " +
-                                    _vm._s(area.area) +
-                                    "\n                  "
-                                ),
-                              ]
-                            )
-                          }),
-                        ],
-                        2
-                      ),
-                    ]),
+              [_c("i", { staticClass: "fas fa-times fs-3" })]
+            ),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-body" }, [
+            _vm.loadingData
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex justify-content-center align-items-center flex-column",
+                  },
+                  [
+                    _vm._m(0),
                     _vm._v(" "),
-                    _c("div", { staticClass: "mx-2 flex-fill" }, [
-                      _c(
-                        "label",
-                        { staticClass: "fw-600", attrs: { for: "" } },
-                        [_vm._v("Locality")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.localityInput,
-                              expression: "localityInput",
-                            },
-                          ],
-                          staticClass: "form-select",
-                          on: {
-                            change: [
-                              function ($event) {
-                                var $$selectedVal = Array.prototype.filter
-                                  .call($event.target.options, function (o) {
-                                    return o.selected
-                                  })
-                                  .map(function (o) {
-                                    var val = "_value" in o ? o._value : o.value
-                                    return val
-                                  })
-                                _vm.localityInput = $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
-                              },
-                              _vm.onChangeLocalityInput,
-                            ],
-                          },
-                        },
-                        [
-                          _c(
-                            "option",
-                            { attrs: { value: "0", disabled: "" } },
-                            [_vm._v("--SELECT LOCALITY--")]
-                          ),
-                          _vm._v(" "),
-                          _vm._l(
-                            _vm.localities.filter(_vm.filterLocalities),
-                            function (locality) {
-                              return _c(
-                                "option",
-                                {
-                                  key: locality.id,
-                                  domProps: {
-                                    value: {
-                                      id: locality.id,
-                                      locality: locality.locality,
-                                    },
-                                  },
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                    " +
-                                      _vm._s(locality.locality) +
-                                      "\n                  "
-                                  ),
-                                ]
-                              )
-                            }
-                          ),
-                        ],
-                        2
-                      ),
+                    _c("span", { staticClass: "fst-italic" }, [
+                      _vm._v("Loading data ..."),
                     ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "flex-fill" }, [
-                      _c(
-                        "label",
-                        { staticClass: "fw-600", attrs: { for: "" } },
-                        [_vm._v("Location")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "select",
-                        {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.locationInput,
-                              expression: "locationInput",
-                            },
-                          ],
-                          staticClass: "form-select",
-                          attrs: { "aria-label": "Default select example" },
-                          on: {
-                            change: function ($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function (o) {
-                                  return o.selected
-                                })
-                                .map(function (o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.locationInput = $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
-                            },
-                          },
-                        },
-                        [
-                          _c(
-                            "option",
-                            { attrs: { value: "0", disabled: "" } },
-                            [_vm._v("--SELECT LOCATION--")]
-                          ),
-                          _vm._v(" "),
-                          _vm._l(
-                            _vm.locations.filter(_vm.filterLocations),
-                            function (location) {
-                              return _c(
-                                "option",
-                                {
-                                  key: location.id,
-                                  domProps: {
-                                    value: {
-                                      id: location.id,
-                                      location: location.location,
-                                    },
-                                  },
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                    " +
-                                      _vm._s(location.location) +
-                                      "\n                  "
-                                  ),
-                                ]
-                              )
-                            }
-                          ),
-                        ],
-                        2
-                      ),
-                    ]),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "mb-2" }, [
-                  _vm.validationErrors.addressLongitude.length > 0
+                  ]
+                )
+              : _c("div", [
+                  _vm.validationErrors.restaurantOutletName.length > 0
                     ? _c("div", { staticClass: "alert alert-warning" }, [
                         _c("i", {
                           staticClass: "fas fa-exclamation-circle me-2",
                         }),
                         _vm._v(
-                          "\n              " +
-                            _vm._s(_vm.validationErrors.addressLongitude[0]) +
-                            "\n            "
+                          "\n            " +
+                            _vm._s(
+                              _vm.validationErrors.restaurantOutletName[0]
+                            ) +
+                            "\n          "
                         ),
                       ])
                     : _vm._e(),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-floating" }, [
+                  _c("div", { staticClass: "form-floating mb-1" }, [
                     _c("input", {
                       directives: [
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.fullAddressInput,
-                          expression: "fullAddressInput",
+                          value: _vm.restaurantOutletName,
+                          expression: "restaurantOutletName",
                         },
                       ],
+                      ref: "restaurantOutletNameInput",
                       staticClass: "form-control",
                       attrs: {
-                        id: "floatingFullAddress1",
+                        id: "floatingRestaurantOutletName1",
                         type: "text",
-                        placeholder: "full address",
+                        placeholder: "restaurant outlet name",
+                        autofocus: "",
                       },
-                      domProps: { value: _vm.fullAddressInput },
+                      domProps: { value: _vm.restaurantOutletName },
                       on: {
-                        input: function ($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.fullAddressInput = $event.target.value
-                        },
+                        input: [
+                          function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.restaurantOutletName = $event.target.value
+                          },
+                          _vm.checkIfSameWithRestaurantName,
+                        ],
                       },
                     }),
                     _vm._v(" "),
-                    _c("label", { attrs: { for: "floatingFullAddress" } }, [
-                      _vm._v("Full Address"),
+                    _c("label", { attrs: { for: "floatingName" } }, [
+                      _vm._v("Restaurant Outlet Name"),
                     ]),
                   ]),
                   _vm._v(" "),
-                  _vm.reverseGeoCoding.loading
-                    ? _c(
-                        "div",
+                  _c("div", { staticClass: "form-check mb-3" }, [
+                    _c("input", {
+                      directives: [
                         {
-                          staticClass:
-                            "\n                d-flex\n                justify-content-center\n                align-items-center\n                flex-column\n              ",
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.sameRestaurantOutletName,
+                          expression: "sameRestaurantOutletName",
                         },
-                        [
-                          _vm._m(1),
-                          _vm._v(" "),
-                          _c("span", { staticClass: "fst-italic" }, [
-                            _vm._v("Fetching address ..."),
-                          ]),
-                        ]
-                      )
-                    : _vm._e(),
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "mb-2" },
-                  [
-                    _c("p", { staticClass: "fw-600" }, [
-                      _vm._v("Map Location"),
-                    ]),
-                    _vm._v(" "),
-                    _c("map-box-map", {
-                      attrs: {
-                        "mapbox-api-key": _vm.mapBoxAPIKey,
-                        "address-coordinates": _vm.addressCoordinates,
+                      ],
+                      staticClass: "form-check-input",
+                      attrs: { type: "checkbox" },
+                      domProps: {
+                        checked: _vm.sameRestaurantOutletName,
+                        checked: Array.isArray(_vm.sameRestaurantOutletName)
+                          ? _vm._i(_vm.sameRestaurantOutletName, null) > -1
+                          : _vm.sameRestaurantOutletName,
                       },
-                      on: { "map-click": _vm.setFullAddress },
-                    }),
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  [
-                    _c("p", { staticClass: "fw-600" }, [
-                      _vm._v("Opening Hours"),
-                    ]),
-                    _vm._v(" "),
-                    _c("opening-hours-form", {
-                      attrs: { "opening-hours": _vm.openingHours },
                       on: {
-                        "add-opening-hours": _vm.addOpeningHours,
-                        "remove-opening-hours": _vm.removeOpeningHours,
-                        "change-to-closed": _vm.changeToClosed,
-                        "change-opening-hours": _vm.changeOpeningHours,
+                        change: [
+                          function ($event) {
+                            var $$a = _vm.sameRestaurantOutletName,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  (_vm.sameRestaurantOutletName = $$a.concat([
+                                    $$v,
+                                  ]))
+                              } else {
+                                $$i > -1 &&
+                                  (_vm.sameRestaurantOutletName = $$a
+                                    .slice(0, $$i)
+                                    .concat($$a.slice($$i + 1)))
+                              }
+                            } else {
+                              _vm.sameRestaurantOutletName = $$c
+                            }
+                          },
+                          _vm.changeOutletNameToRestaurantName,
+                        ],
                       },
                     }),
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c("div", [
-                  _c("p", { staticClass: "fw-600" }, [
-                    _vm._v("Contact Information"),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        staticClass: "form-check-label",
+                        attrs: { for: "flexCheckDefault" },
+                      },
+                      [
+                        _vm._v(
+                          "\n              Same as Restaurant Name\n            "
+                        ),
+                      ]
+                    ),
                   ]),
                   _vm._v(" "),
-                  _c("div", [
-                    _vm.validationErrors["mobileNumberInput"]
+                  _c("div", { staticClass: "mb-3" }, [
+                    _c("p", { staticClass: "fw-600 mb-1" }, [
+                      _vm._v("Address"),
+                    ]),
+                    _vm._v(" "),
+                    _vm.validationErrors.area.length > 0
                       ? _c("div", { staticClass: "alert alert-warning" }, [
                           _c("i", {
                             staticClass: "fas fa-exclamation-circle me-2",
                           }),
                           _vm._v(
-                            "\n                " +
+                            "\n              " +
+                              _vm._s(_vm.validationErrors.area[0]) +
+                              "\n            "
+                          ),
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.validationErrors.locality.length > 0
+                      ? _c("div", { staticClass: "alert alert-warning" }, [
+                          _c("i", {
+                            staticClass: "fas fa-exclamation-circle me-2",
+                          }),
+                          _vm._v(
+                            "\n              " +
+                              _vm._s(_vm.validationErrors.locality[0]) +
+                              "\n            "
+                          ),
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.validationErrors.location.length > 0
+                      ? _c("div", { staticClass: "alert alert-warning" }, [
+                          _c("i", {
+                            staticClass: "fas fa-exclamation-circle me-2",
+                          }),
+                          _vm._v(
+                            "\n              " +
+                              _vm._s(_vm.validationErrors.location[0]) +
+                              "\n            "
+                          ),
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "d-flex justify-content-between" },
+                      [
+                        _c("div", { staticClass: "flex-fill" }, [
+                          _c(
+                            "label",
+                            { staticClass: "fw-600", attrs: { for: "" } },
+                            [_vm._v("Area")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.areaInput,
+                                  expression: "areaInput",
+                                },
+                              ],
+                              staticClass: "form-select",
+                              on: {
+                                change: [
+                                  function ($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call(
+                                        $event.target.options,
+                                        function (o) {
+                                          return o.selected
+                                        }
+                                      )
+                                      .map(function (o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.areaInput = $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  },
+                                  _vm.onChangeAreaInput,
+                                ],
+                              },
+                            },
+                            [
+                              _c(
+                                "option",
+                                { attrs: { value: "0", disabled: "" } },
+                                [_vm._v("--SELECT AREA--")]
+                              ),
+                              _vm._v(" "),
+                              _vm._l(_vm.areas.sort(), function (area) {
+                                return _c(
+                                  "option",
+                                  {
+                                    key: area.id,
+                                    domProps: {
+                                      value: { id: area.id, area: area.area },
+                                    },
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                    " +
+                                        _vm._s(area.area) +
+                                        "\n                  "
+                                    ),
+                                  ]
+                                )
+                              }),
+                            ],
+                            2
+                          ),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "mx-2 flex-fill" }, [
+                          _c(
+                            "label",
+                            { staticClass: "fw-600", attrs: { for: "" } },
+                            [_vm._v("Locality")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.localityInput,
+                                  expression: "localityInput",
+                                },
+                              ],
+                              staticClass: "form-select",
+                              on: {
+                                change: [
+                                  function ($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call(
+                                        $event.target.options,
+                                        function (o) {
+                                          return o.selected
+                                        }
+                                      )
+                                      .map(function (o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.localityInput = $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  },
+                                  _vm.onChangeLocalityInput,
+                                ],
+                              },
+                            },
+                            [
+                              _c(
+                                "option",
+                                { attrs: { value: "0", disabled: "" } },
+                                [_vm._v("--SELECT LOCALITY--")]
+                              ),
+                              _vm._v(" "),
+                              _vm._l(
+                                _vm.localities.filter(_vm.filterLocalities),
+                                function (locality) {
+                                  return _c(
+                                    "option",
+                                    {
+                                      key: locality.id,
+                                      domProps: {
+                                        value: {
+                                          id: locality.id,
+                                          locality: locality.locality,
+                                        },
+                                      },
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                    " +
+                                          _vm._s(locality.locality) +
+                                          "\n                  "
+                                      ),
+                                    ]
+                                  )
+                                }
+                              ),
+                            ],
+                            2
+                          ),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "flex-fill" }, [
+                          _c(
+                            "label",
+                            { staticClass: "fw-600", attrs: { for: "" } },
+                            [_vm._v("Location")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.locationInput,
+                                  expression: "locationInput",
+                                },
+                              ],
+                              staticClass: "form-select",
+                              attrs: { "aria-label": "Default select example" },
+                              on: {
+                                change: function ($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function (o) {
+                                      return o.selected
+                                    })
+                                    .map(function (o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.locationInput = $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                },
+                              },
+                            },
+                            [
+                              _c(
+                                "option",
+                                { attrs: { value: "0", disabled: "" } },
+                                [_vm._v("--SELECT LOCATION--")]
+                              ),
+                              _vm._v(" "),
+                              _vm._l(
+                                _vm.locations.filter(_vm.filterLocations),
+                                function (location) {
+                                  return _c(
+                                    "option",
+                                    {
+                                      key: location.id,
+                                      domProps: {
+                                        value: {
+                                          id: location.id,
+                                          location: location.location,
+                                        },
+                                      },
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                    " +
+                                          _vm._s(location.location) +
+                                          "\n                  "
+                                      ),
+                                    ]
+                                  )
+                                }
+                              ),
+                            ],
+                            2
+                          ),
+                        ]),
+                      ]
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "mb-2" }, [
+                    _vm.validationErrors.addressLongitude.length > 0
+                      ? _c("div", { staticClass: "alert alert-warning" }, [
+                          _c("i", {
+                            staticClass: "fas fa-exclamation-circle me-2",
+                          }),
+                          _vm._v(
+                            "\n              " +
+                              _vm._s(_vm.validationErrors.addressLongitude[0]) +
+                              "\n            "
+                          ),
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-floating" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.fullAddressInput,
+                            expression: "fullAddressInput",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          id: "floatingFullAddress1",
+                          type: "text",
+                          placeholder: "full address",
+                        },
+                        domProps: { value: _vm.fullAddressInput },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.fullAddressInput = $event.target.value
+                          },
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "floatingFullAddress" } }, [
+                        _vm._v("Full Address"),
+                      ]),
+                    ]),
+                    _vm._v(" "),
+                    _vm.reverseGeoCoding.loading
+                      ? _c(
+                          "div",
+                          {
+                            staticClass:
+                              "\n                d-flex\n                justify-content-center\n                align-items-center\n                flex-column\n              ",
+                          },
+                          [
+                            _vm._m(1),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "fst-italic" }, [
+                              _vm._v("Fetching address ..."),
+                            ]),
+                          ]
+                        )
+                      : _vm._e(),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "mb-2" },
+                    [
+                      _c("p", { staticClass: "fw-600" }, [
+                        _vm._v("Map Location"),
+                      ]),
+                      _vm._v(" "),
+                      _c("map-box-map", {
+                        attrs: {
+                          "mapbox-api-key": _vm.mapBoxAPIKey,
+                          "address-coordinates": _vm.addressCoordinates,
+                        },
+                        on: { "map-click": _vm.setFullAddress },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    [
+                      _c("p", { staticClass: "fw-600" }, [
+                        _vm._v("Opening Hours"),
+                      ]),
+                      _vm._v(" "),
+                      _c("opening-hours-form", {
+                        attrs: { "opening-hours": _vm.openingHours },
+                        on: {
+                          "add-opening-hours": _vm.addOpeningHours,
+                          "remove-opening-hours": _vm.removeOpeningHours,
+                          "change-to-closed": _vm.changeToClosed,
+                          "change-opening-hours": _vm.changeOpeningHours,
+                        },
+                      }),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("div", [
+                    _c("p", { staticClass: "fw-600" }, [
+                      _vm._v("Contact Information"),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [
+                      _vm.validationErrors["mobileNumberInput"]
+                        ? _c("div", { staticClass: "alert alert-warning" }, [
+                            _c("i", {
+                              staticClass: "fas fa-exclamation-circle me-2",
+                            }),
+                            _vm._v(
+                              "\n                " +
+                                _vm._s(
+                                  _vm.validationErrors["mobileNumberInput"]
+                                ) +
+                                "\n              "
+                            ),
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "\n                  contact-container\n                  d-flex\n                  justify-content-between\n                  align-items-center\n                  mb-3\n                ",
+                        },
+                        [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "d-flex align-items-center flex-fill",
+                            },
+                            [
+                              _vm._m(2),
+                              _vm._v(" "),
+                              _c("p", { staticClass: "mb-0 fw-600 me-2" }, [
+                                _vm._v("+63"),
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "form-floating w-100" },
+                                [
+                                  _c("contact-number-input", {
+                                    ref: "mobileNumberInputRef",
+                                    model: {
+                                      value: _vm.mobileNumberInput,
+                                      callback: function ($$v) {
+                                        _vm.mobileNumberInput = $$v
+                                      },
+                                      expression: "mobileNumberInput",
+                                    },
+                                  }),
+                                  _vm._v(" "),
+                                  _c(
+                                    "label",
+                                    { attrs: { for: "floatingMobile1" } },
+                                    [_vm._v("Mobile Number")]
+                                  ),
+                                ],
+                                1
+                              ),
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass:
+                                "btn btn-main-red ms-2 add-contact-btn",
+                              attrs: { id: "addMobileBtn", type: "button" },
+                              on: {
+                                click: function ($event) {
+                                  return _vm.addContactNumber(
+                                    _vm.mobileNumberInput,
+                                    _vm.mobileNumbers,
+                                    "mobileNumberInput"
+                                  )
+                                },
+                              },
+                            },
+                            [
+                              _vm._v(
+                                "\n                  Add Mobile Number +\n                "
+                              ),
+                            ]
+                          ),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "text-center mobile-numbers-div" },
+                        _vm._l(_vm.mobileNumbers, function (mobileNumber) {
+                          return _c(
+                            "div",
+                            {
+                              key: _vm.mobileNumbers.indexOf(mobileNumber),
+                              staticClass:
+                                "\n                    d-flex\n                    align-items-center\n                    justify-content-center\n                    mb-2\n                  ",
+                            },
+                            [
+                              _c("p", { staticClass: "mb-0 fw-600" }, [
+                                _vm._v(_vm._s(mobileNumber)),
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-main-red py-1 ms-2",
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.removeContactNumber(
+                                        mobileNumber,
+                                        _vm.mobileNumbers,
+                                        "mobileNumberInput"
+                                      )
+                                    },
+                                  },
+                                },
+                                [_c("i", { staticClass: "fas fa-times" })]
+                              ),
+                            ]
+                          )
+                        }),
+                        0
+                      ),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [
+                    _vm.validationErrors["telephoneNumberInput"]
+                      ? _c("div", { staticClass: "alert alert-warning" }, [
+                          _c("i", {
+                            staticClass: "fas fa-exclamation-circle me-2",
+                          }),
+                          _vm._v(
+                            "\n              " +
                               _vm._s(
-                                _vm.validationErrors["mobileNumberInput"]
+                                _vm.validationErrors["telephoneNumberInput"]
                               ) +
-                              "\n              "
+                              "\n            "
                           ),
                         ])
                       : _vm._e(),
@@ -41080,7 +41375,7 @@ var render = function () {
                       "div",
                       {
                         staticClass:
-                          "\n                  contact-container\n                  d-flex\n                  justify-content-between\n                  align-items-center\n                  mb-3\n                ",
+                          "\n                contact-container\n                d-flex\n                justify-content-between\n                align-items-center\n                mb-3\n              ",
                       },
                       [
                         _c(
@@ -41089,7 +41384,7 @@ var render = function () {
                             staticClass: "d-flex align-items-center flex-fill",
                           },
                           [
-                            _vm._m(2),
+                            _vm._m(3),
                             _vm._v(" "),
                             _c("p", { staticClass: "mb-0 fw-600 me-2" }, [
                               _vm._v("+63"),
@@ -41100,20 +41395,20 @@ var render = function () {
                               { staticClass: "form-floating w-100" },
                               [
                                 _c("contact-number-input", {
-                                  ref: "mobileNumberInputRef",
+                                  ref: "telephoneNumberInputRef",
                                   model: {
-                                    value: _vm.mobileNumberInput,
+                                    value: _vm.telephoneNumberInput,
                                     callback: function ($$v) {
-                                      _vm.mobileNumberInput = $$v
+                                      _vm.telephoneNumberInput = $$v
                                     },
-                                    expression: "mobileNumberInput",
+                                    expression: "telephoneNumberInput",
                                   },
                                 }),
                                 _vm._v(" "),
                                 _c(
                                   "label",
-                                  { attrs: { for: "floatingMobile1" } },
-                                  [_vm._v("Mobile Number")]
+                                  { attrs: { for: "floatingTelephone1" } },
+                                  [_vm._v("Telephone Number")]
                                 ),
                               ],
                               1
@@ -41126,20 +41421,20 @@ var render = function () {
                           {
                             staticClass:
                               "btn btn-main-red ms-2 add-contact-btn",
-                            attrs: { id: "addMobileBtn", type: "button" },
+                            attrs: { id: "addTelephoneBtn", type: "button" },
                             on: {
                               click: function ($event) {
                                 return _vm.addContactNumber(
-                                  _vm.mobileNumberInput,
-                                  _vm.mobileNumbers,
-                                  "mobileNumberInput"
+                                  _vm.telephoneNumberInput,
+                                  _vm.telephoneNumbers,
+                                  "telephoneNumberInput"
                                 )
                               },
                             },
                           },
                           [
                             _vm._v(
-                              "\n                  Add Mobile Number +\n                "
+                              "\n                Add Telephone Number +\n              "
                             ),
                           ]
                         ),
@@ -41148,18 +41443,18 @@ var render = function () {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "text-center mobile-numbers-div" },
-                      _vm._l(_vm.mobileNumbers, function (mobileNumber) {
+                      { staticClass: "text-center telephone-numbers-div" },
+                      _vm._l(_vm.telephoneNumbers, function (telephoneNumber) {
                         return _c(
                           "div",
                           {
-                            key: _vm.mobileNumbers.indexOf(mobileNumber),
+                            key: _vm.telephoneNumbers.indexOf(telephoneNumber),
                             staticClass:
-                              "\n                    d-flex\n                    align-items-center\n                    justify-content-center\n                    mb-2\n                  ",
+                              "d-flex align-items-center justify-content-center mb-2",
                           },
                           [
                             _c("p", { staticClass: "mb-0 fw-600" }, [
-                              _vm._v(_vm._s(mobileNumber)),
+                              _vm._v(_vm._s(telephoneNumber)),
                             ]),
                             _vm._v(" "),
                             _c(
@@ -41170,9 +41465,9 @@ var render = function () {
                                 on: {
                                   click: function ($event) {
                                     return _vm.removeContactNumber(
-                                      mobileNumber,
-                                      _vm.mobileNumbers,
-                                      "mobileNumberInput"
+                                      telephoneNumber,
+                                      _vm.telephoneNumbers,
+                                      "telephoneNumberInput"
                                     )
                                   },
                                 },
@@ -41186,160 +41481,37 @@ var render = function () {
                     ),
                   ]),
                 ]),
-                _vm._v(" "),
-                _c("div", [
-                  _vm.validationErrors["telephoneNumberInput"]
-                    ? _c("div", { staticClass: "alert alert-warning" }, [
-                        _c("i", {
-                          staticClass: "fas fa-exclamation-circle me-2",
-                        }),
-                        _vm._v(
-                          "\n              " +
-                            _vm._s(
-                              _vm.validationErrors["telephoneNumberInput"]
-                            ) +
-                            "\n            "
-                        ),
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass:
-                        "\n                contact-container\n                d-flex\n                justify-content-between\n                align-items-center\n                mb-3\n              ",
-                    },
-                    [
-                      _c(
-                        "div",
-                        { staticClass: "d-flex align-items-center flex-fill" },
-                        [
-                          _vm._m(3),
-                          _vm._v(" "),
-                          _c("p", { staticClass: "mb-0 fw-600 me-2" }, [
-                            _vm._v("+63"),
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "form-floating w-100" },
-                            [
-                              _c("contact-number-input", {
-                                ref: "telephoneNumberInputRef",
-                                model: {
-                                  value: _vm.telephoneNumberInput,
-                                  callback: function ($$v) {
-                                    _vm.telephoneNumberInput = $$v
-                                  },
-                                  expression: "telephoneNumberInput",
-                                },
-                              }),
-                              _vm._v(" "),
-                              _c(
-                                "label",
-                                { attrs: { for: "floatingTelephone1" } },
-                                [_vm._v("Telephone Number")]
-                              ),
-                            ],
-                            1
-                          ),
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-main-red ms-2 add-contact-btn",
-                          attrs: { id: "addTelephoneBtn", type: "button" },
-                          on: {
-                            click: function ($event) {
-                              return _vm.addContactNumber(
-                                _vm.telephoneNumberInput,
-                                _vm.telephoneNumbers,
-                                "telephoneNumberInput"
-                              )
-                            },
-                          },
-                        },
-                        [
-                          _vm._v(
-                            "\n                Add Telephone Number +\n              "
-                          ),
-                        ]
-                      ),
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "text-center telephone-numbers-div" },
-                    _vm._l(_vm.telephoneNumbers, function (telephoneNumber) {
-                      return _c(
-                        "div",
-                        {
-                          key: _vm.telephoneNumbers.indexOf(telephoneNumber),
-                          staticClass:
-                            "d-flex align-items-center justify-content-center mb-2",
-                        },
-                        [
-                          _c("p", { staticClass: "mb-0 fw-600" }, [
-                            _vm._v(_vm._s(telephoneNumber)),
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-main-red py-1 ms-2",
-                              attrs: { type: "button" },
-                              on: {
-                                click: function ($event) {
-                                  return _vm.removeContactNumber(
-                                    telephoneNumber,
-                                    _vm.telephoneNumbers,
-                                    "telephoneNumberInput"
-                                  )
-                                },
-                              },
-                            },
-                            [_c("i", { staticClass: "fas fa-times" })]
-                          ),
-                        ]
-                      )
-                    }),
-                    0
-                  ),
-                ]),
-              ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "modal-footer" }, [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-secondary",
-              attrs: { type: "button" },
-              on: {
-                click: function ($event) {
-                  return _vm.$emit("close-modal")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-footer" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary",
+                attrs: { type: "button" },
+                on: {
+                  click: function ($event) {
+                    return _vm.$emit("close-modal")
+                  },
                 },
               },
-            },
-            [_vm._v("\n          Cancel\n        ")]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-main-red",
-              attrs: { type: "button" },
-              on: { click: _vm.editRestaurantOutlet },
-            },
-            [_vm._v("\n          Save\n        ")]
-          ),
+              [_vm._v("\n          Cancel\n        ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-main-red",
+                attrs: { type: "button" },
+                on: { click: _vm.editRestaurantOutlet },
+              },
+              [_vm._v("\n          Save\n        ")]
+            ),
+          ]),
         ]),
       ]),
-    ]),
-  ])
+    ]
+  )
 }
 var staticRenderFns = [
   function () {

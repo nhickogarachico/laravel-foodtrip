@@ -17,7 +17,18 @@
           v-if="updateSuccess"
         >
           Updated successfully.
-          <button class="btn p-0" v-on:click="updateSuccess = false"><i class="fas fa-times"></i></button>
+          <button class="btn p-0" v-on:click="updateSuccess = false">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div
+          class="alert alert-success d-flex justify-content-between"
+          v-if="deleteSuccess"
+        >
+          Deleted successfully.
+          <button class="btn p-0" v-on:click="deleteSuccess = false">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
         <div
           v-if="$root.addingRestaurantOutletData"
@@ -69,14 +80,23 @@
             <p class="fw-600 mb-1">
               {{ restaurantOutlet.restaurantOutletName }}
             </p>
-            <button
-              type="button"
-              class="btn py-0 px-1 btn-main-red-hover"
-              :ref="`openModalButton${i}`"
-              v-on:click="changeCurrentRestaurantOutlet(i)"
-            >
-              <i class="fas fa-pencil"></i>
-            </button>
+            <div>
+              <button
+                type="button"
+                class="btn py-0 px-1 btn-main-red-hover"
+                :ref="`openModalButton${i}`"
+                v-on:click="changeCurrentRestaurantOutlet(i)"
+              >
+                <i class="fas fa-pencil"></i>
+              </button>
+              <button
+                type="button"
+                class="btn py-0 px-1 btn-main-red-hover ms-1"
+                v-on:click="deleteRestaurantOutlet(i)"
+              >
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
           </div>
           <p class="mb-1">
             {{ restaurantOutlet.location.location }},
@@ -96,7 +116,8 @@
                 :key="i"
               >
                 <span
-                  >{{ openingHour.openingHour }}:{{ openingHour.openingMinute
+                  >{{ convertDateStringToNumber(openingHour.openingHour) }}:{{
+                    openingHour.openingMinute
                   }}{{ openingHour.openingHour > 12 ? "PM" : "AM" }} -
                   {{ convertDateStringToNumber(openingHour.closingHour) }}:{{
                     openingHour.closingMinute
@@ -109,13 +130,13 @@
             <p class="fw-600 mb-2">Contact Numbers</p>
             <div
               v-if="
-                restaurantOutlet.mobileNumbers.length === 0 ||
+                restaurantOutlet.mobileNumbers.length === 0 &&
                 restaurantOutlet.telephoneNumbers.length === 0
               "
             >
               No contact numbers
             </div>
-            <div v-else>
+            <div v-if="restaurantOutlet.mobileNumbers.length > 0">
               <p class="fw-600 mb-2">Mobile Numbers</p>
               <p
                 v-for="(mobileNumber, i) in restaurantOutlet.mobileNumbers"
@@ -123,6 +144,8 @@
               >
                 {{ mobileNumber }}
               </p>
+            </div>
+            <div v-if="restaurantOutlet.telephoneNumbers.length > 0">
               <p class="fw-600 mb-2">Telephone Numbers</p>
               <p
                 v-for="telephoneNumber in restaurantOutlet.telephoneNumbers"
@@ -142,11 +165,13 @@
         class="btn btn-main-red-outline w-100 me-3"
         >Back</a
       >
-      <a
-        href="./create-restaurant-page-step-3.html"
+      <button
+        type="button"
         class="btn btn-main-red w-100"
-        >Next</a
+        v-on:click="proceedToStepThree"
       >
+        Next
+      </button>
     </div>
 
     <!-- Edit Restaurant Outlet Modal -->
@@ -179,6 +204,7 @@ export default {
     return {
       isModalOpen: false,
       updateSuccess: false,
+      deleteSuccess: false,
       openModalButton: {},
       daysOfTheWeek: {
         1: "Monday",
@@ -196,7 +222,10 @@ export default {
     convertDateStringToNumber: function (dateString) {
       let dateInteger = parseInt(dateString);
       if (dateInteger > 12) {
-        return String(dateInteger - 12);
+        return (dateInteger - 12).toLocaleString("en-US", {
+          minimumIntegerDigits: 2,
+          useGrouping: false,
+        });
       } else {
         return dateString;
       }
@@ -212,8 +241,17 @@ export default {
       document.body.style.overflow = "auto";
       document.body.removeAttribute("style");
     },
-    displayUpdateSuccessMessage: function() {
+    displayUpdateSuccessMessage: function () {
       this.updateSuccess = true;
+    },
+    deleteRestaurantOutlet: function(index) {
+      axios.delete(`/register/restaurant/step/2/${index}`).then((response) => {
+        this.deleteSuccess = true;
+                  this.$root.fetchSessionData();
+      }).catch((error) => console.log(error.response.data))
+    },
+    proceedToStepThree: function () {
+      window.location.href = "/register/restaurant/step/3";
     },
   },
   mounted() {
