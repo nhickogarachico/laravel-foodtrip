@@ -36,6 +36,7 @@
     <add-menu-item-modal
       v-if="isAddMenuItemModalOpen"
       v-on:close-modal="closeAddMenuItemModal"
+      :menu-item-category-tags="menuItemCategoryTags"
     ></add-menu-item-modal>
   </div>
 </template>
@@ -44,6 +45,7 @@ import { createRestaurantPageStorage } from "./sessionStorage";
 export default {
   props: {
     stepThreeData: Object,
+    menuItemCategoryTags: Array
   },
   data() {
     return {

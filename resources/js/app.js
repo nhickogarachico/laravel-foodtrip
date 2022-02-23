@@ -32,6 +32,7 @@ Vue.component('mapbox-map', require('./components/MapBoxMap.vue').default);
 Vue.component('opening-hours-form', require('./components/OpeningHoursForm.vue').default);
 Vue.component('edit-restaurant-outlet-modal', require('./components/EditRestaurantOutletModal.vue').default);
 Vue.component('add-menu-item-modal', require('./components/AddMenuItemModal.vue').default);
+Vue.component('pagination', require('./components/Pagination.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

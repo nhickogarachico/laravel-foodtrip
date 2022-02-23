@@ -12,163 +12,196 @@
         </button>
       </div>
       <div class="card-body">
-        <div
-          class="alert alert-danger d-flex justify-content-between"
-          v-if="stepTwoError"
+        <pagination
+          :totalItems="$root.restaurantOutlets.length"
+          :items="$root.restaurantOutlets"
         >
-          {{ errors.stepTwoError[0] }}
-          <button
-            class="btn p-0"
-            v-on:click="closeStepTwoError"
-          >
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        <div
-          class="alert alert-success d-flex justify-content-between"
-          v-if="updateSuccess"
-        >
-          Updated successfully.
-          <button class="btn p-0" v-on:click="updateSuccess = false">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        <div
-          class="alert alert-success d-flex justify-content-between"
-          v-if="deleteSuccess"
-        >
-          Deleted successfully.
-          <button class="btn p-0" v-on:click="deleteSuccess = false">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        <div
-          v-if="$root.addingRestaurantOutletData"
-          class="d-flex justify-content-center align-items-center flex-column"
-        >
-          <div class="spinner-grow text-danger mt-2" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-          <span class="fst-italic">Adding restaurant outlet ...</span>
-        </div>
-        <div
-          v-else-if="$root.loadingRestaurantOutletData"
-          class="d-flex justify-content-center align-items-center flex-column"
-        >
-          <div class="spinner-grow text-danger mt-2" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-          <span class="fst-italic">Loading restaurant outlets ...</span>
-        </div>
-
-        <div
-          class="
-            d-flex
-            justify-content-center
-            align-items-center
-            flex-column
-            text-center
-            p-3
-          "
-          v-else-if="$root.restaurantOutlets.length === 0"
-        >
-          <p>No restaurant outlets yet</p>
-
-          <button
-            class="btn btn-main-red w-50"
-            data-bs-toggle="modal"
-            data-bs-target="#addRestaurantOutletModal"
-          >
-            Add Outlet
-          </button>
-        </div>
-        <div
-          class="d-flex justify-content-center flex-column p-3"
-          v-else
-          v-for="(restaurantOutlet, i) in $root.restaurantOutlets"
-          :key="i"
-        >
-          <div class="d-flex justify-content-between">
-            <p class="fw-600 mb-1">
-              {{ restaurantOutlet.restaurantOutletName }}
-            </p>
-            <div>
-              <button
-                type="button"
-                class="btn py-0 px-1 btn-main-red-hover"
-                :ref="`openModalButton${i}`"
-                v-on:click="changeCurrentRestaurantOutlet(i)"
-              >
-                <i class="fas fa-pencil"></i>
-              </button>
-              <button
-                type="button"
-                class="btn py-0 px-1 btn-main-red-hover ms-1"
-                v-on:click="deleteRestaurantOutlet(i)"
-              >
-                <i class="fas fa-trash"></i>
-              </button>
-            </div>
-          </div>
-          <p class="mb-1">
-            {{ restaurantOutlet.location.location }},
-            {{ restaurantOutlet.locality.locality }},
-            {{ restaurantOutlet.area.area }}
-          </p>
-          <p>{{ restaurantOutlet.fullAddress }}</p>
-          <div>
-            <p class="fw-600">Opening Hours</p>
-            <div v-for="i in 7" :key="i" class="mb-2">
-              <p class="mb-0">{{ daysOfTheWeek[i] }} :</p>
-              <div v-if="restaurantOutlet.openingHours[i].closed">CLOSED</div>
-              <div
-                v-else
-                v-for="(openingHour, i) in restaurantOutlet.openingHours[i]
-                  .hours"
-                :key="i"
-              >
-                <span
-                  >{{ convertDateStringToNumber(openingHour.openingHour) }}:{{
-                    openingHour.openingMinute
-                  }}{{ openingHour.openingHour > 12 ? "PM" : "AM" }} -
-                  {{ convertDateStringToNumber(openingHour.closingHour) }}:{{
-                    openingHour.closingMinute
-                  }}{{ openingHour.closingHour > 12 ? "PM" : "AM" }}</span
-                >
-              </div>
-            </div>
-          </div>
-          <div>
-            <p class="fw-600 mb-2">Contact Numbers</p>
+          <template #data="{ paginatedItems, pageNumber, perPage }">
             <div
-              v-if="
-                restaurantOutlet.mobileNumbers.length === 0 &&
-                restaurantOutlet.telephoneNumbers.length === 0
+              class="alert alert-danger d-flex justify-content-between"
+              v-if="stepTwoError"
+            >
+              {{ errors.stepTwoError[0] }}
+              <button class="btn p-0" v-on:click="closeStepTwoError">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div
+              class="alert alert-success d-flex justify-content-between"
+              v-if="updateSuccess"
+            >
+              Updated successfully.
+              <button class="btn p-0" v-on:click="updateSuccess = false">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div
+              class="alert alert-success d-flex justify-content-between"
+              v-if="deleteSuccess"
+            >
+              Deleted successfully.
+              <button class="btn p-0" v-on:click="deleteSuccess = false">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div
+              v-if="$root.addingRestaurantOutletData"
+              class="
+                d-flex
+                justify-content-center
+                align-items-center
+                flex-column
               "
             >
-              No contact numbers
+              <div class="spinner-grow text-danger mt-2" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <span class="fst-italic">Adding restaurant outlet ...</span>
             </div>
-            <div v-if="restaurantOutlet.mobileNumbers.length > 0">
-              <p class="fw-600 mb-2">Mobile Numbers</p>
-              <p
-                v-for="(mobileNumber, i) in restaurantOutlet.mobileNumbers"
-                :key="i"
+            <div
+              v-else-if="$root.loadingRestaurantOutletData"
+              class="
+                d-flex
+                justify-content-center
+                align-items-center
+                flex-column
+              "
+            >
+              <div class="spinner-grow text-danger mt-2" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <span class="fst-italic">Loading restaurant outlets ...</span>
+            </div>
+
+            <div
+              class="
+                d-flex
+                justify-content-center
+                align-items-center
+                flex-column
+                text-center
+                p-3
+              "
+              v-else-if="$root.restaurantOutlets.length === 0"
+            >
+              <p>No restaurant outlets yet</p>
+
+              <button
+                class="btn btn-main-red w-50"
+                data-bs-toggle="modal"
+                data-bs-target="#addRestaurantOutletModal"
               >
-                {{ mobileNumber }}
-              </p>
+                Add Outlet
+              </button>
             </div>
-            <div v-if="restaurantOutlet.telephoneNumbers.length > 0">
-              <p class="fw-600 mb-2">Telephone Numbers</p>
-              <p
-                v-for="telephoneNumber in restaurantOutlet.telephoneNumbers"
-                :key="telephoneNumber"
-              >
-                {{ telephoneNumber }}
+
+            <div
+              class="d-flex justify-content-center flex-column p-3"
+              v-else
+              v-for="(restaurantOutlet, i) in paginatedItems"
+              :key="i"
+            >
+              <div class="d-flex justify-content-between">
+                <p class="fw-600 mb-1">
+                  {{ restaurantOutlet.restaurantOutletName }}
+                </p>
+                <div>
+                  <button
+                    type="button"
+                    class="btn py-0 px-1 btn-main-red-hover"
+                    data-bs-toggle="collapse"
+                    :data-bs-target="`#restaurantOutletData${i}`"
+                  >
+                    <i class="fas fa-chevron-down"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn py-0 px-1 btn-main-red-hover ms-1"
+                    :ref="`openModalButton${i}`"
+                    v-on:click="changeCurrentRestaurantOutlet(i)"
+                  >
+                    <i class="fas fa-pencil"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn py-0 px-1 btn-main-red-hover ms-1"
+                    v-on:click="deleteRestaurantOutlet(i, pageNumber, perPage)"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+
+              <p class="mb-1">
+                {{ restaurantOutlet.location.location }},
+                {{ restaurantOutlet.locality.locality }},
+                {{ restaurantOutlet.area.area }}
               </p>
+              <p>{{ restaurantOutlet.fullAddress }}</p>
+              <div class="collapse" :id="`restaurantOutletData${i}`">
+                <div>
+                  <p class="fw-600">Opening Hours</p>
+                  <div v-for="i in 7" :key="i" class="mb-2">
+                    <p class="mb-0">{{ daysOfTheWeek[i] }} :</p>
+                    <div v-if="restaurantOutlet.openingHours[i].closed">
+                      CLOSED
+                    </div>
+                    <div
+                      v-else
+                      v-for="(openingHour, i) in restaurantOutlet.openingHours[
+                        i
+                      ].hours"
+                      :key="i"
+                    >
+                      <span
+                        >{{
+                          convertDateStringToNumber(openingHour.openingHour)
+                        }}:{{ openingHour.openingMinute
+                        }}{{ openingHour.openingHour > 12 ? "PM" : "AM" }} -
+                        {{
+                          convertDateStringToNumber(openingHour.closingHour)
+                        }}:{{ openingHour.closingMinute
+                        }}{{ openingHour.closingHour > 12 ? "PM" : "AM" }}</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <p class="fw-600 mb-2">Contact Numbers</p>
+                  <div
+                    v-if="
+                      restaurantOutlet.mobileNumbers.length === 0 &&
+                      restaurantOutlet.telephoneNumbers.length === 0
+                    "
+                  >
+                    No contact numbers
+                  </div>
+                  <div v-if="restaurantOutlet.mobileNumbers.length > 0">
+                    <p class="fw-600 mb-2">Mobile Numbers</p>
+                    <p
+                      v-for="(
+                        mobileNumber, i
+                      ) in restaurantOutlet.mobileNumbers"
+                      :key="i"
+                    >
+                      {{ mobileNumber }}
+                    </p>
+                  </div>
+                  <div v-if="restaurantOutlet.telephoneNumbers.length > 0">
+                    <p class="fw-600 mb-2">Telephone Numbers</p>
+                    <p
+                      v-for="telephoneNumber in restaurantOutlet.telephoneNumbers"
+                      :key="telephoneNumber"
+                    >
+                      {{ telephoneNumber }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <hr />
             </div>
-          </div>
-          <hr />
-        </div>
+          </template>
+        </pagination>
       </div>
     </div>
     <div class="d-flex">
@@ -220,6 +253,9 @@ export default {
       deleteSuccess: false,
       stepTwoError: false,
       openModalButton: {},
+      numberOfRestaurantOutletPerPage: 5,
+      currentPage: 1,
+      paginatedItems: [],
       daysOfTheWeek: {
         1: "Monday",
         2: "Tuesday",
@@ -258,9 +294,10 @@ export default {
     displayUpdateSuccessMessage: function () {
       this.updateSuccess = true;
     },
-    deleteRestaurantOutlet: function (index) {
+    deleteRestaurantOutlet: function (index , pageNumber, perPage) {
+     
       axios
-        .delete(`/register/restaurant/step/2/${index}`)
+        .delete(`/register/restaurant/step/2/${perPage * (pageNumber - 1) + index}`)
         .then((response) => {
           this.deleteSuccess = true;
           this.$root.fetchSessionData();
@@ -274,6 +311,7 @@ export default {
       window.location.href = "/register/restaurant/step/3";
     },
   },
+
   mounted() {
     createRestaurantPageStorage.setItem(
       "stepOneData",

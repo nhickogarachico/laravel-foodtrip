@@ -35,15 +35,15 @@
 <script>
 export default {
   props: {
-    restaurantCategoryTags: Array,
-    restaurantCategories: Array
+    categoryTags: Array,
+    categories: Array
   },
   data() {
     return {
       tagDisplay: "none",
       categoryTagInput: "",
-      searchedCategoryTags: this.restaurantCategoryTags,
-      selectedCategoryTags: this.restaurantCategories,
+      searchedCategoryTags: this.categoryTags,
+      selectedCategoryTags: this.categories,
     };
   },
   methods: {
@@ -51,7 +51,7 @@ export default {
       this.tagDisplay = "block";
       let exp = new RegExp("^" + this.escapeRegex(this.categoryTagInput), "i");
 
-      this.searchedCategoryTags = this.restaurantCategoryTags.filter((category) => {
+      this.searchedCategoryTags = this.categoryTags.filter((category) => {
         return category.category.match(exp) && !this.selectedCategoryTags.some((el) => el.id == category.id)
       });
       

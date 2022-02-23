@@ -190,6 +190,27 @@ a:hover {
     border: 1px solid var(--main-red);
 }
 
+
+/* Pagination */
+
+.pagination {
+    background-color: transparent;
+}
+
+.pagination .page-link:hover {
+    color: var(--main-red);
+    background-color: white;
+}
+
+.pagination .active .page-link {
+    background-color: var(--main-red);
+    border: 1px solid var(--main-red);
+}
+
+.pagination .active .page-link:hover {
+    color: white;
+}
+
 @media only screen and (max-width: 768px) {
     .header-margin-top {
         margin-top: 1rem;

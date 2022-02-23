@@ -12,11 +12,13 @@ use App\Http\Requests\Restaurant\StoreStepTwoRequest;
 use App\Models\Area;
 use App\Models\Locality;
 use App\Models\Location;
+use App\Models\MenuItemCategory;
 use Illuminate\Http\Request;
 
 class RestaurantController extends Controller
 {
     protected $restaurantCategory;
+    protected $menuItemCategory;
     protected $area;
     protected $locality;
     protected $location;
@@ -34,12 +36,13 @@ class RestaurantController extends Controller
     protected $initialStepThree = [
         'menuItems' => []
     ];
-    public function __construct(RestaurantCategory $restaurantCategory, Area $area, Locality $locality, Location $location)
+    public function __construct(RestaurantCategory $restaurantCategory, Area $area, Locality $locality, Location $location, MenuItemCategory $menuItemCategory)
     {
         $this->restaurantCategory = $restaurantCategory;
         $this->area = $area;
         $this->locality = $locality;
         $this->location = $location;
+        $this->menuItemCategory = $menuItemCategory;
     }
 
     public function showRegisterRestaurantStepOneView()
@@ -82,6 +85,7 @@ class RestaurantController extends Controller
     {
         if (session('stepTwoData') && count(session('stepTwoData.restaurantOutlets')) > 0) {
             return view('screens.create-restaurant-page-step-3', [
+                'menuItemCategories' => $this->menuItemCategory->orderBy('category')->get(),
                 'stepThreeData' => session('stepThreeData') ? json_encode(session('stepThreeData')) : json_encode($this->initialStepThree)
             ]);
         } else if (session('stepTwoData') && count(session('stepTwoData.restaurantOutlets')) === 0) {
@@ -118,6 +122,9 @@ class RestaurantController extends Controller
 
     public function deleteRestaurantOutletSession($restaurantOutletIndex)
     {
-        session()->forget("stepTwoData.restaurantOutlets.$restaurantOutletIndex");
+        $restaurantOutlets = session()->get("stepTwoData.restaurantOutlets");
+        array_splice($restaurantOutlets, $restaurantOutletIndex, 1);
+        session()->put("stepTwoData.restaurantOutlets",$restaurantOutlets );
+
     }
 }

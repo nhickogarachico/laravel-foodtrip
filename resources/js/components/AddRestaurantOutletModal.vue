@@ -85,7 +85,7 @@
                     <option
                       v-for="area in areas.sort()"
                       :key="area.id"
-                      :value="{id: area.id, area: area.area}"
+                      :value="{ id: area.id, area: area.area }"
                     >
                       {{ area.area }}
                     </option>
@@ -102,7 +102,7 @@
                     <option
                       v-for="locality in localities.filter(filterLocalities)"
                       :key="locality.id"
-                      :value="{id: locality.id, locality: locality.locality}"
+                      :value="{ id: locality.id, locality: locality.locality }"
                     >
                       {{ locality.locality }}
                     </option>
@@ -119,7 +119,7 @@
                     <option
                       v-for="location in locations.filter(filterLocations)"
                       :key="location.id"
-                      :value="{id: location.id, location: location.location}"
+                      :value="{ id: location.id, location: location.location }"
                     >
                       {{ location.location }}
                     </option>
@@ -163,8 +163,10 @@
             <div class="mb-2">
               <p class="fw-600">Map Location</p>
               <map-box-map
+              :remove-map-marker="removeMapMarker"
                 :mapbox-api-key="mapBoxAPIKey"
                 v-on:map-click="setFullAddress"
+                v-on:change-remove-map-marker="changeRemoveMapMarker"
               ></map-box-map>
             </div>
             <div>
@@ -375,6 +377,7 @@ export default {
       mobileNumbers: [],
       telephoneNumberInput: "",
       telephoneNumbers: [],
+      removeMapMarker: false,
       validationErrors: {
         restaurantOutletName: [],
         area: [],
@@ -528,6 +531,9 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+    changeRemoveMapMarker: function () {
+      this.removeMapMarker = false;
+    },
     addContactNumber: function (
       contactNumberInput,
       contactNumbers,
@@ -584,9 +590,15 @@ export default {
       axios
         .post("/register/restaurant/step/2", {
           restaurantOutletName: this.restaurantOutletName,
-          area:{id:  this.areaInput.id, area: this.areaInput.area},
-          locality: {id: this.localityInput.id, locality: this.localityInput.locality},
-          location: {id: this.locationInput.id, location: this.locationInput.location},
+          area: { id: this.areaInput.id, area: this.areaInput.area },
+          locality: {
+            id: this.localityInput.id,
+            locality: this.localityInput.locality,
+          },
+          location: {
+            id: this.locationInput.id,
+            location: this.locationInput.location,
+          },
           fullAddress: this.fullAddressInput,
           addressLongitude: this.addressCoordinates[0],
           addressLatitude: this.addressCoordinates[1],
@@ -597,6 +609,19 @@ export default {
         .then((response) => {
           this.$root.addingRestaurantOutletData = false;
           this.addRestaurantOutletModal.hide();
+
+          // Clear form inputs
+
+          (this.restaurantOutletName = this.stepOneData.restaurantName),
+            (this.areaInput = 0);
+          this.localityInput = 0;
+          this.locationInput = 0;
+          this.fullAddressInput = "";
+          this.removeMapMarker = true;
+          this.mobileNumberInput = "";
+          this.mobileNumbers = [];
+          this.telephoneNumberInput = "";
+          this.telephoneNumbers = [];
         })
         .catch((error) => {
           this.$root.addingRestaurantOutletData = false;

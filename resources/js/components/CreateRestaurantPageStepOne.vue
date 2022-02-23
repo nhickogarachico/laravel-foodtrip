@@ -183,8 +183,8 @@
     </div>
     <p class="fw-600">Categories</p>
     <tag-search-input
-      :restaurant-category-tags="restaurantCategoryTags"
-      :restaurant-categories="restaurantCategories"
+      :category-tags="restaurantCategoryTags"
+      :categories="restaurantCategories"
     ></tag-search-input>
     <button
       type="button"

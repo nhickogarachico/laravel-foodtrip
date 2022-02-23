@@ -11,7 +11,7 @@
 
         </li>
         <li class="breadcrumb-item" aria-current="page">
-            @if (session()->has('stepTwoData'))
+            @if (session('stepTwoData.restaurantOutlets') && count(session('stepTwoData.restaurantOutlets')) > 0)
                 <a href="/register/restaurant/step/3" class="active text-decoration-none">Menu Items</a>
             @else
                Menu Items
